@@ -1,0 +1,86 @@
+{
+  "name": "transformToUnocss",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@7.2.1",
+  "description": "",
+  "author": "Simon He",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/Simon-He95",
+  "homepage": "https://github.com/Simon-He95/transformToUnocss#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Simon-He95/transformToUnocss.git"
+  },
+  "bugs": "https://github.com/Simon-He95/transformToUnocss/issues",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "bin": {
+    "run": "./cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "simple-git-hooks",
+    "build": "tsup ./src/index.ts --format cjs,esm --dts --clean --minify",
+    "dev": "npm run build -- --watch src",
+    "format": "prettier --write --cache .",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0 --cache",
+    "lint:fix": "pnpm run lint --fix",
+    "prepublishOnly": "nr build",
+    "release": "bumpp && npm publish",
+    "start": "esno src/index.ts",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.25.1",
+    "@types/node": "^18.0.0",
+    "bumpp": "^8.2.1",
+    "eslint": "^8.18.0",
+    "esno": "^0.16.3",
+    "lazy-js-utils": "^0.0.35",
+    "lint-staged": "^13.1.0",
+    "picocolors": "^1.0.0",
+    "prettier": "^2.8.1",
+    "rimraf": "^3.0.2",
+    "simple-git-hooks": "^2.8.1",
+    "tsup": "^6.5.0",
+    "tsx": "^3.12.1",
+    "typescript": "^4.7.4",
+    "vitest": "^0.15.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged --concurrent false",
+    "commit-msg": "pnpm exec tsx scripts/verifyCommit.ts $1"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --cache --ignore-unknown"
+    ],
+    "*.{vue,js,ts,jsx,tsx,md,json}": "eslint --fix"
+  },
+  "eslintConfig": {
+    "extends": "@antfu"
+  }
+}
