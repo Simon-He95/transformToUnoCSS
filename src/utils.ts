@@ -13,3 +13,11 @@ export function isUrl(s: string) {
 export function isPercent(s: string) {
   return s.endsWith('%')
 }
+
+export function isHex(hex: string) {
+  return /^#[0-9A-Fa-f]{2,}$/.test(hex)
+}
+
+export function isRgb(s: string) {
+  return s.startsWith('rgb')
+}

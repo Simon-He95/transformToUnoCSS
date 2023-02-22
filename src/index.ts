@@ -7,6 +7,9 @@ import { transformCursor } from './cursor'
 import { transformMargin } from './margin'
 import { transformOpacity } from './opacity'
 import { transformPosition } from './position'
+import { transformColor } from './color'
+import { transformText } from './text'
+import { transformVertical } from './transformVertical'
 
 const typeMap: any = {
   background: transformBackground,
@@ -19,9 +22,12 @@ const typeMap: any = {
   padding: transformMargin,
   opacity: transformOpacity,
   position: transformPosition,
+  color: transformColor,
+  text: transformText,
+  vertical: transformVertical,
 }
 export function transformToUnocss(css: String) {
-  const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",]+)/
+  const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#]+)/
   const match = css.match(splitReg)
   if (!match)
     return
