@@ -11,6 +11,14 @@ import { transformColor } from './color'
 import { transformText } from './text'
 import { transformVertical } from './transformVertical'
 import { transformLine } from './line'
+import { transformBorder } from './border'
+import { transformDisplay } from './display'
+import { transformFloat } from './float'
+import { transformTop } from './top'
+import { transformList } from './list'
+import { transformBox } from './box'
+import { transformFilter } from './filter'
+import { transformBackdrop } from './backdrop'
 
 const typeMap: any = {
   background: transformBackground,
@@ -27,6 +35,19 @@ const typeMap: any = {
   text: transformText,
   vertical: transformVertical,
   line: transformLine,
+  border: transformBorder,
+  display: transformDisplay,
+  float: transformFloat,
+  clear: transformFloat,
+  top: transformTop,
+  left: transformTop,
+  right: transformTop,
+  bottom: transformTop,
+  z: transformSize,
+  list: transformList,
+  box: transformBox,
+  filter: transformFilter,
+  backdrop: transformBackdrop,
 }
 export function transformToUnocss(css: String) {
   const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#]+)/

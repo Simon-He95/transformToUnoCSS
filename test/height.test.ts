@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { transformToUnocss } from '../src'
 
-describe('should', () => {
+describe('height', () => {
   it('px', () => {
     expect(transformToUnocss('height:10px')).toMatchInlineSnapshot('"h-10px"')
   })

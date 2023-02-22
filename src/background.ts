@@ -1,14 +1,10 @@
-import { isUrl } from './utils'
+import { getVal } from './utils'
 
 const background = ['background', 'background-size', 'background-attachments', 'background-position', 'background-image']
 
 export function transformBackground(key: string, val: string) {
-  if (background.includes(key)) {
-    if (isUrl(val))
-      return `bg-[${val}]`
-
-    return `bg-${transformSpaceToLine(val)}`
-  }
+  if (background.includes(key))
+    return `bg-${getVal(val, transformSpaceToLine)}`
 
   return `${replaceBackground(key, val)}-${transformBox(val)}`
 }

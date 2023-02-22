@@ -1,5 +1,5 @@
 import { getVal } from './utils'
 
-export function transformCursor(key: string, val: string) {
+export function transformTop(key: string, val: string) {
   return `${key}-${getVal(val)}`
 }

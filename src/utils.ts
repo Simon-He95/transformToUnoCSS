@@ -1,3 +1,4 @@
+import { trim } from 'lazy-js-utils'
 export function isCalc(s: string) {
   return s.startsWith('calc(')
 }
@@ -20,4 +21,10 @@ export function isHex(hex: string) {
 
 export function isRgb(s: string) {
   return s.startsWith('rgb')
+}
+
+export function getVal(val: string, transform?: Function) {
+  if (isCalc(val) || isUrl(val) || isRgb(val))
+    return `[${trim(val, 'all')}]`
+  return transform ? transform(val) : val
 }
