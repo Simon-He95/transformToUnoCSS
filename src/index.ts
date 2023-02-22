@@ -10,6 +10,7 @@ import { transformPosition } from './position'
 import { transformColor } from './color'
 import { transformText } from './text'
 import { transformVertical } from './transformVertical'
+import { transformLine } from './line'
 
 const typeMap: any = {
   background: transformBackground,
@@ -25,6 +26,7 @@ const typeMap: any = {
   color: transformColor,
   text: transformText,
   vertical: transformVertical,
+  line: transformLine,
 }
 export function transformToUnocss(css: String) {
   const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#]+)/
