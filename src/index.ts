@@ -19,6 +19,8 @@ import { transformList } from './list'
 import { transformBox } from './box'
 import { transformFilter } from './filter'
 import { transformBackdrop } from './backdrop'
+import { transform } from './transform'
+import { transformTransition } from './transition'
 
 const typeMap: any = {
   background: transformBackground,
@@ -48,6 +50,8 @@ const typeMap: any = {
   box: transformBox,
   filter: transformFilter,
   backdrop: transformBackdrop,
+  transform,
+  transition: transformTransition,
 }
 export function transformToUnocss(css: String) {
   const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#]+)/

@@ -1,0 +1,36 @@
+import { describe, expect, it } from 'vitest'
+import { transformToUnocss } from '../src'
+
+describe('transform', () => {
+  it('transform-origin:center', () => {
+    expect(transformToUnocss('transform-origin: center;')).toBe('origin-center')
+  })
+
+  it('transform-origin: top right;', () => {
+    expect(transformToUnocss('transform-origin: top right;')).toBe('origin-top-right')
+  })
+
+  it('transform: scale(0);', () => {
+    expect(transformToUnocss('transform: scale(.5);')).toBe('scale-50')
+  })
+
+  it('transform: scaleX(0);', () => {
+    expect(transformToUnocss('transform: scaleX( 0.5 );')).toBe('scale-x-50')
+  })
+
+  it('transform: rotate(0deg);', () => {
+    expect(transformToUnocss('transform: rotate( 0deg );')).toBe('rotate-0')
+  })
+
+  it('transform: translateX(1px);', () => {
+    expect(transformToUnocss('transform: translateX(1px);')).toBe('translate-x-1px')
+  })
+
+  it('transform: translateX(1px);', () => {
+    expect(transformToUnocss('transform: translateX(1px);')).toBe('translate-x-1px')
+  })
+
+  it('transform: skewX(2deg);', () => {
+    expect(transformToUnocss('transform: skewX(2deg);')).toBe('skew-x-2')
+  })
+})

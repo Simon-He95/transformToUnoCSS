@@ -28,3 +28,7 @@ export function getVal(val: string, transform?: Function) {
     return `[${trim(val, 'all')}]`
   return transform ? transform(val) : val
 }
+
+export function getHundred(n: string | number) {
+  return +n * 100
+}

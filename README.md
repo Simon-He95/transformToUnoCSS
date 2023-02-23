@@ -25,8 +25,8 @@ WIP
 - [x] list-style
 - [x] box-shadow
 - [x] text-shadow
-- [ ] transform
-- [ ] transition
+- [x] transform
+- [x] transition
 - [ ] animation
 - [ ] justify-content
 - [ ] align-item
