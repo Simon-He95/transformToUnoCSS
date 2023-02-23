@@ -2,19 +2,19 @@ import { getFirstName } from './utils'
 import { size } from './size'
 import { transformBackground } from './background'
 import { max } from './max'
-import { transformFont } from './font'
+import { font } from './font'
 import { transformCursor } from './cursor'
 import { transformMargin } from './margin'
 import { transformOpacity } from './opacity'
 import { transformColor } from './color'
-import { transformText } from './text'
+import { text } from './text'
 import { transformVertical } from './transformVertical'
-import { transformLine } from './line'
+import { line } from './line'
 import { transformBorder } from './border'
 import { display } from './display'
 import { float } from './float'
 import { top } from './top'
-import { transformList } from './list'
+import { list } from './list'
 import { box } from './box'
 import { transformFilter } from './filter'
 import { transformBackdrop } from './backdrop'
@@ -31,6 +31,7 @@ import { overscroll } from './overscroll'
 import { grid } from './grid'
 import { row } from './row'
 import { place } from './place'
+import { letter } from './letter'
 
 const typeMap: any = {
   aspect,
@@ -61,20 +62,22 @@ const typeMap: any = {
   place,
   padding: transformMargin,
   margin: transformMargin,
-  background: transformBackground,
   width: size,
-  height: size,
-  font: transformFont,
-  max,
   min: max,
+  max,
+  height: size,
+  font,
+  letter,
+  line,
+  list,
+  text,
+
+  background: transformBackground,
   cursor: transformCursor,
   opacity: transformOpacity,
   color: transformColor,
-  text: transformText,
   vertical: transformVertical,
-  line: transformLine,
   border: transformBorder,
-  list: transformList,
   filter: transformFilter,
   backdrop: transformBackdrop,
   transform,

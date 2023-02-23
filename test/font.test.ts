@@ -22,8 +22,11 @@ describe('font-weight', () => {
 })
 
 describe('font-style', () => {
-  it('style', () => {
+  it('italic', () => {
     expect(transformToUnocss('font-style: italic;')).toBe('font-italic')
+  })
+  it('normal', () => {
+    expect(transformToUnocss('font-style: normal;')).toBe('font-not-italic')
   })
 })
 
@@ -34,6 +37,16 @@ describe('font-family', () => {
 
   it('mono', () => {
     expect(transformToUnocss('  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;')).toBe('font-mono')
+  })
+})
+
+describe('font-variant-numeric', () => {
+  it('normal', () => {
+    expect(transformToUnocss('font-variant-numeric: normal;')).toBe('normal-nums')
+  })
+
+  it('ordinal', () => {
+    expect(transformToUnocss('font-variant-numeric: ordinal;')).toBe('ordinal')
   })
 })
 

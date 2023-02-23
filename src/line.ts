@@ -1,5 +1,5 @@
 import { getVal } from './utils'
 
-export function transformLine(key: string, val: string) {
+export function line(key: string, val: string) {
   return `lh-${getVal(val)}`
 }
