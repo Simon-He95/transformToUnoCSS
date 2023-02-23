@@ -2,32 +2,67 @@ WIP
 
 # Todo:
 
-- [x] width
-- [x] height
-- [x] max-width
-- [x] max-height
-- [x] color
-- [x] margin
-- [x] padding
-- [x] cursor
-- [x] opacity
-- [x] font-size
-- [x] background 50%
-- [x] font-\[width|style|family|\]
-- [x] text-align
-- [x] line-height
-- [x] border
-- [x] display
-- [x] float
-- [x] clear
-- [x] top|bottom|left|right
-- [x] z-index
-- [x] list-style
-- [x] box-shadow
-- [x] text-shadow
-- [x] transform
-- [x] transition
+- [ ] aspect-ratio
+- [ ] container
+- [ ] columns
+- [ ] break-after/break-before/break-inside
+- [ ] box-decoration-break/box-sizing
+- [ ] display
+- [ ] float
+- [ ] clear
+- [ ] isolation
+- [ ] object-fit/object-position
+- [ ] overflow
+- [ ] overscroll-behavior
+- [ ] position
+- [ ] Top / Right / Bottom / Left
+- [ ] visibility
+- [ ] z-index
+- [ ] flex-basis/flex-direction/flex-wrap/flex/flex-grow/flex-shrink
+- [ ] order
+- [ ] grid-template-columns/grid-column/grid-template-rows/grid-row/grid-auto-flow/grid-auto-columns/grid-auto-rows
+- [ ] gap
+- [ ] justify-content/justify-items/justify-self
+- [ ] align-content/align-items/align-self
+- [ ] place-content/place-items/place-self
+- [ ] padding
+- [ ] margin
+- [ ] width/min-width/max-width
+- [ ] height/min-height/max-height
+- [ ] font-family/font-size/font-smoothing/font-style/font-weight/font-variant-numeric
+- [ ] letter-spacing
+- [ ] line-height
+- [ ] list-style-type/list-style-position
+- [ ] text-align/color
+- [ ] text-decoration-line/text-decoration-color/text-decoration-style/text-decoration-thickness/text-underline-offset/text-transform/text-overflow/text-indent
+- [ ] vertical-align
+- [ ] white-space
+- [ ] word-break
+- [ ] content
+- [ ] background-attachment/background-clip/background-color/background-origin/background-position/background-repeat/background-size/background-image/gradient/background-blend-mode
+- [ ] border-radius/border-width/border-color/border-style/border-collapse/border-spacing:
+- [ ] outline-width/outline-color/outline-style/outline-offset
+- [ ] box-shadow
+- [ ] opacity
+- [ ] mix-blend-mode
+- [ ] filter
+- [ ] backdrop-filter
+- [ ] table-layout
+- [ ] transition
 - [ ] animation
-- [ ] justify-content
-- [ ] align-item
-- [ ] flex-\[direction|wrap|flow\]
+- [ ] transform
+- [ ] transition
+- [ ] animation
+- [ ] transform
+- [ ] accent-color
+- [ ] appearance
+- [ ] cursor
+- [ ] caret-color
+- [ ] pointer-events
+- [ ] resize
+- [ ] scroll
+- [ ] touch-action
+- [ ] user-select
+- [ ] will-change
+- [ ] fill
+- [ ] stroke/stroke-width
