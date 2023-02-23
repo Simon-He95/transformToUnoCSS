@@ -7,6 +7,11 @@ export function getFirstName(s: string) {
   return s.split('-')[0]
 }
 
+export function getLastName(s: string) {
+  const all = s.split('-')
+  return all[all.length - 1]
+}
+
 export function isUrl(s: string) {
   return s.startsWith('url(')
 }

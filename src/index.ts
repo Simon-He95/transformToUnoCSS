@@ -21,6 +21,7 @@ import { transformFilter } from './filter'
 import { transformBackdrop } from './backdrop'
 import { transform } from './transform'
 import { transformTransition } from './transition'
+import { transformJustify } from './justify'
 
 const typeMap: any = {
   background: transformBackground,
@@ -52,6 +53,7 @@ const typeMap: any = {
   backdrop: transformBackdrop,
   transform,
   transition: transformTransition,
+  justify: transformJustify,
 }
 export function transformToUnocss(css: String) {
   const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#]+)/
