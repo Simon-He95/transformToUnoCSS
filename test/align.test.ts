@@ -13,4 +13,8 @@ describe('align', () => {
   it('align-self: center;', () => {
     expect(transformToUnocss('align-self: center;')).toBe('self-center')
   })
+
+  it('align-self: flex-start;', () => {
+    expect(transformToUnocss('align-self: flex-start;')).toBe('self-start')
+  })
 })

@@ -9,4 +9,8 @@ describe('justify', () => {
   it('justify-items: start;', () => {
     expect(transformToUnocss('justify-items: start;')).toBe('justify-items-start')
   })
+
+  it('justify-self: auto;', () => {
+    expect(transformToUnocss('justify-self: auto;')).toBe('justify-self-auto')
+  })
 })

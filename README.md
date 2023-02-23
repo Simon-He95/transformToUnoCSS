@@ -19,16 +19,16 @@ WIP
 - [x] visibility
 - [x] z-index
 - [x] flex-basis/flex-direction/flex-wrap/flex/flex-grow/flex-shrink
-- [ ] order
-- [ ] grid-template-columns/grid-column/grid-template-rows/grid-row/grid-auto-flow/grid-auto-columns/grid-auto-rows
-- [ ] gap
-- [ ] justify-content/justify-items/justify-self
-- [ ] align-content/align-items/align-self
-- [ ] place-content/place-items/place-self
-- [ ] padding
-- [ ] margin
-- [ ] width/min-width/max-width
-- [ ] height/min-height/max-height
+- [x] order
+- [x] grid-template-columns/grid-column/grid-template-rows/grid-row/grid-auto-flow/grid-auto-columns/grid-auto-rows
+- [x] gap
+- [x] justify-content/justify-items/justify-self
+- [x] align-content/align-items/align-self
+- [x] place-content/place-items/place-self
+- [x] padding
+- [x] margin
+- [x] width/min-width/max-width
+- [x] height/min-height/max-height
 - [ ] font-family/font-size/font-smoothing/font-style/font-weight/font-variant-numeric
 - [ ] letter-spacing
 - [ ] line-height

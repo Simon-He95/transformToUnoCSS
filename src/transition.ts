@@ -10,6 +10,4 @@ export function transformTransition(key: string, val: string) {
   }
   if (times.includes(key))
     return `${key.split('-')[1]}-${val.slice(0, -2)}`
-
-  console.log({ key, val })
 }

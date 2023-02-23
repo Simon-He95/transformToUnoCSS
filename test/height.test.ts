@@ -33,4 +33,18 @@ describe('height', () => {
   it('calc space', () => {
     expect(transformToUnocss(' height:calc(100%  -  50px)')).toBe('h-[calc(100%-50px)]')
   })
+
+  it('min-height: 0px;', () => {
+    expect(transformToUnocss('min-height: 0px;')).toBe('min-h-0px')
+  })
+
+  it('min-height: 0px;', () => {
+    expect(transformToUnocss('min-height: 100%;;')).toBe('min-h-100%')
+  })
+  it('max-height: 0px;', () => {
+    expect(transformToUnocss('max-height: 0px;')).toBe('max-h-0px')
+  })
+  it('max-height: 0px;', () => {
+    expect(transformToUnocss('max-height: max-content;')).toBe('max-h-max')
+  })
 })

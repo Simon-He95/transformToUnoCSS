@@ -1,7 +1,7 @@
 import { getFirstName } from './utils'
 import { size } from './size'
 import { transformBackground } from './background'
-import { transformMax } from './max'
+import { max } from './max'
 import { transformFont } from './font'
 import { transformCursor } from './cursor'
 import { transformMargin } from './margin'
@@ -20,14 +20,17 @@ import { transformFilter } from './filter'
 import { transformBackdrop } from './backdrop'
 import { transform } from './transform'
 import { transformTransition } from './transition'
-import { transformJustify } from './justify'
-import { transformAlign } from './align'
+import { justify } from './justify'
+import { align } from './align'
 import { transformFlex } from './flex'
 import { aspect } from './aspect'
 import { column } from './column'
 import { isolation } from './isolation'
 import { object } from './object'
 import { overscroll } from './overscroll'
+import { grid } from './grid'
+import { row } from './row'
+import { place } from './place'
 
 const typeMap: any = {
   aspect,
@@ -49,14 +52,22 @@ const typeMap: any = {
   bottom: top,
   visibility: display,
   z: size,
+  flex: transformFlex,
+  order: float,
+  grid,
+  gap: top,
+  justify,
+  align,
+  place,
+  padding: transformMargin,
+  margin: transformMargin,
   background: transformBackground,
   width: size,
   height: size,
   font: transformFont,
-  max: transformMax,
+  max,
+  min: max,
   cursor: transformCursor,
-  margin: transformMargin,
-  padding: transformMargin,
   opacity: transformOpacity,
   color: transformColor,
   text: transformText,
@@ -68,10 +79,7 @@ const typeMap: any = {
   backdrop: transformBackdrop,
   transform,
   transition: transformTransition,
-  justify: transformJustify,
-  align: transformAlign,
-  gap: top,
-  flex: transformFlex,
+  row,
 }
 export function transformToUnocss(css: String) {
   const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/]+)/
