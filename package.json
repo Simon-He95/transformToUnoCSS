@@ -1,5 +1,5 @@
 {
-  "name": "transformToUnocss",
+  "name": "transform-to-unocss",
   "type": "module",
   "version": "0.0.1",
   "packageManager": "pnpm@7.2.1",
