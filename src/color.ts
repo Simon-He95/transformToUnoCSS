@@ -1,5 +1,5 @@
 import { getVal } from './utils'
 
-export function transformColor(key: string, val: string) {
+export function color(key: string, val: string) {
   return `text-${getVal(val)}`
 }

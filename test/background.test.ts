@@ -5,6 +5,10 @@ describe('background', () => {
     expect(transformToUnocss('background:red')).toBe('bg-red')
   })
 
+  it('background:red', () => {
+    expect(transformToUnocss('background-color:red')).toBe('bg-red')
+  })
+
   it('background:auto', () => {
     expect(transformToUnocss('background:auto')).toBe('bg-auto')
   })
@@ -23,7 +27,7 @@ describe('background', () => {
 
   // attachments
   it('background-attachments:fixed', () => {
-    expect(transformToUnocss('background-attachments:fixed')).toBe('bg-fixed')
+    expect(transformToUnocss('background-attachment:fixed')).toBe('bg-fixed')
   })
 
   // clip
@@ -82,6 +86,11 @@ describe('background', () => {
   it('background: red', () => {
     expect(transformToUnocss('background: red')).toBe('bg-red')
   })
+
+  it('background-blend-mode: normal;', () => {
+    expect(transformToUnocss('background-blend-mode: normal;')).toBe('bg-blend-normal')
+  })
+
   // it('background: linear-gradient', () => {
   //   expect(transformToUnocss('background: linear-gradient(to top, black, cyan);')).toBe('bg-gradient-to-t from-black to-cyan')
   // })

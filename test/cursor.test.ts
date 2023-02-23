@@ -33,4 +33,8 @@ describe('cursor', () => {
   it('cursor: url(hyper.cur), auto;', () => {
     expect(transformToUnocss('cursor: url(hyper.cur), auto;')).toBe('cursor-[url(hyper.cur),auto]')
   })
+
+  it('cursor: not-allowed;', () => {
+    expect(transformToUnocss('cursor: not-allowed;')).toBe('cursor-not-allowed')
+  })
 })

@@ -1,25 +1,25 @@
 import { getFirstName } from './utils'
 import { size } from './size'
-import { transformBackground } from './background'
+import { background } from './background'
 import { max } from './max'
 import { font } from './font'
 import { transformCursor } from './cursor'
 import { transformMargin } from './margin'
-import { transformOpacity } from './opacity'
-import { transformColor } from './color'
+import { opacity } from './opacity'
+import { color } from './color'
 import { text } from './text'
-import { transformVertical } from './transformVertical'
+import { vertical } from './vertical'
 import { line } from './line'
-import { transformBorder } from './border'
+import { border } from './border'
 import { display } from './display'
 import { float } from './float'
 import { top } from './top'
 import { list } from './list'
 import { box } from './box'
-import { transformFilter } from './filter'
-import { transformBackdrop } from './backdrop'
+import { filter } from './filter'
+import { backdrop } from './backdrop'
 import { transform } from './transform'
-import { transformTransition } from './transition'
+import { transition } from './transition'
 import { justify } from './justify'
 import { align } from './align'
 import { transformFlex } from './flex'
@@ -32,6 +32,14 @@ import { grid } from './grid'
 import { row } from './row'
 import { place } from './place'
 import { letter } from './letter'
+import { white } from './white'
+import { word } from './word'
+import { outline } from './outline'
+import { mix } from './mix'
+import { resize } from './resize'
+import { scroll } from './scroll'
+import { user } from './user'
+import { will } from './will'
 
 const typeMap: any = {
   aspect,
@@ -71,17 +79,33 @@ const typeMap: any = {
   line,
   list,
   text,
-
-  background: transformBackground,
-  cursor: transformCursor,
-  opacity: transformOpacity,
-  color: transformColor,
-  vertical: transformVertical,
-  border: transformBorder,
-  filter: transformFilter,
-  backdrop: transformBackdrop,
+  vertical,
+  white,
+  word,
+  content: list,
+  background,
+  border,
+  outline,
+  opacity,
+  mix,
+  filter,
+  backdrop,
+  table: list,
+  transition,
   transform,
-  transition: transformTransition,
+  accent: list,
+  appearance: list,
+  cursor: transformCursor,
+  caret: list,
+  pointer: float,
+  resize,
+  scroll,
+  touch: list,
+  user,
+  will,
+  fill: float,
+  stroke: list,
+  color,
   row,
 }
 export function transformToUnocss(css: String) {

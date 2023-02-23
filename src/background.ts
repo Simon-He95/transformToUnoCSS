@@ -1,10 +1,12 @@
 import { getVal } from './utils'
 
-const background = ['background', 'background-size', 'background-attachments', 'background-position', 'background-image']
+const backgroundMap = ['background', 'background-color', 'background-size', 'background-attachment', 'background-position', 'background-image']
 
-export function transformBackground(key: string, val: string) {
-  if (background.includes(key))
+export function background(key: string, val: string) {
+  if (backgroundMap.includes(key))
     return `bg-${getVal(val, transformSpaceToLine)}`
+  if (key === 'background-blend-mode')
+    return `bg-blend-${val}`
 
   return `${replaceBackground(key, val)}-${transformBox(val)}`
 }

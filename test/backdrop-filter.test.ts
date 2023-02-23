@@ -30,4 +30,16 @@ describe('backdrop-filter', () => {
   it('invert', () => {
     expect(transformToUnocss('backdrop-filter: invert(0.1);')).toBe('backdrop-invert-10')
   })
+
+  it('opacity', () => {
+    expect(transformToUnocss('backdrop-filter: opacity(0);')).toBe('backdrop-opacity-0')
+  })
+
+  it('saturate', () => {
+    expect(transformToUnocss('backdrop-filter: saturate(0);')).toBe('backdrop-saturate-0')
+  })
+
+  it('sepia', () => {
+    expect(transformToUnocss('backdrop-filter: sepia(0);')).toBe('backdrop-sepia-0')
+  })
 })

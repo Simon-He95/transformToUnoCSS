@@ -3,7 +3,7 @@ import { getHundred } from './utils'
 
 const hundred = ['contrast', 'brightness', 'saturate']
 const percent = ['grayscale', 'invert', 'sepia']
-export function transformFilter(key: string, val: string) {
+export function filter(key: string, val: string) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, name, value] = val.match(/([\w-]+)\((.*)\)/)!
 

@@ -34,4 +34,12 @@ describe('filter', () => {
   it('invert', () => {
     expect(transformToUnocss('filter: invert(0.1);')).toBe('invert-10')
   })
+
+  it('saturate', () => {
+    expect(transformToUnocss('filter: saturate(0);')).toBe('saturate-0')
+  })
+
+  it('sepia', () => {
+    expect(transformToUnocss('filter: sepia(0);')).toBe('sepia-0')
+  })
 })

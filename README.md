@@ -29,40 +29,40 @@ WIP
 - [x] margin
 - [x] width/min-width/max-width
 - [x] height/min-height/max-height
-- [ ] font-family/font-size/font-smoothing/font-style/font-weight/font-variant-numeric
-- [ ] letter-spacing
-- [ ] line-height
-- [ ] list-style-type/list-style-position
-- [ ] text-align/color
-- [ ] text-decoration-line/text-decoration-color/text-decoration-style/text-decoration-thickness/text-underline-offset/text-transform/text-overflow/text-indent
-- [ ] vertical-align
-- [ ] white-space
-- [ ] word-break
-- [ ] content
-- [ ] background-attachment/background-clip/background-color/background-origin/background-position/background-repeat/background-size/background-image/gradient/background-blend-mode
-- [ ] border-radius/border-width/border-color/border-style/border-collapse/border-spacing:
-- [ ] outline-width/outline-color/outline-style/outline-offset
-- [ ] box-shadow
-- [ ] opacity
-- [ ] mix-blend-mode
-- [ ] filter
-- [ ] backdrop-filter
-- [ ] table-layout
-- [ ] transition
-- [ ] animation
-- [ ] transform
-- [ ] transition
-- [ ] animation
-- [ ] transform
-- [ ] accent-color
-- [ ] appearance
-- [ ] cursor
-- [ ] caret-color
-- [ ] pointer-events
-- [ ] resize
-- [ ] scroll
-- [ ] touch-action
-- [ ] user-select
-- [ ] will-change
-- [ ] fill
-- [ ] stroke/stroke-width
+- [x] font-family/font-size/font-smoothing/font-style/font-weight/font-variant-numeric
+- [x] letter-spacing
+- [x] line-height
+- [x] list-style-type/list-style-position
+- [x] text-align/color
+- [x] text-decoration-line/text-decoration-color/text-decoration-style/text-decoration-thickness/text-underline-offset/text-transform/text-overflow/text-indent
+- [x] vertical-align
+- [x] white-space
+- [x] word-break
+- [x] content
+- [x] background-attachment/background-clip/background-color/background-origin/background-position/background-repeat/background-size/background-image/gradient/background-blend-mode
+- [x] border-radius/border-width/border-color/border-style/border-collapse/border-spacing:
+- [x] outline-width/outline-color/outline-style/outline-offset
+- [x] box-shadow
+- [x] opacity
+- [x] mix-blend-mode
+- [x] filter
+- [x] backdrop-filter
+- [x] table-layout
+- [x] transition
+- [x] animation
+- [x] transform
+- [x] transition
+- [x] animation
+- [x] transform
+- [x] accent-color
+- [x] appearance
+- [x] cursor
+- [x] caret-color
+- [x] pointer-events
+- [x] resize
+- [x] scroll
+- [x] touch-action
+- [x] user-select
+- [x] will-change
+- [x] fill
+- [x] stroke/stroke-width

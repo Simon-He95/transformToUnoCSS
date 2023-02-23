@@ -1,5 +1,5 @@
-import { transformFilter } from './filter'
+import { filter } from './filter'
 
-export function transformBackdrop(key: string, val: string) {
-  return `backdrop-${transformFilter(key, val)}`
+export function backdrop(key: string, val: string) {
+  return `backdrop-${filter(key, val)}`
 }

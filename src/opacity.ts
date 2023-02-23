@@ -1,6 +1,6 @@
 import { isPercent } from './utils'
 
-export function transformOpacity(key: string, val: string) {
+export function opacity(key: string, val: string) {
   if (isPercent(val))
     return `op-${val.replace('%', '')}`
 
