@@ -37,3 +37,11 @@ export function getVal(val: string, transform?: Function) {
 export function getHundred(n: string | number) {
   return +n * 100
 }
+
+export function joinWithLine(s: string) {
+  return s.replace(/\s+/, ' ').split(' ').join('-')
+}
+
+export function joinWithUnderLine(s: string) {
+  return s.replace(/\s+/, ' ').split(' ').join('_')
+}

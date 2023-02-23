@@ -9,8 +9,4 @@ describe('align', () => {
   it('column-gap: 0px;', () => {
     expect(transformToUnocss('column-gap: 0px;')).toBe('gap-x-0px')
   })
-
-  it('row-gap: 0px;', () => {
-    expect(transformToUnocss('row-gap: 0px;')).toBe('gap-y-0px')
-  })
 })

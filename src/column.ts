@@ -1,5 +1,5 @@
-export function transformColumn(key: string, val: string) {
-  if (key.startsWith('column'))
+export function column(key: string, val: string) {
+  if (key === 'column-gap')
     return `gap-x-${val}`
-  return `gap-y-${val}`
+  return `${key}-${val}`
 }

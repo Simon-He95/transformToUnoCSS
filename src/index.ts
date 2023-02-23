@@ -1,70 +1,80 @@
 import { getFirstName } from './utils'
-import { transformSize } from './size'
+import { size } from './size'
 import { transformBackground } from './background'
 import { transformMax } from './max'
 import { transformFont } from './font'
 import { transformCursor } from './cursor'
 import { transformMargin } from './margin'
 import { transformOpacity } from './opacity'
-import { transformPosition } from './position'
 import { transformColor } from './color'
 import { transformText } from './text'
 import { transformVertical } from './transformVertical'
 import { transformLine } from './line'
 import { transformBorder } from './border'
-import { transformDisplay } from './display'
-import { transformFloat } from './float'
-import { transformTop } from './top'
+import { display } from './display'
+import { float } from './float'
+import { top } from './top'
 import { transformList } from './list'
-import { transformBox } from './box'
+import { box } from './box'
 import { transformFilter } from './filter'
 import { transformBackdrop } from './backdrop'
 import { transform } from './transform'
 import { transformTransition } from './transition'
 import { transformJustify } from './justify'
 import { transformAlign } from './align'
-import { transformColumn } from './column'
 import { transformFlex } from './flex'
+import { aspect } from './aspect'
+import { column } from './column'
+import { isolation } from './isolation'
+import { object } from './object'
+import { overscroll } from './overscroll'
 
 const typeMap: any = {
+  aspect,
+  column,
+  columns: float,
+  break: float,
+  box,
+  display,
+  float,
+  clear: float,
+  isolation,
+  object,
+  overflow: float,
+  overscroll,
+  position: display,
+  top,
+  left: top,
+  right: top,
+  bottom: top,
+  visibility: display,
+  z: size,
   background: transformBackground,
-  width: transformSize,
-  height: transformSize,
+  width: size,
+  height: size,
   font: transformFont,
   max: transformMax,
   cursor: transformCursor,
   margin: transformMargin,
   padding: transformMargin,
   opacity: transformOpacity,
-  position: transformPosition,
   color: transformColor,
   text: transformText,
   vertical: transformVertical,
   line: transformLine,
   border: transformBorder,
-  display: transformDisplay,
-  float: transformFloat,
-  clear: transformFloat,
-  top: transformTop,
-  left: transformTop,
-  right: transformTop,
-  bottom: transformTop,
-  z: transformSize,
   list: transformList,
-  box: transformBox,
   filter: transformFilter,
   backdrop: transformBackdrop,
   transform,
   transition: transformTransition,
   justify: transformJustify,
   align: transformAlign,
-  gap: transformTop,
-  column: transformColumn,
-  row: transformColumn,
+  gap: top,
   flex: transformFlex,
 }
 export function transformToUnocss(css: String) {
-  const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#]+)/
+  const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/]+)/
   const match = css.match(splitReg)
   if (!match)
     return

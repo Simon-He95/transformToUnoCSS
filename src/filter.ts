@@ -1,4 +1,4 @@
-import { transformBox } from './box'
+import { box } from './box'
 import { getHundred } from './utils'
 
 const hundred = ['contrast', 'brightness', 'saturate']
@@ -11,7 +11,7 @@ export function transformFilter(key: string, val: string) {
     return `${name}-${getHundred(value)}`
 
   if (name === 'drop-shadow')
-    return `drop-${transformBox(name, value)}`
+    return `drop-${box(name, value)}`
   if (percent.includes(name))
     return `${name}-${value.endsWith('%') ? value.slice(0, -1) : getHundred(value)}`
   if (name === 'hue-rotate')

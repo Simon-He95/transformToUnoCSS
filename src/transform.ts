@@ -1,9 +1,9 @@
 import { trim } from 'lazy-js-utils'
-import { getHundred } from './utils'
+import { getHundred, joinWithLine } from './utils'
 
 export function transform(key: string, val: string) {
   if (key === 'transform-origin')
-    return `origin-${val.replace(/\s+/, ' ').split(' ').join('-')}`
+    return `origin-${joinWithLine(val)}`
   const [_, namePrefix, nameSuffix, value] = val.match(/([a-z]+)([A-Z])?\((.*)\)/)!
 
   if (nameSuffix) {
