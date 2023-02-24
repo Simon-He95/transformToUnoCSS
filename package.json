@@ -49,6 +49,7 @@
     "lint:fix": "pnpm run lint --fix",
     "play": "pnpm --filter playground dev",
     "play:build": "pnpm --filter playground build",
+    "preview": "pnpm --filter playground preview",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
     "start": "esno src/index.ts",
