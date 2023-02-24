@@ -47,7 +47,6 @@ importers:
       '@vueuse/core': ^8.1.1
       eslint: ^8.11.0
       jsdom: ^19.0.0
-      transform-to-unocss: workspace:^0.0.2
       typescript: ^4.6.2
       unocss: ^0.29.2
       unplugin-auto-import: ^0.6.6
@@ -71,7 +70,6 @@ importers:
       '@vue/test-utils': 2.3.0_vue@3.2.45
       eslint: 8.18.0
       jsdom: 19.0.0
-      transform-to-unocss: link:..
       typescript: 4.7.4
       unocss: 0.29.6
       unplugin-auto-import: 0.6.9_dpsmmhf7abul64kjwyr33hnf5e
