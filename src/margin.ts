@@ -1,4 +1,4 @@
-import { trim } from 'lazy-js-utils'
+import { trim } from './utils'
 const map: any = {
   'margin-left': 'ml',
   'margin-right': 'mr',

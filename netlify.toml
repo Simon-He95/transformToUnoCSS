@@ -1,0 +1,5 @@
+[build.environment]
+  NODE_VERSION = "16"
+[build]
+  publish = "playground/dist"
+  command = "pnpm run play:build"

@@ -1,5 +1,4 @@
-import { trim } from 'lazy-js-utils'
-import { getFirstName } from './utils'
+import { getFirstName, trim } from './utils'
 
 export function aspect(key: string, val: string) {
   if (val === 'auto')

@@ -1,5 +1,4 @@
-import { trim } from 'lazy-js-utils'
-import { getFirstName } from './utils'
+import { getFirstName, trim } from './utils'
 export function box(key: string, val: string) {
   if (key.startsWith('box-decoration'))
     return `box-decoration-${val}`

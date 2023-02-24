@@ -1,4 +1,4 @@
-import { trim } from 'lazy-js-utils'
+import { trim } from './utils'
 const keepTransition = ['transition', 'transition-property']
 const times = ['transition-delay', 'transition-duration']
 

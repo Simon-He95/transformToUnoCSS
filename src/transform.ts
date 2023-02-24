@@ -1,10 +1,12 @@
-import { trim } from 'lazy-js-utils'
-import { getHundred, joinWithLine } from './utils'
+import { getHundred, joinWithLine, trim } from './utils'
 
 export function transform(key: string, val: string) {
   if (key === 'transform-origin')
     return `origin-${joinWithLine(val)}`
-  const [_, namePrefix, nameSuffix, value] = val.match(/([a-z]+)([A-Z])?\((.*)\)/)!
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, namePrefix, nameSuffix, value] = val.match(
+    /([a-z]+)([A-Z])?\((.*)\)/,
+  )!
 
   if (nameSuffix) {
     if (namePrefix === 'scale')

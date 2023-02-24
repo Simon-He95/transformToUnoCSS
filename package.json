@@ -19,11 +19,11 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
@@ -42,11 +42,13 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks",
-    "build": "tsup ./src/index.ts --format cjs,esm --dts --clean --minify",
+    "build": "tsup ./src/index.ts",
     "dev": "npm run build -- --watch src",
     "format": "prettier --write --cache .",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0 --cache",
     "lint:fix": "pnpm run lint --fix",
+    "play": "pnpm --filter playground dev",
+    "play:build": "pnpm --filter playground build",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
     "start": "esno src/index.ts",
@@ -59,12 +61,12 @@
     "bumpp": "^8.2.1",
     "eslint": "^8.18.0",
     "esno": "^0.16.3",
-    "lazy-js-utils": "^0.0.35",
     "lint-staged": "^13.1.0",
     "picocolors": "^1.0.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "simple-git-hooks": "^2.8.1",
+    "transform-to-unocss": "workspace:^0.0.1",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typescript": "^4.7.4",
