@@ -1,6 +1,6 @@
 {
   "name": "transform-to-unocss",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packageManager": "pnpm@7.2.1",
   "description": "",
   "author": "Simon He",
@@ -31,9 +31,6 @@
         "./dist/index.d.ts"
       ]
     }
-  },
-  "bin": {
-    "run": "./cli.mjs"
   },
   "files": [
     "dist"
@@ -66,7 +63,7 @@
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "simple-git-hooks": "^2.8.1",
-    "transform-to-unocss": "workspace:^0.0.3",
+    "transform-to-unocss": "workspace:^0.0.4",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typescript": "^4.7.4",

@@ -14,7 +14,7 @@ importers:
       prettier: ^2.8.1
       rimraf: ^3.0.2
       simple-git-hooks: ^2.8.1
-      transform-to-unocss: workspace:^0.0.3
+      transform-to-unocss: workspace:^0.0.4
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
@@ -42,7 +42,7 @@ importers:
       '@iconify-json/carbon': ^1.1.2
       '@types/node': ^18.0.0
       '@unocss/reset': ^0.47.0
-      '@vitejs/plugin-vue': ^3.0.1
+      '@vitejs/plugin-vue': ^3.2.0
       '@vue/test-utils': ^2.0.0-rc.18
       '@vueuse/core': ^9.0.0
       eslint: ^8.11.0
@@ -1378,7 +1378,7 @@ packages:
       js-beautify: 1.14.6
       vue: 3.2.45
     optionalDependencies:
-      '@vue/compiler-dom': 3.2.45
+      '@vue/compiler-dom': 3.2.47
       '@vue/server-renderer': 3.2.45_vue@3.2.45
     dev: true
 
