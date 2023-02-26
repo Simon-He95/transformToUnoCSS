@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { VividTyping } from 'vivid-typing'
 import { transformToUnocss } from '../../src'
 const input = ref('')
 const transform = computed(() => {
@@ -8,6 +9,7 @@ const transform = computed(() => {
 </script>
 
 <template>
+  <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
   <div w="100%" h="100%" flex justify-center items-center flex-col p="y-10">
     <input
       v-model="input"
@@ -18,6 +20,7 @@ const transform = computed(() => {
       type="text"
       autocomplete="off"
       p="x6 y4"
+      hover:border-pink
       border-1
     >
     <div v-if="transform">

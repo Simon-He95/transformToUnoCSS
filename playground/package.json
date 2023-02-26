@@ -32,6 +32,7 @@
     "vite": "^4.0.0",
     "vite-plugin-pages": "^0.28.0",
     "vitest": "^0.7.0",
+    "vivid-typing": "^1.1.33",
     "vue-tsc": "^1.0.0"
   }
 }
