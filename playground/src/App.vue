@@ -22,7 +22,9 @@ const transform = computed(() => {
     >
     <div v-if="transform">
       <h2>结果：</h2>
-      <div>{{ transform }}</div>
+      <div :style="message">
+        {{ transform }}
+      </div>
     </div>
     <div v-else>
       <div v-if="message">
