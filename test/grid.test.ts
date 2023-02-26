@@ -7,7 +7,9 @@ describe('grid', () => {
   })
 
   it('grid-column: span 1 / span 1;', () => {
-    expect(transformToUnocss('grid-column: span 2 / span 2;')).toBe('col-span-2')
+    expect(transformToUnocss('grid-column: span 2 / span 2;')).toBe(
+      'col-span-2',
+    )
   })
 
   it('grid-column: 1 / -1;', () => {
@@ -23,11 +25,15 @@ describe('grid', () => {
   })
 
   it('grid-template-rows: repeat(1, minmax(0, 1fr));', () => {
-    expect(transformToUnocss('grid-template-rows: repeat(1, minmax(0, 1fr));')).toBe('grid-rows-1')
+    expect(
+      transformToUnocss('grid-template-rows: repeat(1, minmax(0, 1fr));'),
+    ).toBe('grid-rows-1')
   })
 
   it('grid-template-rows: none;', () => {
-    expect(transformToUnocss('grid-template-rows: none;')).toBe('grid-rows-none')
+    expect(transformToUnocss('grid-template-rows: none;')).toBe(
+      'grid-rows-none',
+    )
   })
 
   it('grid-row: auto;', () => {
@@ -55,11 +61,15 @@ describe('grid', () => {
   })
 
   it('grid-auto-flow: column dense;', () => {
-    expect(transformToUnocss('grid-auto-flow: column dense;')).toBe('grid-flow-col-dense')
+    expect(transformToUnocss('grid-auto-flow: column dense;')).toBe(
+      'grid-flow-col-dense',
+    )
   })
 
   it('grid-auto-flow: row dense;', () => {
-    expect(transformToUnocss('grid-auto-flow: row dense;')).toBe('grid-flow-row-dense')
+    expect(transformToUnocss('grid-auto-flow: row dense;')).toBe(
+      'grid-flow-row-dense',
+    )
   })
 
   it('grid-auto-columns: auto;', () => {
@@ -67,11 +77,15 @@ describe('grid', () => {
   })
 
   it('grid-auto-columns: min-content;', () => {
-    expect(transformToUnocss('grid-auto-columns: min-content;')).toBe('auto-cols-min')
+    expect(transformToUnocss('grid-auto-columns: min-content;')).toBe(
+      'auto-cols-min',
+    )
   })
 
   it('grid-auto-columns: minmax(0, 1fr);', () => {
-    expect(transformToUnocss('grid-auto-columns: minmax(0, 1fr);')).toBe('auto-cols-fr')
+    expect(transformToUnocss('grid-auto-columns: minmax(0, 1fr);')).toBe(
+      'auto-cols-fr',
+    )
   })
 
   it('grid-auto-rows: auto;', () => {
@@ -79,10 +93,14 @@ describe('grid', () => {
   })
 
   it('grid-auto-rows: min-content;', () => {
-    expect(transformToUnocss('grid-auto-rows: min-content;')).toBe('auto-rows-min')
+    expect(transformToUnocss('grid-auto-rows: min-content;')).toBe(
+      'auto-rows-min',
+    )
   })
 
   it('grid-auto-rows: minmax(0, 1fr);', () => {
-    expect(transformToUnocss('grid-auto-rows: minmax(0, 1fr);')).toBe('auto-rows-fr')
+    expect(transformToUnocss('grid-auto-rows: minmax(0, 1fr);')).toBe(
+      'auto-rows-fr',
+    )
   })
 })

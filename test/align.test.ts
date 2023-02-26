@@ -7,7 +7,9 @@ describe('align', () => {
   })
 
   it('align-content: flex-start;', () => {
-    expect(transformToUnocss('align-content: flex-start;')).toBe('content-start')
+    expect(transformToUnocss('align-content: flex-start;')).toBe(
+      'content-start',
+    )
   })
 
   it('align-self: center;', () => {

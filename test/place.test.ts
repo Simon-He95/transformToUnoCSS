@@ -3,11 +3,15 @@ import { transformToUnocss } from '../src'
 
 describe('place', () => {
   it('place-content: center;', () => {
-    expect(transformToUnocss('place-content: center;')).toBe('place-content-center')
+    expect(transformToUnocss('place-content: center;')).toBe(
+      'place-content-center',
+    )
   })
 
   it('place-content: space-between;', () => {
-    expect(transformToUnocss('place-content: space-between;')).toBe('place-content-between')
+    expect(transformToUnocss('place-content: space-between;')).toBe(
+      'place-content-between',
+    )
   })
 
   it('place-items: start;', () => {

@@ -10,10 +10,14 @@ describe('color', () => {
   })
   // size
   it('color:rgb', () => {
-    expect(transformToUnocss('color:rgb(255, 255, 255)')).toBe('text-[rgb(255,255,255)]')
+    expect(transformToUnocss('color:rgb(255, 255, 255)')).toBe(
+      'text-[rgb(255,255,255)]',
+    )
   })
 
   it('color:rgba', () => {
-    expect(transformToUnocss('color:rgba(255, 255, 255,0.1)')).toBe('text-[rgba(255,255,255,0.1)]')
+    expect(transformToUnocss('color:rgba(255, 255, 255,0.1)')).toBe(
+      'text-[rgba(255,255,255,0.1)]',
+    )
   })
 })

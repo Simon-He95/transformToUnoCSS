@@ -19,11 +19,15 @@ describe('flex', () => {
   })
 
   it('flex-direction: row-reverse;', () => {
-    expect(transformToUnocss('flex-direction: row-reverse;')).toBe('flex-row-reverse')
+    expect(transformToUnocss('flex-direction: row-reverse;')).toBe(
+      'flex-row-reverse',
+    )
   })
 
   it('flex-wrap: wrap-reverse;', () => {
-    expect(transformToUnocss('flex-wrap: wrap-reverse;')).toBe('flex-wrap-reverse')
+    expect(transformToUnocss('flex-wrap: wrap-reverse;')).toBe(
+      'flex-wrap-reverse',
+    )
   })
 
   it('flex: 1 1 0%;', () => {

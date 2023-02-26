@@ -12,10 +12,14 @@ describe('letter', () => {
     expect(transformToUnocss('width:10rem')).toMatchInlineSnapshot('"w-10rem"')
   })
   it('max-content', () => {
-    expect(transformToUnocss('width: max-content')).toMatchInlineSnapshot('"w-max"')
+    expect(transformToUnocss('width: max-content')).toMatchInlineSnapshot(
+      '"w-max"',
+    )
   })
   it('min-content', () => {
-    expect(transformToUnocss('width: min-content')).toMatchInlineSnapshot('"w-min"')
+    expect(transformToUnocss('width: min-content')).toMatchInlineSnapshot(
+      '"w-min"',
+    )
   })
   it('fit-content', () => {
     expect(transformToUnocss('width:fit-content')).toBe('w-fit')
@@ -24,14 +28,20 @@ describe('letter', () => {
     expect(transformToUnocss('width:auto')).toBe('w-auto')
   })
   it('calc', () => {
-    expect(transformToUnocss('width:calc(100% - 50px)')).toBe('w-[calc(100%-50px)]')
+    expect(transformToUnocss('width:calc(100% - 50px)')).toBe(
+      'w-[calc(100%-50px)]',
+    )
   })
   it('calc not space', () => {
-    expect(transformToUnocss('width:calc(100%-50px)')).toBe('w-[calc(100%-50px)]')
+    expect(transformToUnocss('width:calc(100%-50px)')).toBe(
+      'w-[calc(100%-50px)]',
+    )
   })
 
   it('calc space', () => {
-    expect(transformToUnocss('width:calc(100%  -  50px)')).toBe('w-[calc(100%-50px)]')
+    expect(transformToUnocss('width:calc(100%  -  50px)')).toBe(
+      'w-[calc(100%-50px)]',
+    )
   })
 
   it('min-width: 0px;', () => {

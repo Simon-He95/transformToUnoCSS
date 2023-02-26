@@ -7,6 +7,8 @@ describe('whitespace', () => {
   })
 
   it('white-space: pre-wrap;', () => {
-    expect(transformToUnocss('white-space: pre-wrap;')).toBe('whitespace-pre-wrap')
+    expect(transformToUnocss('white-space: pre-wrap;')).toBe(
+      'whitespace-pre-wrap',
+    )
   })
 })

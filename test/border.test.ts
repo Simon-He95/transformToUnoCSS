@@ -6,7 +6,9 @@ describe('border', () => {
   })
 
   it('radius', () => {
-    expect(transformToUnocss('border-radius: 0.25rem;')).toBe('border-rd-0.25rem')
+    expect(transformToUnocss('border-radius: 0.25rem;')).toBe(
+      'border-rd-0.25rem',
+    )
   })
 
   it('border-width', () => {
@@ -14,7 +16,9 @@ describe('border', () => {
   })
 
   it('radius-calc', () => {
-    expect(transformToUnocss('border-radius: calc(100% - 20px)')).toBe('border-rd-[calc(100%-20px)]')
+    expect(transformToUnocss('border-radius: calc(100% - 20px)')).toBe(
+      'border-rd-[calc(100%-20px)]',
+    )
   })
 
   it('style', () => {
@@ -22,10 +26,14 @@ describe('border', () => {
   })
 
   it('collapse', () => {
-    expect(transformToUnocss('border-collapse: collapse;')).toBe('border-collapse')
+    expect(transformToUnocss('border-collapse: collapse;')).toBe(
+      'border-collapse',
+    )
   })
 
   it('spacing', () => {
-    expect(transformToUnocss('border-spacing: 0px 0px;')).toBe('border-spacing-[0px_0px]')
+    expect(transformToUnocss('border-spacing: 0px 0px;')).toBe(
+      'border-spacing-[0px_0px]',
+    )
   })
 })

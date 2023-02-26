@@ -1,6 +1,13 @@
 import { getVal } from './utils'
 
-const backgroundMap = ['background', 'background-color', 'background-size', 'background-attachment', 'background-position', 'background-image']
+const backgroundMap = [
+  'background',
+  'background-color',
+  'background-size',
+  'background-attachment',
+  'background-position',
+  'background-image',
+]
 
 export function background(key: string, val: string) {
   if (backgroundMap.includes(key))

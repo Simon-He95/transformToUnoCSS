@@ -3,7 +3,7 @@ import { size } from './size'
 import { background } from './background'
 import { max } from './max'
 import { font } from './font'
-import { transformCursor } from './cursor'
+import { cursor } from './cursor'
 import { transformMargin } from './margin'
 import { opacity } from './opacity'
 import { color } from './color'
@@ -22,7 +22,7 @@ import { transform } from './transform'
 import { transition } from './transition'
 import { justify } from './justify'
 import { align } from './align'
-import { transformFlex } from './flex'
+import { flex } from './flex'
 import { aspect } from './aspect'
 import { column } from './column'
 import { isolation } from './isolation'
@@ -61,7 +61,7 @@ const typeMap: any = {
   bottom: top,
   visibility: display,
   z: size,
-  flex: transformFlex,
+  flex,
   order: float,
   grid,
   gap: top,
@@ -95,7 +95,7 @@ const typeMap: any = {
   transform,
   accent: list,
   appearance: list,
-  cursor: transformCursor,
+  cursor,
   caret: list,
   pointer: float,
   resize,
@@ -108,15 +108,13 @@ const typeMap: any = {
   color,
   row,
 }
+const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/]+)/
 export function transformToUnocss(css: String) {
-  const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/]+)/
   const match = css.match(splitReg)
   if (!match)
     return
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, key, val] = match
   const first = getFirstName(key)
-  const result = typeMap[first](key, val)
-  return result
+  return typeMap[first]?.(key, val)
 }
-

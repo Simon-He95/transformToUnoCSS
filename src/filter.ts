@@ -12,8 +12,11 @@ export function filter(key: string, val: string) {
 
   if (name === 'drop-shadow')
     return `drop-${box(name, value)}`
-  if (percent.includes(name))
-    return `${name}-${value.endsWith('%') ? value.slice(0, -1) : getHundred(value)}`
+  if (percent.includes(name)) {
+    return `${name}-${
+      value.endsWith('%') ? value.slice(0, -1) : getHundred(value)
+    }`
+  }
   if (name === 'hue-rotate')
     return `${name}-${value.slice(0, -3)}`
   return `${name}-${value}`

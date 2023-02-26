@@ -32,7 +32,9 @@ describe('background', () => {
 
   // clip
   it('background-clip:border-box', () => {
-    expect(transformToUnocss('background-clip:border-box')).toBe('bg-clip-border')
+    expect(transformToUnocss('background-clip:border-box')).toBe(
+      'bg-clip-border',
+    )
   })
 
   it('background-clip:test', () => {
@@ -45,7 +47,9 @@ describe('background', () => {
   })
 
   it('background-position:center center', () => {
-    expect(transformToUnocss('background-position:center center')).toBe('bg-center-center')
+    expect(transformToUnocss('background-position:center center')).toBe(
+      'bg-center-center',
+    )
   })
 
   // repeats
@@ -54,7 +58,9 @@ describe('background', () => {
   })
 
   it('background-repeat:no-repeat', () => {
-    expect(transformToUnocss('background-repeat:no-repeat')).toBe('bg-no-repeat')
+    expect(transformToUnocss('background-repeat:no-repeat')).toBe(
+      'bg-no-repeat',
+    )
   })
 
   it('background-repeat:repeat-x', () => {
@@ -62,16 +68,22 @@ describe('background', () => {
   })
 
   it('background-repeat:inherit', () => {
-    expect(transformToUnocss('background-repeat:inherit')).toBe('bg-repeat-inherit')
+    expect(transformToUnocss('background-repeat:inherit')).toBe(
+      'bg-repeat-inherit',
+    )
   })
 
   // origins
   it('background-origin:border-box', () => {
-    expect(transformToUnocss('background-origin:border-box')).toBe('bg-origin-border')
+    expect(transformToUnocss('background-origin:border-box')).toBe(
+      'bg-origin-border',
+    )
   })
 
   it('background-origin:inherit', () => {
-    expect(transformToUnocss('background-origin:inherit')).toBe('bg-origin-inherit')
+    expect(transformToUnocss('background-origin:inherit')).toBe(
+      'bg-origin-inherit',
+    )
   })
 
   // image
@@ -80,7 +92,9 @@ describe('background', () => {
   })
 
   it('background-image:url(\'picture.png\')', () => {
-    expect(transformToUnocss('background-image:url(\'picture.png\')')).toBe('bg-[url(\'picture.png\')]')
+    expect(transformToUnocss('background-image:url(\'picture.png\')')).toBe(
+      'bg-[url(\'picture.png\')]',
+    )
   })
 
   it('background: red', () => {
@@ -88,7 +102,9 @@ describe('background', () => {
   })
 
   it('background-blend-mode: normal;', () => {
-    expect(transformToUnocss('background-blend-mode: normal;')).toBe('bg-blend-normal')
+    expect(transformToUnocss('background-blend-mode: normal;')).toBe(
+      'bg-blend-normal',
+    )
   })
 
   // it('background: linear-gradient', () => {

@@ -17,31 +17,45 @@ describe('text', () => {
   })
 
   it('text-decoration-line: underline;', () => {
-    expect(transformToUnocss('text-decoration-line: underline;')).toBe('underline')
+    expect(transformToUnocss('text-decoration-line: underline;')).toBe(
+      'underline',
+    )
   })
 
   it('text-decoration-line: none;', () => {
-    expect(transformToUnocss('text-decoration-line: none;')).toBe('no-underline')
+    expect(transformToUnocss('text-decoration-line: none;')).toBe(
+      'no-underline',
+    )
   })
 
   it('text-decoration-color: inherit;', () => {
-    expect(transformToUnocss('text-decoration-color: inherit;')).toBe('decoration-inherit')
+    expect(transformToUnocss('text-decoration-color: inherit;')).toBe(
+      'decoration-inherit',
+    )
   })
 
   it('text-decoration-color: #000;', () => {
-    expect(transformToUnocss('text-decoration-color: #000;')).toBe('decoration-#000')
+    expect(transformToUnocss('text-decoration-color: #000;')).toBe(
+      'decoration-#000',
+    )
   })
 
   it('text-decoration-style: solid;', () => {
-    expect(transformToUnocss('text-decoration-style: solid;')).toBe('decoration-solid')
+    expect(transformToUnocss('text-decoration-style: solid;')).toBe(
+      'decoration-solid',
+    )
   })
 
   it('text-decoration-thickness: 1px;', () => {
-    expect(transformToUnocss('text-decoration-thickness: 1px;')).toBe('decoration-1px')
+    expect(transformToUnocss('text-decoration-thickness: 1px;')).toBe(
+      'decoration-1px',
+    )
   })
 
   it('text-underline-offset: auto;', () => {
-    expect(transformToUnocss('text-underline-offset: auto;')).toBe('underline-offset-auto')
+    expect(transformToUnocss('text-underline-offset: auto;')).toBe(
+      'underline-offset-auto',
+    )
   })
 
   it('text-transform: uppercase;', () => {

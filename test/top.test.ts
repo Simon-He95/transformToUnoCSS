@@ -13,6 +13,8 @@ describe('top', () => {
   })
 
   it('calc', () => {
-    expect(transformToUnocss('top: calc(100% - 20px);')).toBe('top-[calc(100%-20px)]')
+    expect(transformToUnocss('top: calc(100% - 20px);')).toBe(
+      'top-[calc(100%-20px)]',
+    )
   })
 })

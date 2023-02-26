@@ -7,7 +7,9 @@ describe('transform', () => {
   })
 
   it('transform-origin: top right;', () => {
-    expect(transformToUnocss('transform-origin: top right;')).toBe('origin-top-right')
+    expect(transformToUnocss('transform-origin: top right;')).toBe(
+      'origin-top-right',
+    )
   })
 
   it('transform: scale(0);', () => {
@@ -23,11 +25,15 @@ describe('transform', () => {
   })
 
   it('transform: translateX(1px);', () => {
-    expect(transformToUnocss('transform: translateX(1px);')).toBe('translate-x-1px')
+    expect(transformToUnocss('transform: translateX(1px);')).toBe(
+      'translate-x-1px',
+    )
   })
 
   it('transform: translateX(1px);', () => {
-    expect(transformToUnocss('transform: translateX(1px);')).toBe('translate-x-1px')
+    expect(transformToUnocss('transform: translateX(1px);')).toBe(
+      'translate-x-1px',
+    )
   })
 
   it('transform: skewX(2deg);', () => {

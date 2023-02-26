@@ -7,7 +7,9 @@ describe('object', () => {
   })
 
   it('object-fit: scale-down;', () => {
-    expect(transformToUnocss('object-fit: scale-down;')).toBe('object-scale-down')
+    expect(transformToUnocss('object-fit: scale-down;')).toBe(
+      'object-scale-down',
+    )
   })
 
   it('object-position: bottom;', () => {
@@ -15,6 +17,8 @@ describe('object', () => {
   })
 
   it('object-position: left bottom;', () => {
-    expect(transformToUnocss('object-position: left bottom;')).toBe('object-left-bottom')
+    expect(transformToUnocss('object-position: left bottom;')).toBe(
+      'object-left-bottom',
+    )
   })
 })

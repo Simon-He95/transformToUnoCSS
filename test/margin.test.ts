@@ -9,10 +9,14 @@ describe('margin', () => {
     expect(transformToUnocss('margin:50px 30px')).toBe('mx-30px my-50px')
   })
   it('margin:50px 30px 20px', () => {
-    expect(transformToUnocss('margin:50px 30px 20px')).toBe('mx-30px mt-50px mb-20px')
+    expect(transformToUnocss('margin:50px 30px 20px')).toBe(
+      'mx-30px mt-50px mb-20px',
+    )
   })
   it('margin:50px 30px 20px 40px', () => {
-    expect(transformToUnocss('margin:50px 30px 20px 40px')).toBe('mt-50px mb-20px ml-40px mr-30px')
+    expect(transformToUnocss('margin:50px 30px 20px 40px')).toBe(
+      'mt-50px mb-20px ml-40px mr-30px',
+    )
   })
 })
 

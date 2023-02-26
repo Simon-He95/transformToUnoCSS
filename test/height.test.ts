@@ -12,10 +12,14 @@ describe('height', () => {
     expect(transformToUnocss('height:10rem')).toMatchInlineSnapshot('"h-10rem"')
   })
   it('max-content', () => {
-    expect(transformToUnocss('height: max-content')).toMatchInlineSnapshot('"h-max"')
+    expect(transformToUnocss('height: max-content')).toMatchInlineSnapshot(
+      '"h-max"',
+    )
   })
   it('min-content', () => {
-    expect(transformToUnocss('height: min-content')).toMatchInlineSnapshot('"h-min"')
+    expect(transformToUnocss('height: min-content')).toMatchInlineSnapshot(
+      '"h-min"',
+    )
   })
   it('fit-content', () => {
     expect(transformToUnocss(' height:fit-content')).toBe('h-fit')
@@ -24,14 +28,20 @@ describe('height', () => {
     expect(transformToUnocss(' height:auto')).toBe('h-auto')
   })
   it('calc', () => {
-    expect(transformToUnocss(' height:calc(100% - 50px)')).toBe('h-[calc(100%-50px)]')
+    expect(transformToUnocss(' height:calc(100% - 50px)')).toBe(
+      'h-[calc(100%-50px)]',
+    )
   })
   it('calc not space', () => {
-    expect(transformToUnocss(' height:calc(100%-50px)')).toBe('h-[calc(100%-50px)]')
+    expect(transformToUnocss(' height:calc(100%-50px)')).toBe(
+      'h-[calc(100%-50px)]',
+    )
   })
 
   it('calc space', () => {
-    expect(transformToUnocss(' height:calc(100%  -  50px)')).toBe('h-[calc(100%-50px)]')
+    expect(transformToUnocss(' height:calc(100%  -  50px)')).toBe(
+      'h-[calc(100%-50px)]',
+    )
   })
 
   it('min-height: 0px;', () => {
