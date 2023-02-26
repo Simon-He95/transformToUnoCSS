@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { transformToUnocss } from 'transform-to-unocss'
-const message = ref('')
+import { transformToUnocss } from '../../src'
+const input = ref('')
 const transform = computed(() => {
-  return transformToUnocss(message.value)
+  return transformToUnocss(input.value)
 })
 </script>
 
 <template>
   <div w="100%" h="100%" flex justify-center items-center flex-col p="y-10">
     <input
-      v-model="message"
+      v-model="input"
       class="!outline-none"
       w="40%"
       text-4
@@ -22,12 +22,12 @@ const transform = computed(() => {
     >
     <div v-if="transform">
       <h2>结果：</h2>
-      <div :style="message">
+      <div :style="input">
         {{ transform }}
       </div>
     </div>
     <div v-else>
-      <div v-if="message">
+      <div v-if="input">
         <h2>当前值不对，或匹配错误！</h2>
         如果你输入的是一个合法的值，你可以再这里添加你的例子。
         <a
