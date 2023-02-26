@@ -1,4 +1,4 @@
-import { getVal } from './utils'
+import { getVal, isRgb, trim } from './utils'
 
 const backgroundMap = [
   'background',
@@ -8,10 +8,22 @@ const backgroundMap = [
   'background-position',
   'background-image',
 ]
-
+const gradientReg
+  = /linear-gradient\(\s*to\s+(\w+)\s*(\w+)?\s*,\s*([\w\(\), ]+)\s*,\s*([\w\(\), ]+)\s*\)$/
 export function background(key: string, val: string) {
-  if (backgroundMap.includes(key))
+  if (backgroundMap.includes(key)) {
+    if (val.startsWith('linear-gradient')) {
+      const matcher = val.match(gradientReg)
+      if (!matcher)
+        return
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, from, to, fromColor, toColor] = matcher
+      return `bg-gradient-to-${from?.[0] || ''}${to?.[0] || ''} from-${
+        isRgb(fromColor) ? `[${trim(fromColor, 'all')}]` : fromColor
+      } to-${isRgb(toColor) ? `[${trim(toColor, 'all')}]` : toColor}`
+    }
     return `bg-${getVal(val, transformSpaceToLine)}`
+  }
   if (key === 'background-blend-mode')
     return `bg-blend-${val}`
 

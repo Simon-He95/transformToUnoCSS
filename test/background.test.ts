@@ -107,7 +107,19 @@ describe('background', () => {
     )
   })
 
-  // it('background: linear-gradient', () => {
-  //   expect(transformToUnocss('background: linear-gradient(to top, black, cyan);')).toBe('bg-gradient-to-t from-black to-cyan')
-  // })
+  it('background: linear-gradient to top', () => {
+    expect(
+      transformToUnocss(
+        'background: linear-gradient(to top, rgba(255, 255, 255), cyan);',
+      ),
+    ).toBe('bg-gradient-to-t from-[rgba(255,255,255)] to-cyan')
+  })
+
+  it('background: linear-gradient(to left top, black, cyan);', () => {
+    expect(
+      transformToUnocss(
+        'background: linear-gradient(to left top, black, cyan);',
+      ),
+    ).toBe('bg-gradient-to-lt from-black to-cyan')
+  })
 })
