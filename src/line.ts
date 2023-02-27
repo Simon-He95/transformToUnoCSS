@@ -1,5 +1,5 @@
 import { getVal } from './utils'
 
 export function line(key: string, val: string) {
-  return `lh-${getVal(val)}`
+  return `lh${getVal(val)}`
 }

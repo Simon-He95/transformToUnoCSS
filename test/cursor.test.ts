@@ -28,13 +28,13 @@ describe('cursor', () => {
 
   it('cursor: url("hyper.cur"), auto;', () => {
     expect(transformToUnocss('cursor: url("hyper.cur"), auto;')).toBe(
-      'cursor-[url("hyper.cur"),auto]',
+      'cursor=[url("hyper.cur"),auto]',
     )
   })
 
   it('cursor: url(hyper.cur), auto;', () => {
     expect(transformToUnocss('cursor: url(hyper.cur), auto;')).toBe(
-      'cursor-[url(hyper.cur),auto]',
+      'cursor=[url(hyper.cur),auto]',
     )
   })
 

@@ -84,3 +84,4 @@ export async function cli() {
       }
     })
 }
+cli()

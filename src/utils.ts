@@ -28,9 +28,9 @@ export function isRgb(s: string) {
 }
 
 export function getVal(val: string, transform?: Function) {
-  if (isCalc(val) || isUrl(val) || isRgb(val))
-    return `[${trim(val, 'all')}]`
-  return transform ? transform(val) : val
+  if (isCalc(val) || isUrl(val) || isRgb(val) || isPercent(val))
+    return `=[${trim(val, 'all')}]`
+  return `-${transform ? transform(val) : val}`
 }
 
 export function getHundred(n: string | number) {

@@ -45,9 +45,16 @@ export function transfromCode(code: string) {
               loc: { source },
               tag,
             } = r
+            const classReg = new RegExp(`<${tag}.*class=["'](.*)["']`)
+            const hasClass = classReg.test(source)
+
             code = code.replace(
               source,
-              source.replace(`<${tag}`, `<${tag} ${after}`),
+              hasClass
+                ? source.replace(classReg, (all: string, c: string) =>
+                  all.replace(c, `${c} ${after}`),
+                )
+                : source.replace(`<${tag}`, `<${tag} ${after}`),
             )
           })
           // 删除原本class

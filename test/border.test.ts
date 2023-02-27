@@ -17,7 +17,7 @@ describe('border', () => {
 
   it('radius-calc', () => {
     expect(transformToUnocss('border-radius: calc(100% - 20px)')).toBe(
-      'border-rd-[calc(100%-20px)]',
+      'border-rd=[calc(100%-20px)]',
     )
   })
 
@@ -33,7 +33,7 @@ describe('border', () => {
 
   it('spacing', () => {
     expect(transformToUnocss('border-spacing: 0px 0px;')).toBe(
-      'border-spacing-[0px_0px]',
+      'border-spacing=[0px_0px]',
     )
   })
 })

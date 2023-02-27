@@ -20,7 +20,7 @@ describe('filter', () => {
   it('drop-shadow', () => {
     expect(
       transformToUnocss('filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));'),
-    ).toBe('drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)]')
+    ).toBe('drop-shadow=[0_1px_1px_rgba(0,0,0,0.05)]')
   })
 
   it('grayscale 0.1', () => {

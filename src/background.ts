@@ -18,11 +18,11 @@ export function background(key: string, val: string) {
         return
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, from, to, fromColor, toColor] = matcher
-      return `bg-gradient-to-${from?.[0] || ''}${to?.[0] || ''} from-${
-        isRgb(fromColor) ? `[${trim(fromColor, 'all')}]` : fromColor
-      } to-${isRgb(toColor) ? `[${trim(toColor, 'all')}]` : toColor}`
+      return `bg-gradient-to-${from?.[0] || ''}${to?.[0] || ''} from${
+        isRgb(fromColor) ? `=[${trim(fromColor, 'all')}]` : `-${fromColor}`
+      } to${isRgb(toColor) ? `=[${trim(toColor, 'all')}]` : `-${toColor}`}`
     }
-    return `bg-${getVal(val, transformSpaceToLine)}`
+    return `bg${getVal(val, transformSpaceToLine)}`
   }
   if (key === 'background-blend-mode')
     return `bg-blend-${val}`

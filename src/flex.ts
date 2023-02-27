@@ -6,7 +6,7 @@ export function flex(key: string, val: string) {
     return `${getLastName(key)}-${val}`
   const firstVal = trim(val)[0]
   if (key === 'flex' && (firstVal === '0' || firstVal === '1'))
-    return `flex-[${joinWithUnderLine(val)}]`
+    return `flex=[${joinWithUnderLine(val)}]`
 
   return `${getFirstName(key)}-${val}`
 }

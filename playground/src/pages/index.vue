@@ -16,7 +16,4 @@ div > .red {
 .red {
   color: yellow;
 }
-.hi {
-  aa: 'aa';
-}
 </style>

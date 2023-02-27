@@ -5,7 +5,7 @@ export default defineConfig({
   target: 'node14',
   format: ['cjs', 'esm'],
   clean: true,
-  external: ['vite', 'webpack', 'rollup', 'esbuild'],
+  external: ['vite', 'webpack', 'rollup', 'esbuild', 'fast-glob'],
   dts: {
     resolve: true,
     // build types for `src/index.ts` only

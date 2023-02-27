@@ -40,7 +40,6 @@ import { resize } from './resize'
 import { scroll } from './scroll'
 import { user } from './user'
 import { will } from './will'
-import { cli } from './cli'
 import { transfromCode } from './transformCode'
 import { vitePluginTransformToUnocss } from './vite'
 
@@ -131,5 +130,3 @@ export function transformStyleToUnocss(styles: string) {
 }
 
 export { transfromCode, vitePluginTransformToUnocss }
-
-cli()
