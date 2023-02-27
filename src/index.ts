@@ -41,6 +41,8 @@ import { scroll } from './scroll'
 import { user } from './user'
 import { will } from './will'
 import { cli } from './cli'
+import { transfromCode } from './transformCode'
+import { vitePluginTransformToUnocss } from './vite'
 
 const typeMap: any = {
   aspect,
@@ -127,5 +129,7 @@ export function transformStyleToUnocss(styles: string) {
     .reduce((result, cur) => (result += `${transformToUnocss(cur)} `), '')
     .slice(0, -1)
 }
+
+export { transfromCode, vitePluginTransformToUnocss }
 
 cli()

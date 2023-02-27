@@ -32,11 +32,13 @@
       ]
     }
   },
+  "bin": {
+    "tounocss": "./cli.mjs"
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks",
     "build": "tsup ./src/index.ts",
     "dev": "npm run build -- --watch src",
@@ -54,6 +56,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.1",
+    "@simon_he/colorize": "^0.0.1",
     "@types/node": "^18.0.0",
     "bumpp": "^8.2.1",
     "eslint": "^8.18.0",

@@ -5,6 +5,7 @@ importers:
   .:
     specifiers:
       '@antfu/eslint-config': ^0.25.1
+      '@simon_he/colorize': ^0.0.1
       '@types/node': ^18.0.0
       bumpp: ^8.2.1
       eslint: ^8.18.0
@@ -22,6 +23,7 @@ importers:
       vitest: ^0.15.1
     devDependencies:
       '@antfu/eslint-config': 0.25.1_b5e7v2qnwxfo6hmiq56u52mz3e
+      '@simon_he/colorize': 0.0.1
       '@types/node': 18.0.0
       bumpp: 8.2.1
       eslint: 8.18.0
@@ -703,6 +705,12 @@ packages:
       '@types/estree': 1.0.0
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@simon_he/colorize/0.0.1:
+    resolution: {integrity: sha512-AsMYrX9s9Nw3CfXoPc4mVRc1/NJTR8UNhKS0dscA1rtzs0JEGHoxeOkwpx8kvm8zjUZP9Spup1TYPVBe0iLCFA==}
+    dependencies:
+      picocolors: 1.0.0
     dev: true
 
   /@tootallnate/once/2.0.0:
