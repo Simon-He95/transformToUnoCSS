@@ -6,7 +6,7 @@ describe('table', () => {
     expect(transformToUnocss('table-layout: auto;')).toBe('table-auto')
   })
 
-  it('	table-layout: fixed;', () => {
+  it('table-layout: fixed;', () => {
     expect(transformToUnocss('table-layout: fixed;')).toBe('table-fixed')
   })
 })

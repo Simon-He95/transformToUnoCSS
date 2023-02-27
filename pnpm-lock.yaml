@@ -5,6 +5,7 @@ importers:
   .:
     specifiers:
       '@antfu/eslint-config': ^0.25.1
+      '@babel/eslint-parser': ^7.19.1
       '@simon_he/colorize': ^0.0.1
       '@types/node': ^18.0.0
       bumpp: ^8.2.1
@@ -16,13 +17,14 @@ importers:
       prettier: ^2.8.1
       rimraf: ^3.0.2
       simple-git-hooks: ^2.8.1
-      transform-to-unocss: workspace:^0.0.5
+      transform-to-unocss: workspace:^0.0.6
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
       vitest: ^0.15.1
     devDependencies:
       '@antfu/eslint-config': 0.25.1_b5e7v2qnwxfo6hmiq56u52mz3e
+      '@babel/eslint-parser': 7.19.1_eslint@8.18.0
       '@simon_he/colorize': 0.0.1
       '@types/node': 18.0.0
       bumpp: 8.2.1
@@ -301,6 +303,19 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/highlight': 7.16.10
+    dev: true
+
+  /@babel/eslint-parser/7.19.1_eslint@8.18.0:
+    resolution: {integrity: sha512-AqNf2QWt1rtu2/1rLswy6CDP7H9Oh3mMhk177Y67Rg8d7RD9WfOLLv8CGn6tisFvS2htm86yIe1yLF6I1UDaGQ==}
+    engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
+    peerDependencies:
+      '@babel/core': '>=7.11.0'
+      eslint: ^7.5.0 || ^8.0.0
+    dependencies:
+      '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
+      eslint: 8.18.0
+      eslint-visitor-keys: 2.1.0
+      semver: 6.3.0
     dev: true
 
   /@babel/helper-string-parser/7.19.4:
@@ -658,6 +673,12 @@ packages:
       cross-spawn: 7.0.3
       string-argv: 0.3.1
       type-detect: 4.0.8
+    dev: true
+
+  /@nicolo-ribaudo/eslint-scope-5-internals/5.1.1-v1:
+    resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
+    dependencies:
+      eslint-scope: 5.1.1
     dev: true
 
   /@nodelib/fs.scandir/2.1.4:
