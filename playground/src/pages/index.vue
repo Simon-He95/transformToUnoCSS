@@ -2,7 +2,9 @@
 
 <template>
   <div style="background: red; width: 100%; line-height: 20px">
-    <div class="red" />
+    <div class="red">
+      hi
+    </div>
   </div>
 </template>
 
@@ -12,7 +14,7 @@ div > .red {
   width: 100%;
 }
 .red {
-  color: 'yellow';
+  color: yellow;
 }
 .hi {
   aa: 'aa';

@@ -126,7 +126,7 @@ export function transformStyleToUnocss(styles: string) {
   return styles
     .split(';')
     .filter(Boolean)
-    .reduce((result, cur) => (result += `${transformToUnocss(cur)} `), '')
+    .reduce((result, cur) => (result += `${transformToUnocss(cur) || ''} `), '')
     .slice(0, -1)
 }
 

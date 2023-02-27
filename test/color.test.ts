@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { transformToUnocss } from '../src'
 describe('color', () => {
   it('color:red', () => {
-    expect(transformToUnocss('color:red')).toBe('text-red')
+    expect(transformToUnocss('color: red')).toBe('text-red')
   })
 
   it('color:hex', () => {
