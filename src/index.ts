@@ -40,6 +40,7 @@ import { resize } from './resize'
 import { scroll } from './scroll'
 import { user } from './user'
 import { will } from './will'
+import { cli } from './cli'
 
 const typeMap: any = {
   aspect,
@@ -118,3 +119,13 @@ export function transformToUnocss(css: String) {
   const first = getFirstName(key)
   return typeMap[first]?.(key, val)
 }
+
+export function transformStyleToUnocss(styles: string) {
+  return styles
+    .split(';')
+    .filter(Boolean)
+    .reduce((result, cur) => (result += `${transformToUnocss(cur)} `), '')
+    .slice(0, -1)
+}
+
+cli()

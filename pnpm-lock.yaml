@@ -9,12 +9,13 @@ importers:
       bumpp: ^8.2.1
       eslint: ^8.18.0
       esno: ^0.16.3
+      fast-glob: ^3.2.12
       lint-staged: ^13.1.0
       picocolors: ^1.0.0
       prettier: ^2.8.1
       rimraf: ^3.0.2
       simple-git-hooks: ^2.8.1
-      transform-to-unocss: workspace:^0.0.4
+      transform-to-unocss: workspace:^0.0.5
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
@@ -25,6 +26,7 @@ importers:
       bumpp: 8.2.1
       eslint: 8.18.0
       esno: 0.16.3
+      fast-glob: 3.2.12
       lint-staged: 13.1.0
       picocolors: 1.0.0
       prettier: 2.8.1
@@ -1733,7 +1735,7 @@ packages:
     dependencies:
       '@jsdevtools/ez-spawn': 3.0.4
       cac: 6.7.12
-      fast-glob: 3.2.11
+      fast-glob: 3.2.12
       kleur: 4.1.4
       prompts: 2.4.1
       semver: 7.3.7
@@ -3706,7 +3708,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.11
+      fast-glob: 3.2.12
       ignore: 5.2.0
       merge2: 1.4.1
       slash: 3.0.0
