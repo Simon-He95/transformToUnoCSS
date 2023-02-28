@@ -28,39 +28,43 @@ export function transfromCode(code: string) {
       style.replace(
         /(.*){([\\n\s\w\-.:;%\(\)+'"]*)}/g,
         (all: any, name: any, value: any) => {
+          name = trim(name.replace(/\s+/g, ' '))
           const before = trim(value.replaceAll('\n', ''), 'all')
-          const after = transformStyleToUnocss(before) || before
+          const transfer = transformStyleToUnocss(before)
+          const hasHover = name.endsWith(':hover')
+          const after
+            = hasHover && transfer
+              ? `hover="${transfer.replace(/=\[/g, '-[')}"`
+              : before
           // 未被转换跳过
           if (before === after)
             return
+          if (hasHover)
+            name = name.slice(0, -6)
           // 找template > ast
-          name = name.replace(/\s+/g, '')
           const stack = template.ast
           const names = name.split(' ')
 
           // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
           const result = fn1(names, stack)
+          if (!result.length)
+            return
           result.forEach((r) => {
             const {
               loc: { source },
               tag,
             } = r
-            const classReg = new RegExp(`<${tag}.*class=["'](.*)["']`)
-            const hasClass = classReg.test(source)
 
             code = code.replace(
               source,
-              hasClass
-                ? source.replace(classReg, (all: string, c: string) =>
-                  all.replace(c, `${c} ${after}`),
-                )
-                : source.replace(`<${tag}`, `<${tag} ${after}`),
+              source.replace(`<${tag}`, `<${tag} ${after}`),
             )
           })
           // 删除原本class
           code = code.replace(value, '')
+
           // 如果class中内容全部被移除删除这个定义的class
-          code = code.replace(/[\w>.#-+> ]+\s*{}\n/g, '')
+          code = code.replace(/[\w>.#-+>: ]+\s*{}\n/g, '')
 
           return all
         },

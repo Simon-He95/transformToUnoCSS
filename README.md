@@ -35,3 +35,9 @@
 ## After
 
 ![after](/assets/after.png)
+
+# todo
+
+- [ ] support xx + xx
+- [ ] support attribute selector .xx[]
+- [ ] support .a.b
