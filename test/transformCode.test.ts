@@ -11,17 +11,13 @@ describe('transform', () => {
 
       <template>
         <div bg-red w=[100%] lh-20px>
-          <div hover=\\"text-yellow\\" class=\\"red\\">
+          <div bg-red w=[100%] class=\\"red yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      div .red {
-        background-color: red;
-        width: 100%;
-      }
       </style>
       "
     `)

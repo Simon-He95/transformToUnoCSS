@@ -3,6 +3,8 @@ import { trim } from './utils'
 import { transformStyleToUnocss } from '.'
 
 const styleReg = /(:)?style="(.*)"/
+const combineReg = /([.#\w]+)([.#][\w]+)/
+
 export function transfromCode(code: string) {
   const match = code.match(styleReg)
   if (!match)
@@ -89,8 +91,11 @@ function fn(
       targets.forEach((t: any) => fn(list.slice(j), t, deps, undefined, result))
       continue
     }
+    const combineMatch = curFirst.match(combineReg)
 
-    targets = astFindTag(stack, curFirst, deps)
+    targets = combineMatch
+      ? astFindTag(stack, combineMatch[1], deps, combineMatch[2])
+      : astFindTag(stack, curFirst, deps)
     if (list.length === 1) {
       result.push(...targets)
       return
@@ -112,7 +117,14 @@ function fn1(
       targets.forEach((t: any) => fn1(list.slice(i), t, undefined, result))
       continue
     }
-    targets = curs.length > 1 ? fn(curs, stack, 1) : astFindTag(stack, cur)
+    const combineMatch = cur.match(combineReg)
+
+    targets
+      = curs.length > 1
+        ? fn(curs, stack, 1)
+        : combineMatch
+          ? astFindTag(stack, combineMatch[1], Infinity, combineMatch[2])
+          : astFindTag(stack, cur, Infinity)
 
     if (list.length === 1) {
       result.push(...targets)
@@ -126,6 +138,7 @@ export function astFindTag(
   ast: any,
   tag = '',
   deps = Infinity,
+  combine: string | undefined = undefined,
   result: any = [],
 ) {
   const selector = tag.startsWith('.')
@@ -133,6 +146,13 @@ export function astFindTag(
     : tag.startsWith('#')
       ? 'id'
       : ''
+  const combineSelector = combine
+    ? combine.startsWith('.')
+      ? 'class'
+      : combine.startsWith('#')
+        ? 'id'
+        : undefined
+    : undefined
   if (selector) {
     if (
       ast.props
@@ -141,16 +161,34 @@ export function astFindTag(
         (prop: any) =>
           prop.name === selector && prop.value.content?.includes(tag.slice(1)),
       )
+      && (combine === undefined
+        || ast.props.some(
+          (prop: any) =>
+            prop.name === combineSelector
+            && prop.value.content?.includes(combine.slice(1)),
+        ))
     )
       result.push(ast)
   }
-  else if (ast.tag === tag) {
+  else if (
+    ast.tag === tag
+    && (combine === undefined
+      || (ast.props
+        && ast.props.length
+        && ast.props.some(
+          (prop: any) =>
+            prop.name === combineSelector
+            && prop.value.content?.includes(combine.slice(1)),
+        )))
+  ) {
     result.push(ast)
   }
 
   if (ast.children && ast.children.length && deps) {
     deps--
-    ast.children.forEach((child: any) => astFindTag(child, tag, deps, result))
+    ast.children.forEach((child: any) =>
+      astFindTag(child, tag, deps, combine, result),
+    )
   }
   return result
 }

@@ -40,4 +40,4 @@
 
 - [ ] support xx + xx
 - [ ] support attribute selector .xx[]
-- [ ] support .a.b
+- [x] support .a.b
