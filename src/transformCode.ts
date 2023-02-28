@@ -5,6 +5,8 @@ import { transformStyleToUnocss } from '.'
 const styleReg = /(:)?style="(.*)"/
 const combineReg = /([.#\w]+)([.#][\w]+)/
 
+const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/
+
 export function transfromCode(code: string) {
   const match = code.match(styleReg)
   if (!match)
@@ -45,7 +47,7 @@ export function transfromCode(code: string) {
             name = name.slice(0, -6)
           // 找template > ast
           const stack = template.ast
-          const names = name.split(' ')
+          const names = name.replace(/\s*\+\s*/, '+').split(' ')
 
           // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
           const result = fn1(names, stack)
@@ -92,10 +94,12 @@ function fn(
       continue
     }
     const combineMatch = curFirst.match(combineReg)
-
+    const addMatch = curFirst.match(addReg)
     targets = combineMatch
       ? astFindTag(stack, combineMatch[1], deps, combineMatch[2])
-      : astFindTag(stack, curFirst, deps)
+      : addMatch
+        ? astFindTag(stack, addMatch[2], deps, undefined, addMatch[1])
+        : astFindTag(stack, curFirst, deps)
     if (list.length === 1) {
       result.push(...targets)
       return
@@ -118,13 +122,15 @@ function fn1(
       continue
     }
     const combineMatch = cur.match(combineReg)
-
+    const addMatch = cur.match(addReg)
     targets
       = curs.length > 1
         ? fn(curs, stack, 1)
         : combineMatch
           ? astFindTag(stack, combineMatch[1], Infinity, combineMatch[2])
-          : astFindTag(stack, cur, Infinity)
+          : addMatch
+            ? astFindTag(stack, addMatch[2], Infinity, undefined, addMatch[1])
+            : astFindTag(stack, cur, Infinity)
 
     if (list.length === 1) {
       result.push(...targets)
@@ -139,7 +145,9 @@ export function astFindTag(
   tag = '',
   deps = Infinity,
   combine: string | undefined = undefined,
+  add: string | undefined = undefined,
   result: any = [],
+  siblings: any = [],
 ) {
   const selector = tag.startsWith('.')
     ? 'class'
@@ -150,6 +158,13 @@ export function astFindTag(
     ? combine.startsWith('.')
       ? 'class'
       : combine.startsWith('#')
+        ? 'id'
+        : undefined
+    : undefined
+  const addSelector = add
+    ? add.startsWith('.')
+      ? 'class'
+      : add.startsWith('#')
         ? 'id'
         : undefined
     : undefined
@@ -167,6 +182,17 @@ export function astFindTag(
             prop.name === combineSelector
             && prop.value.content?.includes(combine.slice(1)),
         ))
+      && (add === undefined
+        || siblings.some(
+          (sib: any) =>
+            sib.props
+            && sib.props.length
+            && sib.props.some(
+              (prop: any) =>
+                prop.name === addSelector
+                && prop.value.content?.includes(add.slice(1)),
+            ),
+        ))
     )
       result.push(ast)
   }
@@ -180,6 +206,17 @@ export function astFindTag(
             prop.name === combineSelector
             && prop.value.content?.includes(combine.slice(1)),
         )))
+    && (add === undefined
+      || siblings.some(
+        (sib: any) =>
+          sib.props
+          && sib.props.length
+          && sib.props.some(
+            (prop: any) =>
+              prop.name === addSelector
+              && prop.value.content?.includes(add.slice(1)),
+          ),
+      ))
   ) {
     result.push(ast)
   }
@@ -187,7 +224,7 @@ export function astFindTag(
   if (ast.children && ast.children.length && deps) {
     deps--
     ast.children.forEach((child: any) =>
-      astFindTag(child, tag, deps, combine, result),
+      astFindTag(child, tag, deps, combine, add, result, ast.children),
     )
   }
   return result

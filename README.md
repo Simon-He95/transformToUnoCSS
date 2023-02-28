@@ -38,6 +38,6 @@
 
 # todo
 
-- [ ] support xx + xx
+- [x] support xx + xx
 - [ ] support attribute selector .xx[]
 - [x] support .a.b
