@@ -35,7 +35,7 @@ export function transfromCode(code: string) {
           const after
             = hasHover && transfer
               ? `hover="${transfer.replace(/=\[/g, '-[')}"`
-              : before
+              : transfer ?? before
           // 未被转换跳过
           if (before === after)
             return
@@ -47,6 +47,7 @@ export function transfromCode(code: string) {
 
           // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
           const result = fn1(names, stack)
+
           if (!result.length)
             return
           result.forEach((r) => {
