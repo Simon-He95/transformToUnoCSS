@@ -37,86 +37,90 @@ describe('transform', () => {
       ",
         "
 
+      -----    classAttribute.vue.vue     -------
+
+      <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div class=\\"red\\" haha bg-red w=[100%] lh-20px>
+          nihao
+        </div>
+        <div h=[100%] class=\\"yellow\\">
+          hi
+        </div>
+      </template>
+
+      <style scoped>
+
+      </style>
+      ",
+        "
+
       -----    classChild.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div class=\\"yellow\\">
+          <div bg-red w=[100%] class=\\"yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red > .yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classCombine.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div bg-red w=[100%] lh-20px>
-          <div class=\\"red yellow\\">
+          <div bg-red w=[100%] class=\\"red yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red.yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classSpace.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div class=\\"yellow\\">
+          <div bg-red w=[100%] class=\\"yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red .yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    hover.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div bg-red w=[100%] lh-20px>
-          <div class=\\"red\\">
+          <div hover=\\"text-yellow\\" class=\\"red\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red:hover {
-        color: yellow;
-      }
-      </style> -->
+      </style>
       ",
       ]
     `)

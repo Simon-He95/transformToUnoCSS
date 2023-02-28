@@ -1,0 +1,21 @@
+<script setup lang="ts"></script>
+
+<template>
+  <div class="red" haha style="background: red; width: 100%; line-height: 20px">
+    nihao
+  </div>
+  <div class="yellow">
+    hi
+  </div>
+</template>
+
+<style scoped>
+.red[haha] {
+  background-color: red;
+  width: 100%;
+}
+
+.red + div {
+  height: 100%;
+}
+</style>

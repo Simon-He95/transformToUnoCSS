@@ -69,7 +69,7 @@ export function transfromCode(code: string) {
           code = code.replace(value, '')
 
           // 如果class中内容全部被移除删除这个定义的class
-          code = code.replace(/[\w>.#-+>: ]+\s*{}\n/g, '')
+          code = code.replace(/[\w>.#-+>:\[\] ]+\s*{}\n/g, '')
 
           return all
         },
@@ -149,11 +149,15 @@ export function astFindTag(
   result: any = [],
   siblings: any = [],
 ) {
-  const selector = tag.startsWith('.')
-    ? 'class'
-    : tag.startsWith('#')
-      ? 'id'
-      : ''
+  const tagMatch = tag.match(/\[([\w-]+)\]/)
+
+  const selector = tagMatch
+    ? tagMatch[1]
+    : tag.startsWith('.')
+      ? 'class'
+      : tag.startsWith('#')
+        ? 'id'
+        : ''
   const combineSelector = combine
     ? combine.startsWith('.')
       ? 'class'
@@ -174,7 +178,8 @@ export function astFindTag(
       && ast.props.length
       && ast.props.some(
         (prop: any) =>
-          prop.name === selector && prop.value.content?.includes(tag.slice(1)),
+          prop.name === selector
+          && (tagMatch || prop.value.content?.includes(tag.slice(1))),
       )
       && (combine === undefined
         || ast.props.some(
@@ -204,7 +209,7 @@ export function astFindTag(
         && ast.props.some(
           (prop: any) =>
             prop.name === combineSelector
-            && prop.value.content?.includes(combine.slice(1)),
+            && (tagMatch || prop.value.content?.includes(combine.slice(1))),
         )))
     && (add === undefined
       || siblings.some(
