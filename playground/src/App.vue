@@ -10,15 +10,7 @@ const transform = computed(() => {
 
 <template>
   <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
-  <div
-    h="100%"
-    flex
-    justify-center
-    items-center
-    flex-col
-    p="y-10"
-    hover="w-[100px] bg-red"
-  >
+  <div h="100%" flex justify-center items-center flex-col p="y-10">
     <input
       v-model="input"
       class="!outline-none"
