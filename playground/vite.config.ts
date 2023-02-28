@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+/// <reference types="vite-plugin-pages/client" />
 
 import path from 'path'
 import { defineConfig } from 'vite'

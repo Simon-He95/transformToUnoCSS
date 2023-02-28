@@ -5,8 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Footer: typeof import('./src/components/Footer.vue')['default']
-    'Footer.__unocss_transfer__': typeof import('./src/components/Footer.__unocss_transfer__.vue')['default']
   }
 }
 
-export { }
+export {}
