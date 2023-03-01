@@ -6,7 +6,7 @@ describe('width', () => {
     expect(transformToUnocss('width:10px')).toBe('w-10px')
   })
   it('%', () => {
-    expect(transformToUnocss('width: 100%')).toBe('w=[100%]')
+    expect(transformToUnocss('width: 100%')).toBe('w="[100%]"')
   })
   it('em', () => {
     expect(transformToUnocss('width:10em')).toBe('w-10em')
@@ -28,18 +28,18 @@ describe('width', () => {
   })
   it('calc', () => {
     expect(transformToUnocss('width:calc(100% - 50px)')).toBe(
-      'w=[calc(100%-50px)]',
+      'w="[calc(100%-50px)]"',
     )
   })
   it('calc not space', () => {
     expect(transformToUnocss('width:calc(100%-50px)')).toBe(
-      'w=[calc(100%-50px)]',
+      'w="[calc(100%-50px)]"',
     )
   })
 
   it('calc space', () => {
     expect(transformToUnocss('width:calc(100%  -  50px)')).toBe(
-      'w=[calc(100%-50px)]',
+      'w="[calc(100%-50px)]"',
     )
   })
 
@@ -48,7 +48,7 @@ describe('width', () => {
   })
 
   it('min-width: 0px;', () => {
-    expect(transformToUnocss('min-width: 100%;')).toBe('min-w=[100%]')
+    expect(transformToUnocss('min-width: 100%;')).toBe('min-w="[100%]"')
   })
   it('max-width: 0px;', () => {
     expect(transformToUnocss('max-width: 0px;')).toBe('max-w-0px')

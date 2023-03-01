@@ -7,10 +7,10 @@ describe('aspect', () => {
   })
 
   it('aspect-ratio: 1 / 1;', () => {
-    expect(transformToUnocss('aspect-ratio: 1 / 1;')).toBe('aspect=[1/1]')
+    expect(transformToUnocss('aspect-ratio: 1 / 1;')).toBe('aspect="[1/1]"')
   })
 
   it('aspect-ratio: 16 / 9;', () => {
-    expect(transformToUnocss('aspect-ratio: 16 / 9;')).toBe('aspect=[16/9]')
+    expect(transformToUnocss('aspect-ratio: 16 / 9;')).toBe('aspect="[16/9]"')
   })
 })

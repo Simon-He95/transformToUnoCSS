@@ -23,10 +23,10 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div h=[100%] class=\\"red\\" bg-red w=[100%] lh-20px>
+        <div h=\\"[100%]\\" class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
           nihao
         </div>
-        <div bg-red w=[100%] class=\\"yellow\\">
+        <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
           hi
         </div>
       </template>
@@ -42,10 +42,10 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red w=[100%] class=\\"red\\" haha bg-red w=[100%] lh-20px>
+        <div bg-red w=\\"[100%]\\" class=\\"red\\" haha bg-red w=\\"[100%]\\" lh-20px>
           nihao
         </div>
-        <div h=[100%] class=\\"yellow\\">
+        <div h=\\"[100%]\\" class=\\"yellow\\">
           hi
         </div>
       </template>
@@ -61,8 +61,8 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div bg-red w=[100%] class=\\"yellow\\">
+        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+          <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
             hi
           </div>
         </div>
@@ -78,8 +78,8 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red w=[100%] lh-20px>
-          <div bg-red w=[100%] class=\\"red yellow\\">
+        <div bg-red w=\\"[100%]\\" lh-20px>
+          <div bg-red w=\\"[100%]\\" class=\\"red yellow\\">
             hi
           </div>
         </div>
@@ -95,8 +95,8 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div bg-red w=[100%] class=\\"yellow\\">
+        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+          <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
             hi
           </div>
         </div>
@@ -112,8 +112,8 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div focus-within=\\"bg-red w-[100%]\\" class=\\"container\\">
-          <div class=\\"red\\" bg-red w=[100%] lh-20px>
+        <div focus-within=\\"bg-red w=\\"[100%]\\"\\" class=\\"container\\">
+          <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
             nihao
           </div>
           <div class=\\"yellow\\">
@@ -132,7 +132,7 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red w=[100%] lh-20px>
+        <div bg-red w=\\"[100%]\\" lh-20px>
           <div hover=\\"text-yellow\\" class=\\"red\\">
             hi
           </div>

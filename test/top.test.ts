@@ -14,7 +14,7 @@ describe('top', () => {
 
   it('calc', () => {
     expect(transformToUnocss('top: calc(100% - 20px);')).toBe(
-      'top=[calc(100%-20px)]',
+      'top="[calc(100%-20px)]"',
     )
   })
 })

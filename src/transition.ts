@@ -6,7 +6,7 @@ export function transition(key: string, val: string) {
   if (key === 'transition-timing-function') {
     if (val === 'linear')
       return `ease-${val}`
-    return `ease=[${trim(val, 'all')}]`
+    return `ease="[${trim(val, 'all')}]"`
   }
   if (keepTransition.includes(key)) {
     if (val.includes('color'))

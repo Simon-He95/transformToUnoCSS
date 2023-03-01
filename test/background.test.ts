@@ -93,7 +93,7 @@ describe('background', () => {
 
   it('background-image:url(\'picture.png\')', () => {
     expect(transformToUnocss('background-image:url(\'picture.png\')')).toBe(
-      'bg=[url(\'picture.png\')]',
+      'bg="[url(\'picture.png\')]"',
     )
   })
 
@@ -112,7 +112,7 @@ describe('background', () => {
       transformToUnocss(
         'background: linear-gradient(to top, rgba(255, 255, 255), cyan);',
       ),
-    ).toBe('bg-gradient-to-t from=[rgba(255,255,255)] to-cyan')
+    ).toBe('bg-gradient-to-t from="[rgba(255,255,255)]" to-cyan')
   })
 
   it('background: linear-gradient(to left top, black, cyan);', () => {

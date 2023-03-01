@@ -19,8 +19,8 @@ export function background(key: string, val: string) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, from, to, fromColor, toColor] = matcher
       return `bg-gradient-to-${from?.[0] || ''}${to?.[0] || ''} from${
-        isRgb(fromColor) ? `=[${trim(fromColor, 'all')}]` : `-${fromColor}`
-      } to${isRgb(toColor) ? `=[${trim(toColor, 'all')}]` : `-${toColor}`}`
+        isRgb(fromColor) ? `="[${trim(fromColor, 'all')}]"` : `-${fromColor}`
+      } to${isRgb(toColor) ? `="[${trim(toColor, 'all')}]"` : `-${toColor}`}`
     }
     return `bg${getVal(val, transformSpaceToLine)}`
   }

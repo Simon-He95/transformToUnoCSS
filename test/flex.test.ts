@@ -31,10 +31,10 @@ describe('flex', () => {
   })
 
   it('flex: 1 1 0%;', () => {
-    expect(transformToUnocss('flex: 1 1 0%;')).toBe('flex=[1_1_0%]')
+    expect(transformToUnocss('flex: 1 1 0%;')).toBe('flex="[1_1_0%]"')
   })
 
   it('flex: 1 1 auto;', () => {
-    expect(transformToUnocss('flex: 1 1 auto;')).toBe('flex=[1_1_auto]')
+    expect(transformToUnocss('flex: 1 1 auto;')).toBe('flex="[1_1_auto]"')
   })
 })
