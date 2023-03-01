@@ -2,18 +2,21 @@
 
 <template>
   <div style="background: red; width: 100%; line-height: 20px">
-    <div class="red">
-      hi
+    <div class="container">
+      <div class="box" />
+      <div class="box" />
     </div>
   </div>
 </template>
 
 <style scoped>
-div > .red {
-  background-color: red;
+.container {
   width: 100%;
+  display: flex;
 }
-.red {
-  color: yellow;
+.box {
+  flex: 1;
+  height: 100px;
+  background-color: red;
 }
 </style>

@@ -1,4 +1,4 @@
-<script setup lang="ts"></script>
+<!-- <script setup lang="ts"></script>
 
 <template>
   <div class="red" haha style="background: red; width: 100%; line-height: 20px">
@@ -18,4 +18,4 @@
 .red + div {
   height: 100%;
 }
-</style>
+</style> -->

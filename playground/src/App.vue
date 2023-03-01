@@ -10,9 +10,9 @@ const transform = computed(() => {
 
 <template>
   <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
-  <p hihi>
-    asdasdsa
-  </p>
+  <div class="test" bg-red>
+    nihao
+  </div>
   <div h="100%" flex justify-center items-center flex-col p="y-10">
     <input
       v-model="input"
@@ -52,10 +52,14 @@ const transform = computed(() => {
       </div>
     </div>
   </div>
+
+  <router-view />
 </template>
 
 <style scoped>
-p[hihi] {
-  background: red;
+@media (min-width: 640px) {
+  .test {
+    background-color: yellow;
+  }
 }
 </style>

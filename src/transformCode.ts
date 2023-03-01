@@ -1,85 +1,37 @@
 import { parse } from 'vue/compiler-sfc'
 import { trim } from './utils'
+import { tail } from './tail'
+// import { transformMedia } from './media'
 import { transformStyleToUnocss } from '.'
 
+// const mediaReg = /@media[\s\w]*\(([\w-]+):\s*(\w+)\)\s*{([\s\n\w.\{\}\-:;]*)}/g
 const styleReg = /(:)?style="(.*)"/
 const combineReg = /([.#\w]+)([.#][\w]+)/
 
 const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/
+const tailReg = /:([\w-\(\)]+)/
+let transformFn = (source: string) => source
 
 export function transfromCode(code: string) {
-  const match = code.match(styleReg)
-  if (!match)
-    return code
-  const [target, comma, style] = match
-  if (comma)
-    return code
-
   const {
     descriptor: { template, styles },
   } = parse(code)
-  // transform inline-style
-  code = code.replace(target, transformStyleToUnocss(style))
-  if (!template)
+  code = tansformInlineStyle(code)
+
+  if (!template || !styles.length)
     return code
-  if (styles.length) {
-    // transform class
-    const {
-      attrs: { scoped },
-      content: style,
-    } = styles[0]
-    if (scoped) {
-      style.replace(
-        /(.*){([\\n\s\w\-.:;%\(\)+'"]*)}/g,
-        (all: any, name: any, value: any) => {
-          name = trim(name.replace(/\s+/g, ' '))
-          const before = trim(value.replaceAll('\n', ''), 'all')
-          const transfer = transformStyleToUnocss(before)
-          const hasHover = name.endsWith(':hover')
-          const after
-            = hasHover && transfer
-              ? `hover="${transfer.replace(/=\[/g, '-[')}"`
-              : transfer ?? before
-          // 未被转换跳过
-          if (before === after)
-            return
-          if (hasHover)
-            name = name.slice(0, -6)
-          // 找template > ast
-          const stack = template.ast
-          const names = name.replace(/\s*\+\s*/, '+').split(' ')
 
-          // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
-          const result = fn1(names, stack)
+  // transform class
+  const {
+    attrs: { scoped },
+    content: style,
+  } = styles[0]
 
-          if (!result.length)
-            return
-          result.forEach((r) => {
-            const {
-              loc: { source },
-              tag,
-            } = r
-
-            code = code.replace(
-              source,
-              source.replace(`<${tag}`, `<${tag} ${after}`),
-            )
-          })
-          // 删除原本class
-          code = code.replace(value, '')
-
-          // 如果class中内容全部被移除删除这个定义的class
-          code = code.replace(/[\w>.#-+>:\[\] ]+\s*{}\n/g, '')
-
-          return all
-        },
-      )
-    }
-  }
-
-  return code
+  // 只针对scoped css处理
+  return scoped ? transformCss(style, code, template.ast) : code
 }
 
+// 查找下一级的
 function fn(
   list: any[],
   stack: any,
@@ -108,6 +60,7 @@ function fn(
   return result
 }
 
+// 查找下无限级的
 function fn1(
   list: any[],
   stack: any,
@@ -233,4 +186,72 @@ export function astFindTag(
     )
   }
   return result
+}
+
+function tansformInlineStyle(code: string): string {
+  const match = code.match(styleReg)
+  transformFn = (source: string) => source
+  if (!match)
+    return code
+  const [target, comma, inlineStyle] = match
+
+  if (comma)
+    return code
+
+  // transform inline-style
+  transformFn = (source: string) =>
+    source.replace(target, transformStyleToUnocss(inlineStyle))
+  return code.replace(target, transformStyleToUnocss(inlineStyle))
+}
+
+function transformCss(style: string, code: string, stack: any) {
+  style.replace(
+    /(.*){([\\n\s\w\-.:;%\(\)\+'"]*)}/g,
+    (all: any, name: any, value: any) => {
+      name = trim(name.replace(/\s+/g, ' '))
+
+      const before = trim(value.replaceAll('\n', ''), 'all')
+      const transfer = transformStyleToUnocss(before)
+      const tailMatcher = name.match(tailReg)
+      const prefix = tailMatcher ? tail(tailMatcher[1]) : ''
+      const after
+        = prefix && transfer
+          ? `${prefix}="${transfer.replace(/=\[/g, '-[')}"`
+          : transfer ?? before
+      // 未被转换跳过
+      if (before === after)
+        return
+      if (prefix)
+        name = name.slice(0, `-${tailMatcher[0].length}`)
+      // 找template > ast
+      const names = name.replace(/\s*\+\s*/, '+').split(' ')
+
+      // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
+      const result = fn1(names, stack)
+
+      if (!result.length)
+        return
+      result.forEach((r) => {
+        const {
+          loc: { source },
+          tag,
+        } = r
+        const transferSource = transformFn(source)
+
+        code = code.replace(
+          transferSource,
+          transferSource.replace(`<${tag}`, `<${tag} ${after}`),
+        )
+      })
+      // 删除原本class
+      code = code.replace(value, '')
+
+      // 如果class中内容全部被移除删除这个定义的class
+      code = code.replace(/[\w>.#\-\+>:\[\] ]+\s*{}\n/g, '')
+
+      return all
+    },
+  )
+
+  return code
 }

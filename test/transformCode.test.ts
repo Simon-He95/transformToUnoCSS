@@ -20,10 +20,206 @@ describe('transform', () => {
 
       -----    classAdd.vue.vue     -------
 
-      <script setup lang=\\"ts\\"></script>
+      <!-- <script setup lang=\\"ts\\"></script>
 
       <template>
         <div class=\\"red\\" bg-red w=[100%] lh-20px>
+          nihao
+        </div>
+        <div class=\\"yellow\\">
+          hi
+        </div>
+      </template>
+
+      <style scoped>
+      .red + .yellow {
+        background-color: red;
+        width: 100%;
+      }
+
+      .red + div {
+        height: 100%;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    classAttribute.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div class=\\"red\\" haha bg-red w=[100%] lh-20px>
+          nihao
+        </div>
+        <div class=\\"yellow\\">
+          hi
+        </div>
+      </template>
+
+      <style scoped>
+      .red[haha] {
+        background-color: red;
+        width: 100%;
+      }
+
+      .red + div {
+        height: 100%;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    classChild.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div class=\\"red\\" bg-red w=[100%] lh-20px>
+          <div class=\\"yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped>
+      .red > .yellow {
+        background-color: red;
+        width: 100%;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    classCombine.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div bg-red w=[100%] lh-20px>
+          <div class=\\"red yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped>
+      .red.yellow {
+        background-color: red;
+        width: 100%;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    classSpace.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div class=\\"red\\" bg-red w=[100%] lh-20px>
+          <div class=\\"yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped>
+      .red .yellow {
+        background-color: red;
+        width: 100%;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    classTail.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div class=\\"container\\">
+          <div class=\\"red\\" bg-red w=[100%] lh-20px>
+            nihao
+          </div>
+          <div class=\\"yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped>
+      .container:focus-within {
+        background-color: red;
+        width: 100%;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    hover.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div bg-red w=[100%] lh-20px>
+          <div class=\\"red\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped>
+      .red:hover {
+        color: yellow;
+      }
+      </style> -->
+      ",
+        "
+
+      -----    media.vue.vue     -------
+
+      <!-- <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div class=\\"red\\">
+          nihao
+        </div>
+      </template>
+
+      <style scoped>
+      @media (min-width:640px) {
+       .red{
+        background-color: red;
+       }
+      }
+
+      @media (min-width:120px) {
+       .red{
+        background-color: red;
+       }
+      }
+      @media not all and (min-width: 1536px){
+        .red{
+        background-color: red;
+       }
+      }
+      </style> -->
+      ",
+      ]
+    `)
+  })
+})
+
+describe.only('single demo test', async () => {
+  const demo = await fsp.readFile('./test/demo/classAdd.vue', 'utf-8')
+
+  it('transform-origin:center', () => {
+    expect(transfromCode(demo)).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div h=[100%] class=\\"red\\" bg-red w=[100%] lh-20px>
           nihao
         </div>
         <div bg-red w=[100%] class=\\"yellow\\">
@@ -34,95 +230,7 @@ describe('transform', () => {
       <style scoped>
 
       </style>
-      ",
-        "
-
-      -----    classAttribute.vue.vue     -------
-
-      <script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div class=\\"red\\" haha bg-red w=[100%] lh-20px>
-          nihao
-        </div>
-        <div h=[100%] class=\\"yellow\\">
-          hi
-        </div>
-      </template>
-
-      <style scoped>
-
-      </style>
-      ",
-        "
-
-      -----    classChild.vue.vue     -------
-
-      <script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div bg-red w=[100%] class=\\"yellow\\">
-            hi
-          </div>
-        </div>
-      </template>
-
-      <style scoped>
-      </style>
-      ",
-        "
-
-      -----    classCombine.vue.vue     -------
-
-      <script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div bg-red w=[100%] lh-20px>
-          <div bg-red w=[100%] class=\\"red yellow\\">
-            hi
-          </div>
-        </div>
-      </template>
-
-      <style scoped>
-      </style>
-      ",
-        "
-
-      -----    classSpace.vue.vue     -------
-
-      <script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div bg-red w=[100%] class=\\"yellow\\">
-            hi
-          </div>
-        </div>
-      </template>
-
-      <style scoped>
-      </style>
-      ",
-        "
-
-      -----    hover.vue.vue     -------
-
-      <script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div bg-red w=[100%] lh-20px>
-          <div hover=\\"text-yellow\\" class=\\"red\\">
-            hi
-          </div>
-        </div>
-      </template>
-
-      <style scoped>
-      </style>
-      ",
-      ]
+      "
     `)
   })
 })

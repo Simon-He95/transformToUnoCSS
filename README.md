@@ -41,3 +41,5 @@
 - [x] support xx + xx
 - [x] support attribute selector .xx[]
 - [x] support .a.b
+- [ ] support @media
+- [x] support tail
