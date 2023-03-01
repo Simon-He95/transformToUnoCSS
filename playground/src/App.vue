@@ -10,9 +10,6 @@ const transform = computed(() => {
 
 <template>
   <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
-  <div class="test" bg-red>
-    nihao
-  </div>
   <div h="100%" flex justify-center items-center flex-col p="y-10">
     <input
       v-model="input"
@@ -48,18 +45,10 @@ const transform = computed(() => {
         你可以在<a
           href="https://github.com/Simon-He95/transformToUnocss"
           target="_blank"
-        ><b>transform-to-unocss</b></a>查看现在支持的属性，进行体验。
+        ><b>transform-to-unocss</b></a>查看现在支持的属性，进行体验。已有vite插件和cli版本~
       </div>
     </div>
   </div>
-
-  <router-view />
 </template>
 
-<style scoped>
-@media (min-width: 640px) {
-  .test {
-    background-color: yellow;
-  }
-}
-</style>
+<style scoped></style>
