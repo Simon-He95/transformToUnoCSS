@@ -212,23 +212,24 @@ describe('transform', () => {
 })
 
 describe.only('single demo test', async () => {
-  const demo = await fsp.readFile('./test/demo/classAdd.vue', 'utf-8')
+  const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
 
   it('transform-origin:center', () => {
     expect(transfromCode(demo)).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
-        <div h=[100%] class=\\"red\\" bg-red w=[100%] lh-20px>
+        <div max-2xl=\\"bg-red\\" sm=\\"bg-red\\" class=\\"red\\">
           nihao
-        </div>
-        <div bg-red w=[100%] class=\\"yellow\\">
-          hi
         </div>
       </template>
 
       <style scoped>
-
+      @media (min-width:120px) {
+       .red{
+        background-color: red;
+       }
+      }
       </style>
       "
     `)
