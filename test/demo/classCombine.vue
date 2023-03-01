@@ -1,4 +1,4 @@
-<!-- <script setup lang="ts"></script>
+<script setup lang="ts"></script>
 
 <template>
   <div style="background: red; width: 100%; line-height: 20px">
@@ -13,4 +13,4 @@
   background-color: red;
   width: 100%;
 }
-</style> -->
+</style>

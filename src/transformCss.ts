@@ -35,7 +35,7 @@ export function transformCss(
       const names = name.replace(/\s*\+\s*/, '+').split(' ')
 
       // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
-      const result = fn1(names, stack)
+      const result = findDeepChild(names, stack)
 
       if (!result.length)
         return
@@ -68,7 +68,7 @@ export function transformCss(
 }
 
 // 查找下一级的
-function fn(
+function findChild(
   list: any[],
   stack: any,
   deps = Infinity,
@@ -78,7 +78,9 @@ function fn(
   for (let j = 0; j < list.length; j++) {
     const curFirst = list[j]
     if (targets) {
-      targets.forEach((t: any) => fn(list.slice(j), t, deps, undefined, result))
+      targets.forEach((t: any) =>
+        findChild(list.slice(j), t, deps, undefined, result),
+      )
       continue
     }
     const combineMatch = curFirst.match(combineReg)
@@ -97,7 +99,7 @@ function fn(
 }
 
 // 查找下无限级的
-function fn1(
+function findDeepChild(
   list: any[],
   stack: any,
   targets: any = undefined,
@@ -107,14 +109,16 @@ function fn1(
     const cur = list[i]
     const curs = cur.split('>')
     if (targets) {
-      targets.forEach((t: any) => fn1(list.slice(i), t, undefined, result))
+      targets.forEach((t: any) =>
+        findDeepChild(list.slice(i), t, undefined, result),
+      )
       continue
     }
     const combineMatch = cur.match(combineReg)
     const addMatch = cur.match(addReg)
     targets
       = curs.length > 1
-        ? fn(curs, stack, 1)
+        ? findChild(curs, stack, 1)
         : combineMatch
           ? astFindTag(stack, combineMatch[1], Infinity, combineMatch[2])
           : addMatch

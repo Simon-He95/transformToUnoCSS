@@ -6,7 +6,11 @@ import { transformMedia } from './transformMedia'
 export function transfromCode(code: string) {
   const {
     descriptor: { template, styles },
+    errors,
   } = parse(code)
+
+  if (errors.length)
+    return code
 
   // transform inline-style
   const [transferStyleCode, transformFn] = tansformInlineStyle(code)
@@ -40,6 +44,8 @@ function prettier(code: string) {
   const {
     descriptor: { styles },
   } = parse(code)
+  if (!styles.length)
+    return code
   const { content } = styles[0]
   return code.replace(content, content.replace(/\n+/g, '\n'))
 }

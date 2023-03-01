@@ -20,125 +20,99 @@ describe('transform', () => {
 
       -----    classAdd.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" bg-red w=[100%] lh-20px>
+        <div h=[100%] class=\\"red\\" bg-red w=[100%] lh-20px>
           nihao
         </div>
-        <div class=\\"yellow\\">
+        <div bg-red w=[100%] class=\\"yellow\\">
           hi
         </div>
       </template>
 
       <style scoped>
-      .red + .yellow {
-        background-color: red;
-        width: 100%;
-      }
 
-      .red + div {
-        height: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classAttribute.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" haha bg-red w=[100%] lh-20px>
+        <div bg-red w=[100%] class=\\"red\\" haha bg-red w=[100%] lh-20px>
           nihao
         </div>
-        <div class=\\"yellow\\">
+        <div h=[100%] class=\\"yellow\\">
           hi
         </div>
       </template>
 
       <style scoped>
-      .red[haha] {
-        background-color: red;
-        width: 100%;
-      }
 
-      .red + div {
-        height: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classChild.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div class=\\"yellow\\">
+          <div bg-red w=[100%] class=\\"yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red > .yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classCombine.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div bg-red w=[100%] lh-20px>
-          <div class=\\"red yellow\\">
+          <div bg-red w=[100%] class=\\"red yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red.yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classSpace.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div class=\\"red\\" bg-red w=[100%] lh-20px>
-          <div class=\\"yellow\\">
+          <div bg-red w=[100%] class=\\"yellow\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red .yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    classTail.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"container\\">
+        <div focus-within=\\"bg-red w-[100%]\\" class=\\"container\\">
           <div class=\\"red\\" bg-red w=[100%] lh-20px>
             nihao
           </div>
@@ -149,69 +123,51 @@ describe('transform', () => {
       </template>
 
       <style scoped>
-      .container:focus-within {
-        background-color: red;
-        width: 100%;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    hover.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
         <div bg-red w=[100%] lh-20px>
-          <div class=\\"red\\">
+          <div hover=\\"text-yellow\\" class=\\"red\\">
             hi
           </div>
         </div>
       </template>
 
       <style scoped>
-      .red:hover {
-        color: yellow;
-      }
-      </style> -->
+      </style>
       ",
         "
 
       -----    media.vue.vue     -------
 
-      <!-- <script setup lang=\\"ts\\"></script>
+      <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\">
+        <div max-2xl=\\"bg-red\\" sm=\\"bg-red\\" class=\\"red\\">
           nihao
         </div>
       </template>
 
       <style scoped>
-      @media (min-width:640px) {
-       .red{
-        background-color: red;
-       }
+      @media (min-width: 120px) {
+        .red {
+          background-color: red;
+        }
       }
-
-      @media (min-width:120px) {
-       .red{
-        background-color: red;
-       }
-      }
-      @media not all and (min-width: 1536px){
-        .red{
-        background-color: red;
-       }
-      }
-      </style> -->
+      </style>
       ",
       ]
     `)
   })
 })
 
-describe.only('single demo test', async () => {
+describe('single demo test', async () => {
   const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
 
   it('transform-origin:center', () => {
@@ -225,10 +181,10 @@ describe.only('single demo test', async () => {
       </template>
 
       <style scoped>
-      @media (min-width:120px) {
-       .red{
-        background-color: red;
-       }
+      @media (min-width: 120px) {
+        .red {
+          background-color: red;
+        }
       }
       </style>
       "
