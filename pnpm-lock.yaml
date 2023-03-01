@@ -13,12 +13,14 @@ importers:
       esno: ^0.16.3
       fast-glob: ^3.2.12
       find-up: ^6.3.0
+      lazy-js-utils: ^0.0.39
       lint-staged: ^13.1.0
+      monaco-editor: ^0.36.1
       picocolors: ^1.0.0
       prettier: ^2.8.1
       rimraf: ^3.0.2
       simple-git-hooks: ^2.8.1
-      transform-to-unocss: workspace:^0.0.6
+      transform-to-unocss: workspace:^0.0.16
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
@@ -34,7 +36,9 @@ importers:
       eslint: 8.18.0
       esno: 0.16.3
       find-up: 6.3.0
+      lazy-js-utils: 0.0.39
       lint-staged: 13.1.0
+      monaco-editor: 0.36.1
       picocolors: 1.0.0
       prettier: 2.8.1
       rimraf: 3.0.2
@@ -4313,6 +4317,23 @@ packages:
       - typescript
     dev: true
 
+  /lazy-js-utils/0.0.37:
+    resolution: {integrity: sha512-kr6ehqgZmUDkBFUdFaOby43wZ/fdUODJVDRY4v0ZlGoTKTXZ/huea8Mu9LA2ThSt11URObpE+DMWS+IHBtKW2w==}
+    peerDependencies:
+      vue: ^3.2.41
+    dev: true
+
+  /lazy-js-utils/0.0.39:
+    resolution: {integrity: sha512-QSpgcSIU/r4SzawlicNTt4uN5e0aRY2hhRl/tIOdOZ5Y/tfhsf1Hl7eBDcHHVdHSOxstaZDe14xDcLuRs93Jpg==}
+    peerDependencies:
+      vue: ^3.2.41
+    dependencies:
+      htmlparser2: 8.0.1
+      lazy-js-utils: 0.0.37
+      qrcode: 1.5.1
+      spark-md5: 3.0.2
+    dev: true
+
   /levn/0.3.0:
     resolution: {integrity: sha512-0OO4y2iOHix2W6ujICbKIaEQXvFQHue65vUG3pb5EUomzPI90z9hsA1VsO/dbIIpC53J8gxM9Q4Oho0jrCM/yA==}
     engines: {node: '>= 0.8.0'}
@@ -4594,6 +4615,10 @@ packages:
       pathe: 1.1.0
       pkg-types: 1.0.2
       ufo: 1.1.0
+    dev: true
+
+  /monaco-editor/0.36.1:
+    resolution: {integrity: sha512-/CaclMHKQ3A6rnzBzOADfwdSJ25BFoFT0Emxsc4zYVyav5SkK9iA6lEtIeuN/oRYbwPgviJT+t3l+sjFa28jYg==}
     dev: true
 
   /mrmime/1.0.1:

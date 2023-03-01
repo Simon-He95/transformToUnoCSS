@@ -1,11 +1,86 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { VividTyping } from 'vivid-typing'
-import { transformToUnocss } from '../../src'
+import * as monaco from 'monaco-editor'
+import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
+import { useAnimationFrame } from 'lazy-js-utils'
+import { transformToUnocss, transfromCode } from '../../src'
+
 const input = ref('')
-const transform = computed(() => {
-  return transformToUnocss(input.value)
+let pre: any = null
+const transform = computed(() => transformToUnocss(input.value))
+let editorComponent: any = null
+const editor = ref(null)
+const editorResult = ref<HTMLElement>()
+
+const editorInput = ref(`<template>
+  <div style="background:red">hi</div>
+  <div class="hi">hi</div>
+</template>
+
+<style scoped>
+  .hi{
+    font-size:20px;
+    background:yellow;
+  }
+</style>
+`)
+monaco.editor.defineTheme('myTheme', {
+  base: 'vs',
+  inherit: true,
+  rules: [{ background: 'EDF9FA', token: '' }],
+  colors: {
+    'editor.foreground': '#000000',
+    'editor.background': '#EDF9FA',
+    'editorCursor.foreground': '#8B0000',
+    'editor.lineHighlightBackground': '#0000FF20',
+    'editorLineNumber.foreground': '#008800',
+    'editor.selectionBackground': '#88000030',
+    'editor.inactiveSelectionBackground': '#88000015',
+  },
 })
+monaco.editor.setTheme('myTheme')
+
+onMounted(() => {
+  self.MonacoEnvironment = {
+    getWorker() {
+      return new HtmlWorker()
+    },
+  }
+
+  editorComponent = monaco.editor.create(editor.value!, {
+    value: editorInput.value,
+    fontFamily: 'Arial',
+    fontSize: 20,
+    language: 'html',
+  })
+})
+
+useAnimationFrame(() => {
+  const newInput = editorComponent!.getValue()
+  const code = transfromCode(newInput)
+  if (!editorResult.value)
+    return
+  if (!pre) {
+    pre = code
+    monaco.editor.create(editorResult.value!, {
+      value: code,
+      language: 'html',
+      fontFamily: 'Arial',
+      fontSize: 20,
+    })
+  }
+  else if (pre !== code) {
+    editorResult.value!.innerHTML = ''
+    pre = code
+    monaco.editor.create(editorResult.value!, {
+      value: code,
+      language: 'html',
+      fontFamily: 'Arial',
+      fontSize: 20,
+    })
+  }
+}, 200)
 </script>
 
 <template>
@@ -34,19 +109,31 @@ const transform = computed(() => {
         <h2>当前值不对，或匹配错误！</h2>
         如果你输入的是一个合法的值，你可以再这里添加你的例子。
         <a
-          href="https://github.com/geekris1/unocss-reverse/issues"
+          href="https://github.com/Simon-He95/transformToUnocss/issues"
           target="_blank"
         >issues</a>
         <div />
       </div>
       <div v-else>
-        <h2>正在开发中...</h2>
-
         你可以在<a
           href="https://github.com/Simon-He95/transformToUnocss"
           target="_blank"
         ><b>transform-to-unocss</b></a>查看现在支持的属性，进行体验。已有vite插件和cli版本~
       </div>
+    </div>
+  </div>
+  <div flex>
+    <div w="50%">
+      <h1 pl2>
+        inputs:
+      </h1>
+      <div ref="editor" h-100 />
+    </div>
+    <div w="50%">
+      <h1 pl2>
+        outputs:
+      </h1>
+      <div ref="editorResult" h-100 pointer-events-none />
     </div>
   </div>
 </template>
