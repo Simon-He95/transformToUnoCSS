@@ -91,6 +91,7 @@ useAnimationFrame(async () => {
     link="https://github.com/Simon-He95"
     type="trapeziumType"
     position="right"
+    content="Follow Me"
     color="pink"
   />
   <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
