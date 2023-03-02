@@ -57,13 +57,15 @@ onMounted(() => {
   })
 })
 
-useAnimationFrame(() => {
+useAnimationFrame(async () => {
   const newInput = editorComponent!.getValue()
   const code = transfromCode(newInput)
   if (!editorResult.value)
     return
-  if (!pre) {
+  // console.log({ pre, isEqual: pre === code })
+  if (!pre && code) {
     pre = code
+    editorResult.value!.innerHTML = ''
     monaco.editor.create(editorResult.value!, {
       value: code,
       language: 'html',
@@ -72,8 +74,8 @@ useAnimationFrame(() => {
     })
   }
   else if (pre !== code) {
-    editorResult.value!.innerHTML = ''
     pre = code
+    editorResult.value!.innerHTML = ''
     monaco.editor.create(editorResult.value!, {
       value: code,
       language: 'html',
