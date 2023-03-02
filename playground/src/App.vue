@@ -15,14 +15,14 @@ const editor = ref(null)
 const editorResult = ref<HTMLElement>()
 
 const editorInput = ref(`<template>
-  <div style="background:red">hi</div>
+  <div style="background: red">hi</div>
   <div class="hi">hi</div>
 </template>
 
 <style scoped>
-  .hi{
-    font-size:20px;
-    background:yellow;
+  .hi {
+    font-size: 20px;
+    background: yellow;
   }
 </style>
 `)
