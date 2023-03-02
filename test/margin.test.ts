@@ -38,8 +38,14 @@ describe('margin-top', () => {
   })
 })
 
-describe('margin-bottom', () => {
+describe.only('margin-bottom', () => {
   it('margin-bottom:50px', () => {
     expect(transformToUnocss('margin-bottom:50px')).toBe('mb-50px')
+  })
+
+  it('margin-bottom:50px', () => {
+    expect(transformToUnocss('margin-bottom:calc(100% - 30px)')).toBe(
+      'mb="[calc(100%-30px)]"',
+    )
   })
 })
