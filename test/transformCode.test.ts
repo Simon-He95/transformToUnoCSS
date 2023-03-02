@@ -23,17 +23,15 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div h=\\"[100%]\\" class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
           nihao
         </div>
-        <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
+        <div h=\\"[100%]\\" bg-red w=\\"[100%]\\" class=\\"yellow\\">
           hi
         </div>
       </template>
 
-      <style scoped>
-
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -42,7 +40,7 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red w=\\"[100%]\\" class=\\"red\\" haha bg-red w=\\"[100%]\\" lh-20px>
+        <div h=\\"[100%]\\" w=\\"[100%]\\" bg-red class=\\"red\\" name=\\"hi\\" haha>
           nihao
         </div>
         <div h=\\"[100%]\\" class=\\"yellow\\">
@@ -50,9 +48,7 @@ describe('transform', () => {
         </div>
       </template>
 
-      <style scoped>
-
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -68,8 +64,7 @@ describe('transform', () => {
         </div>
       </template>
 
-      <style scoped>
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -85,8 +80,7 @@ describe('transform', () => {
         </div>
       </template>
 
-      <style scoped>
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -102,8 +96,7 @@ describe('transform', () => {
         </div>
       </template>
 
-      <style scoped>
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -112,7 +105,7 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div focus-within=\\"bg-red w=\\"[100%]\\"\\" class=\\"container\\">
+        <div focus-within=\\"bg-red w-100%\\" class=\\"container\\">
           <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
             nihao
           </div>
@@ -122,8 +115,7 @@ describe('transform', () => {
         </div>
       </template>
 
-      <style scoped>
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -139,8 +131,7 @@ describe('transform', () => {
         </div>
       </template>
 
-      <style scoped>
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -149,7 +140,7 @@ describe('transform', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div max-2xl=\\"bg-red\\" sm=\\"bg-red\\" class=\\"red\\">
+        <div bg-red bg-red bg-red max-2xl=\\"bg-red\\" sm=\\"bg-red\\" class=\\"red\\">
           nihao
         </div>
       </template>
@@ -162,28 +153,41 @@ describe('transform', () => {
       }
       </style>
       ",
+        "
+
+      -----    test.vue.vue     -------
+
+      <template>
+        <div text-20px bg-yellow id=\\"red\\" bg-red>
+          hi
+        </div>
+        <div class=\\"hi\\">
+          hi
+        </div>
+      </template>
+
+      <style scoped></style>
+      ",
       ]
     `)
   })
 })
 
-describe('single demo test', async () => {
-  const demo = await fsp.readFile('./test/demo/classSpace.vue', 'utf-8')
+describe.only('single demo test', async () => {
+  const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
 
   it('transform-origin:center', () => {
     expect(transfromCode(demo)).toMatchInlineSnapshot(`
-      "<script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red! w=\\"[100%]\\" class=\\"yellow\\">
-            hi
-          </div>
+      "<template>
+        <div text-20px bg-yellow id=\\"nihao\\" bg-red>
+          hi
+        </div>
+        <div class=\\"hi\\">
+          hi
         </div>
       </template>
 
-      <style scoped>
-      </style>
+      <style scoped></style>
       "
     `)
   })

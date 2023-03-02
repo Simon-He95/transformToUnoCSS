@@ -1,18 +1,17 @@
+import { parse } from 'vue/compiler-sfc'
 import { trim } from './utils'
 import { tail } from './tail'
 import { transformStyleToUnocss } from '.'
-const combineReg = /([.#\w]+)([.#][\w]+)/
+const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
 
-const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/
-const tailReg = /:([\w-\(\)]+)/
+const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
+const tailReg = /:([\w-\(\)]+)/ // :after
+const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 
-export function transformCss(
-  style: string,
-  code: string,
-  stack: any,
-  transformFn: (source: string) => string,
-  media = '',
-) {
+const emptyClass = /[\w>.#\-\+>:\[\]="' ]+\s*{}\n/g
+
+export function transformCss(style: string, code: string, media = '') {
+  let stack = parse(code).descriptor.template?.ast
   style.replace(
     /(.*){([\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any) => {
@@ -21,10 +20,11 @@ export function transformCss(
       const before = trim(value.replaceAll('\n', ''), 'all')
       const transfer = transformStyleToUnocss(before)
       const tailMatcher = name.match(tailReg)
+
       const prefix = tailMatcher ? tail(tailMatcher[1]) : ''
       const after
         = prefix && transfer
-          ? `${prefix}="${transfer.replace(/=\[/g, '-[')}"`
+          ? `${prefix}="${transfer.replace(/="\[(.*)\]"/g, (_, v) => `-${v}`)}"`
           : transfer ?? before
       // 未被转换跳过
       if (before === after)
@@ -33,7 +33,6 @@ export function transformCss(
         name = name.slice(0, `-${tailMatcher[0].length}`)
       // 找template > ast
       const names = name.replace(/\s*\+\s*/, '+').split(' ')
-
       // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
       const result = findDeepChild(names, stack)
 
@@ -44,11 +43,10 @@ export function transformCss(
           loc: { source },
           tag,
         } = r
-        const transferSource = transformFn(source)
 
         code = code.replace(
-          transferSource,
-          transferSource.replace(
+          source,
+          source.replace(
             `<${tag}`,
             `<${tag} ${media ? `${media}="${after}"` : after}`,
           ),
@@ -58,8 +56,10 @@ export function transformCss(
       code = code.replace(value, '')
 
       // 如果class中内容全部被移除删除这个定义的class
-      code = code.replace(/[\w>.#\-\+>:\[\] ]+\s*{}\n/g, '')
+      code = code.replace(emptyClass, '')
 
+      // update stack
+      stack = parse(code).descriptor!.template!.ast
       return all
     },
   )
@@ -85,6 +85,7 @@ function findChild(
     }
     const combineMatch = curFirst.match(combineReg)
     const addMatch = curFirst.match(addReg)
+
     targets = combineMatch
       ? astFindTag(stack, combineMatch[1], deps, combineMatch[2])
       : addMatch
@@ -116,6 +117,7 @@ function findDeepChild(
     }
     const combineMatch = cur.match(combineReg)
     const addMatch = cur.match(addReg)
+
     targets
       = curs.length > 1
         ? findChild(curs, stack, 1)
@@ -142,10 +144,12 @@ export function astFindTag(
   result: any = [],
   siblings: any = [],
 ) {
-  const tagMatch = tag.match(/\[([\w-]+)\]/)
+  const tagMatch = tag.match(tagReg)
 
   const selector = tagMatch
-    ? tagMatch[1]
+    ? tagMatch[2]
+      ? tagMatch[1]
+      : tagMatch[1]
     : tag.startsWith('.')
       ? 'class'
       : tag.startsWith('#')
@@ -172,7 +176,9 @@ export function astFindTag(
       && ast.props.some(
         (prop: any) =>
           prop.name === selector
-          && (tagMatch || prop.value.content?.includes(tag.slice(1))),
+          && ((tagMatch && !tagMatch[0].indexOf('=') && !tagMatch[2])
+            || prop.value.content
+              === (tagMatch && tagMatch[2] ? tagMatch[2] : tag.slice(1))),
       )
       && (combine === undefined
         || ast.props.some(
@@ -183,7 +189,8 @@ export function astFindTag(
       && (add === undefined
         || siblings.some(
           (sib: any) =>
-            sib.props
+            sib !== ast
+            && sib.props
             && sib.props.length
             && sib.props.some(
               (prop: any) =>
@@ -207,7 +214,8 @@ export function astFindTag(
     && (add === undefined
       || siblings.some(
         (sib: any) =>
-          sib.props
+          sib !== ast
+          && sib.props
           && sib.props.length
           && sib.props.some(
             (prop: any) =>

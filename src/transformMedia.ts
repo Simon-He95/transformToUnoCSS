@@ -1,4 +1,3 @@
-import { parse } from 'vue/compiler-sfc'
 import { transformCss } from './transformCss'
 import { getLastName } from './utils'
 
@@ -13,11 +12,7 @@ const valMap: any = {
   '1536px': '2xl',
 }
 
-export function transformMedia(
-  code: string,
-  stack: any,
-  transformFn: (source: string) => string,
-): [string, (r: string) => string] {
+export function transformMedia(code: string): [string, (r: string) => string] {
   let result = code
   const transferBackMap: any = []
   code.replace(
@@ -34,13 +29,7 @@ export function transformMedia(
       }
 
       if (pre.trim()) {
-        const transfer = transformCss(
-          inner,
-          result,
-          stack,
-          transformFn,
-          `max-${value}`,
-        )
+        const transfer = transformCss(inner, result, `max-${value}`)
         if (transfer !== result) {
           result = transfer.replace(emptyMediaReg, '')
           transferBackMap.push((r: string) => r.replace(tempFlag, transfer))
@@ -57,16 +46,11 @@ export function transformMedia(
         }`
       }
 
-      const transfer = transformCss(
-        inner,
-        result,
-        stack,
-        transformFn,
-        mapValue,
-      ).replace(emptyMediaReg, '')
+      const transfer = transformCss(inner, result, mapValue).replace(
+        emptyMediaReg,
+        '',
+      )
       result = transfer.replace(all, tempFlag)
-      // update stack
-      stack = parse(result)!.descriptor!.template!.ast
       transferBackMap.push((r: string) => r.replace(tempFlag, all))
       return result
     },

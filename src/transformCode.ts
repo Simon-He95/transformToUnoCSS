@@ -11,19 +11,14 @@ export function transfromCode(code: string) {
 
   if (errors.length)
     return code
-
   // transform inline-style
-  const [transferStyleCode, transformFn] = tansformInlineStyle(code)
-  code = transferStyleCode
+
+  code = tansformInlineStyle(code)
+
   if (!template || !styles.length)
     return code
-  const stack = template.ast
-  // transform @media
-  const [transferMediaCode, transformBack] = transformMedia(
-    code,
-    stack,
-    transformFn,
-  )
+  // transform @media 注：transformBack是将@media中内容用一个占位符替换等到transformCss处理完将结果还原回去
+  const [transferMediaCode, transformBack] = transformMedia(code)
   code = transferMediaCode
   // transform class
   const {
@@ -33,19 +28,23 @@ export function transfromCode(code: string) {
 
   // 只针对scoped css处理
   if (scoped)
-    code = transformCss(style, code, stack, transformFn)
+    code = transformCss(style, code)
 
   // 还原@media 未匹配到的class
   code = transformBack(code)
+
   return prettier(code)
 }
 
+const emptyStyle = /<style[\s\w'=]*>([\n\s]*)/
 function prettier(code: string) {
   const {
     descriptor: { styles },
   } = parse(code)
+
   if (!styles.length)
-    return code
+    return code.replace(emptyStyle, (all, v) => all.replace(v, ''))
+
   const { content } = styles[0]
   return code.replace(content, content.replace(/\n+/g, '\n'))
 }

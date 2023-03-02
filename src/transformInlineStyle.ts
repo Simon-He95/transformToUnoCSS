@@ -1,24 +1,17 @@
 import { transformStyleToUnocss } from '.'
 
-const styleReg = /(:)?style="(.*)"/
-const transformFn = (source: string) => source
+const styleReg = /(:)?style="([\w\:\-\s;\[\]\/\+%]+)"/
 
-export function tansformInlineStyle(
-  code: string,
-): [string, (source: string) => string] {
+export function tansformInlineStyle(code: string): string {
   const match = code.match(styleReg)
 
   if (!match)
-    return [code, transformFn]
+    return code
   const [target, comma, inlineStyle] = match
 
   if (comma)
-    return [code, transformFn]
+    return code
 
   // transform inline-style
-  return [
-    code.replace(target, transformStyleToUnocss(inlineStyle)),
-    (source: string) =>
-      source.replace(target, transformStyleToUnocss(inlineStyle)),
-  ]
+  return code.replace(target, transformStyleToUnocss(inlineStyle))
 }

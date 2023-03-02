@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="red" haha style="background: red; width: 100%; line-height: 20px">
+  <div class="red" name="hi" haha>
     nihao
   </div>
   <div class="yellow">
@@ -12,7 +12,14 @@
 <style scoped>
 .red[haha] {
   background-color: red;
+}
+
+.red[class='red'] {
   width: 100%;
+}
+
+.red[name='hi'] {
+  height: 100%;
 }
 
 .red + div {
