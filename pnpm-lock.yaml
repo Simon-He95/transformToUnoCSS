@@ -20,7 +20,7 @@ importers:
       prettier: ^2.8.1
       rimraf: ^3.0.2
       simple-git-hooks: ^2.8.1
-      transform-to-unocss: workspace:^0.0.16
+      transform-to-unocss: workspace:^0.0.17
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
@@ -53,6 +53,7 @@ importers:
     specifiers:
       '@antfu/eslint-config': ^0.34.0
       '@iconify-json/carbon': ^1.1.2
+      '@simon_he/git-fork-vue': ^0.0.11
       '@types/node': ^18.0.0
       '@unocss/reset': ^0.47.0
       '@vitejs/plugin-vue': ^3.2.0
@@ -78,6 +79,7 @@ importers:
     devDependencies:
       '@antfu/eslint-config': 0.34.2_b5e7v2qnwxfo6hmiq56u52mz3e
       '@iconify-json/carbon': 1.1.15
+      '@simon_he/git-fork-vue': 0.0.11
       '@types/node': 18.0.0
       '@unocss/reset': 0.47.6
       '@vitejs/plugin-vue': 3.2.0_vite@4.1.4+vue@3.2.45
@@ -765,6 +767,15 @@ packages:
     resolution: {integrity: sha512-AsMYrX9s9Nw3CfXoPc4mVRc1/NJTR8UNhKS0dscA1rtzs0JEGHoxeOkwpx8kvm8zjUZP9Spup1TYPVBe0iLCFA==}
     dependencies:
       picocolors: 1.0.0
+    dev: true
+
+  /@simon_he/git-fork-vue/0.0.11:
+    resolution: {integrity: sha512-OZdx8VzBeiOHbCZ59KaLy5eNZ2nHYb96bw10dRkdraLctB7I3mVMrKNhBKNacilKQOgbn193nxm9wLQlg9VWcw==}
+    dependencies:
+      '@vueuse/core': 8.9.4_vue@3.2.45
+      vue: 3.2.45
+    transitivePeerDependencies:
+      - '@vue/composition-api'
     dev: true
 
   /@tootallnate/once/2.0.0:

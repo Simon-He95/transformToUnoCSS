@@ -4,6 +4,7 @@ import { VividTyping } from 'vivid-typing'
 import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import { useAnimationFrame } from 'lazy-js-utils'
+import gitForkVue from '@simon_he/git-fork-vue'
 import { transformToUnocss, transfromCode } from '../../src'
 
 const input = ref('')
@@ -84,6 +85,12 @@ useAnimationFrame(() => {
 </script>
 
 <template>
+  <gitForkVue
+    link="https://github.com/Simon-He95"
+    type="trapeziumType"
+    position="right"
+    color="pink"
+  />
   <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
   <div h="100%" flex justify-center items-center flex-col p="y-10">
     <input
