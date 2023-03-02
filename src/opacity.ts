@@ -1,8 +1,10 @@
-import { isPercent } from './utils'
+import { isPercent, transformImportant } from './utils'
 
 export function opacity(key: string, val: string) {
-  if (isPercent(val))
-    return `op-${val.replace('%', '')}`
+  const [value, important] = transformImportant(val)
 
-  return `op-${+val * 100}`
+  if (isPercent(val))
+    return `op-${value.replace('%', '')}${important}`
+
+  return `op-${+value * 100}${important}`
 }

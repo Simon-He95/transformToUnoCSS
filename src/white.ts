@@ -1,3 +1,7 @@
+import { transformImportant } from './utils'
+
 export function white(key: string, val: string) {
-  return `whitespace-${val}`
+  const [value, important] = transformImportant(val)
+
+  return `whitespace-${value}${important}`
 }

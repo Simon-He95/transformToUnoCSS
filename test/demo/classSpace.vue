@@ -10,7 +10,7 @@
 
 <style scoped>
 .red .yellow {
-  background-color: red;
+  background-color: red !important;
   width: 100%;
 }
 </style>

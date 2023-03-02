@@ -1,3 +1,7 @@
+import { transformImportant } from './utils'
+
 export function mix(key: string, val: string) {
-  return `mix-blend-${val}`
+  const [value, important] = transformImportant(val)
+
+  return `mix-blend-${value}${important}`
 }

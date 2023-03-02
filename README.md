@@ -45,3 +45,5 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 - [x] support .a.b
 - [x] support @media
 - [x] support tail
+- [x] support !important
+- [ ] support react

@@ -1,5 +1,7 @@
-import { getVal } from './utils'
+import { getVal, transformImportant } from './utils'
 
 export function cursor(key: string, val: string) {
-  return `${key}${getVal(val)}`
+  const [value, important] = transformImportant(val)
+
+  return `${key}${getVal(value)}${important}`
 }

@@ -1,5 +1,7 @@
-import { getLastName } from './utils'
+import { getLastName, transformImportant } from './utils'
 
 export function place(key: string, val: string) {
-  return `${key}-${getLastName(val)}`
+  const [value, important] = transformImportant(val)
+
+  return `${key}-${getLastName(value)}${important}`
 }

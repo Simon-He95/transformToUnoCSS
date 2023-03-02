@@ -96,7 +96,7 @@ describe('transform', () => {
 
       <template>
         <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
+          <div bg-red! w=\\"[100%]\\" class=\\"yellow\\">
             hi
           </div>
         </div>
@@ -168,24 +168,21 @@ describe('transform', () => {
 })
 
 describe('single demo test', async () => {
-  const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
+  const demo = await fsp.readFile('./test/demo/classSpace.vue', 'utf-8')
 
   it('transform-origin:center', () => {
     expect(transfromCode(demo)).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
-        <div max-2xl=\\"bg-red\\" sm=\\"bg-red\\" class=\\"red\\">
-          nihao
+        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+          <div bg-red! w=\\"[100%]\\" class=\\"yellow\\">
+            hi
+          </div>
         </div>
       </template>
 
       <style scoped>
-      @media (min-width: 120px) {
-        .red {
-          background-color: red;
-        }
-      }
       </style>
       "
     `)

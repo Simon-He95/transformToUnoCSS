@@ -1,5 +1,7 @@
-import { getVal } from './utils'
+import { getVal, transformImportant } from './utils'
 
 export function color(key: string, val: string) {
-  return `text${getVal(val)}`
+  const [value, important] = transformImportant(val)
+
+  return `text${getVal(value)}${important}`
 }

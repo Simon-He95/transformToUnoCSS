@@ -110,7 +110,7 @@ const typeMap: any = {
   color,
   row,
 }
-const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/]+)/
+const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/!]+)/
 export function transformToUnocss(css: String) {
   const match = css.match(splitReg)
   if (!match)
@@ -118,6 +118,7 @@ export function transformToUnocss(css: String) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, key, val] = match
   const first = getFirstName(key)
+
   return typeMap[first]?.(key, val)
 }
 

@@ -1,7 +1,9 @@
-import { getLastName } from './utils'
+import { getLastName, transformImportant } from './utils'
 
 export function word(key: string, val: string) {
-  if (val === 'keep-all')
-    return 'break-keep'
-  return `break-${getLastName(val)}`
+  const [value, important] = transformImportant(val)
+
+  if (value === 'keep-all')
+    return `break-keep${important}`
+  return `break-${getLastName(value)}${important}`
 }

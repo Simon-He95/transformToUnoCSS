@@ -1,5 +1,6 @@
-import { getLastName } from './utils'
+import { getLastName, transformImportant } from './utils'
 
 export function align(key: string, val: string) {
-  return `${getLastName(key)}-${getLastName(val)}`
+  const [value, important] = transformImportant(val)
+  return `${getLastName(key)}-${getLastName(value)}${important}`
 }

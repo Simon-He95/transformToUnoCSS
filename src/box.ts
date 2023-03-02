@@ -1,10 +1,16 @@
-import { getFirstName, trim } from './utils'
+import { getFirstName, transformImportant, trim } from './utils'
 export function box(key: string, val: string) {
+  // eslint-disable-next-line prefer-const
+  let [value, important] = transformImportant(val)
+
   if (key.startsWith('box-decoration'))
-    return `box-decoration-${val}`
+    return `box-decoration-${value}${important}`
   if (key === 'box-sizing')
-    return `box-${getFirstName(val)}`
+    return `box-${getFirstName(value)}${important}`
   const rgb = /rgba?(\([\w,\s.]+\))/g
-  val = val.replace(rgb, (r, v) => r.replace(v, trim(v, 'all')))
-  return `shadow="[${val.replace(/\s+/, ' ').split(' ').join('_')}]"`
+  value = value.replace(rgb, (r, v) => r.replace(v, trim(v, 'all')))
+  return `shadow="[${value
+    .replace(/\s+/, ' ')
+    .split(' ')
+    .join('_')}]${important}"`
 }

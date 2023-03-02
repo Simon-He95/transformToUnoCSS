@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { transformToUnocss } from '../src'
 describe('background', () => {
   it('background:red', () => {
-    expect(transformToUnocss('background:red')).toBe('bg-red')
+    expect(transformToUnocss('background:red !important')).toBe('bg-red!')
   })
 
   it('background:red', () => {

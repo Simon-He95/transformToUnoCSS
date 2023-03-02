@@ -1,3 +1,7 @@
+import { transformImportant } from './utils'
+
 export function vertical(key: string, val: string) {
-  return `v-${val}`
+  const [value, important] = transformImportant(val)
+
+  return `v-${value}${important}`
 }

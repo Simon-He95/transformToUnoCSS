@@ -1,5 +1,7 @@
-import { getVal } from './utils'
+import { getVal, transformImportant } from './utils'
 
 export function line(key: string, val: string) {
-  return `lh${getVal(val)}`
+  const [value, important] = transformImportant(val)
+
+  return `lh${getVal(value)}${important}`
 }

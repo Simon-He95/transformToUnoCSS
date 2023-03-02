@@ -1,5 +1,6 @@
-import { getFirstName } from './utils'
+import { getFirstName, transformImportant } from './utils'
 
 export function list(key: string, val: string) {
-  return `${getFirstName(key)}-${val}`
+  const [value, important] = transformImportant(val)
+  return `${getFirstName(key)}-${value}${important}`
 }

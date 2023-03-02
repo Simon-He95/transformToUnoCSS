@@ -1,3 +1,7 @@
+import { transformImportant } from './utils'
+
 export function float(key: string, val: string) {
-  return `${key}-${val}`
+  const [value, important] = transformImportant(val)
+
+  return `${key}-${value}${important}`
 }

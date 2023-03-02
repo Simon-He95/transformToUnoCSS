@@ -3,7 +3,9 @@ import { transformToUnocss } from '../src'
 
 describe('accent', () => {
   it('accent-color: inherit;', () => {
-    expect(transformToUnocss('accent-color: inherit;')).toBe('accent-inherit')
+    expect(transformToUnocss('accent-color: inherit !important;')).toBe(
+      'accent-inherit!',
+    )
   })
 
   it('accent-color: #fff;', () => {

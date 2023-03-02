@@ -1,22 +1,26 @@
+import { transformImportant } from './utils'
+
 export function font(key: string, val: string) {
+  const [value, important] = transformImportant(val)
+
   if (key === 'font-size')
-    return `text-${val}`
+    return `text-${value}${important}`
   if (key === 'font-weight')
-    return `font-${val}`
+    return `font-${value}${important}`
   if (key === 'font-family') {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, family] = val.match(/ui-(\w{0,4})/)!
+    const [_, family] = value.match(/ui-(\w{0,4})/)!
 
-    return `font-${family}`
+    return `font-${family}${important}`
   }
   if (key === 'font-style') {
-    if (val === 'normal')
-      return 'font-not-italic'
-    return `font-${val}`
+    if (value === 'normal')
+      return `font-not-italic${important}`
+    return `font-${value}${important}`
   }
   if (key === 'font-variant-numeric') {
-    if (val === 'normal')
-      return 'normal-nums'
-    return val
+    if (value === 'normal')
+      return `normal-nums${important}`
+    return `${value}${important}`
   }
 }

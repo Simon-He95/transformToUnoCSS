@@ -1,22 +1,29 @@
-import { getHundred, joinWithLine, trim } from './utils'
+import { getHundred, joinWithLine, transformImportant, trim } from './utils'
 
 export function transform(key: string, val: string) {
+  const [v, important] = transformImportant(val)
+
   if (key === 'transform-origin')
-    return `origin-${joinWithLine(val)}`
+    return `origin-${joinWithLine(v)}${important}`
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, namePrefix, nameSuffix, value] = val.match(
+  const [_, namePrefix, nameSuffix, value] = v.match(
     /([a-z]+)([A-Z])?\((.*)\)/,
   )!
 
   if (nameSuffix) {
-    if (namePrefix === 'scale')
-      return `${namePrefix}-${nameSuffix.toLowerCase()}-${getHundred(value)}`
-    return `${namePrefix}-${nameSuffix.toLowerCase()}-${transformVal(value)}`
+    if (namePrefix === 'scale') {
+      return `${namePrefix}-${nameSuffix.toLowerCase()}-${getHundred(
+        value,
+      )}${important}`
+    }
+    return `${namePrefix}-${nameSuffix.toLowerCase()}-${transformVal(
+      value,
+    )}${important}`
   }
   else {
     if (namePrefix === 'scale')
-      return `${namePrefix}-${getHundred(value)}`
-    return `${namePrefix}-${transformVal(value)}`
+      return `${namePrefix}-${getHundred(value)}${important}`
+    return `${namePrefix}-${transformVal(value)}${important}`
   }
 }
 

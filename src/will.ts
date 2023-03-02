@@ -1,5 +1,7 @@
-import { getFirstName } from './utils'
+import { getFirstName, transformImportant } from './utils'
 
 export function will(key: string, val: string) {
-  return `${key}-${getFirstName(val)}`
+  const [value, important] = transformImportant(val)
+
+  return `${key}-${getFirstName(value)}${important}`
 }

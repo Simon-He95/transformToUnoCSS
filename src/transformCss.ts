@@ -14,7 +14,7 @@ export function transformCss(
   media = '',
 ) {
   style.replace(
-    /(.*){([\\n\s\w\-.:;%\(\)\+'"]*)}/g,
+    /(.*){([\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any) => {
       name = trim(name.replace(/\s+/g, ' '))
 

@@ -64,3 +64,9 @@ export function trim(s: string, type: TrimType = 'around'): string {
     return s.replace(/(^\s*)|(\s*$)/g, '')
   return s
 }
+
+export function transformImportant(v: string) {
+  if (v.endsWith('!important'))
+    return [v.replace(/\s*\!important/, ''), '!']
+  return [v, '']
+}
