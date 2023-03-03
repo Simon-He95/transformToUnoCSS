@@ -13,6 +13,7 @@ const transform = computed(() => transformToUnocss(input.value))
 let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
+const display = ref('')
 
 const editorInput = ref(`<template>
   <div style="background: red">hi</div>
@@ -72,6 +73,12 @@ useAnimationFrame(async () => {
       fontFamily: 'Arial',
       fontSize: 20,
     })
+    // const app = createApp(code)
+    display.value = newInput
+      .replace('<template>', '')
+      .replace('<\/template>', '')
+
+    // app.mount(display.value!)
   }
   else if (pre !== code) {
     pre = code
@@ -82,6 +89,9 @@ useAnimationFrame(async () => {
       fontFamily: 'Arial',
       fontSize: 20,
     })
+    display.value = newInput
+      .replace('<template>', '')
+      .replace('<\/template>', '')
   }
 }, 200)
 </script>
@@ -146,6 +156,10 @@ useAnimationFrame(async () => {
       <div ref="editorResult" h-100 pointer-events-none />
     </div>
   </div>
+  <h1 pl2>
+    render:
+  </h1>
+  <div pb20 v-html="display" />
 </template>
 
 <style scoped></style>
