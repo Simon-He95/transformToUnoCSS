@@ -9,9 +9,17 @@ const tailReg = /:([\w-\(\)]+)/ // :after
 const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 
 const emptyClass = /[\w>.#\-\+>:\[\]="' ]+\s*{}\n/g
+interface AllChange {
+  before: string
+  after: string
+  name: string
+  source: string
+}
 
 export function transformCss(style: string, code: string, media = '') {
   let stack = parse(code).descriptor.template?.ast
+  const allChanges: AllChange[] = []
+
   style.replace(
     /(.*){([\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any) => {
@@ -33,7 +41,6 @@ export function transformCss(style: string, code: string, media = '') {
         name = name.slice(0, `-${tailMatcher[0].length}`)
       // 找template > ast
       const names = name.replace(/\s*\+\s*/, '+').split(' ')
-      // todo: 根据names查找ast template对应的所有节点添加unocss attributes，并删除原本class中的对应样式
       const result = findDeepChild(names, stack)
 
       if (!result.length)
@@ -44,13 +51,23 @@ export function transformCss(style: string, code: string, media = '') {
           tag,
         } = r
 
-        code = code.replace(
+        // todo: 如果存在相同的属性根据css权重来进行替换
+        allChanges.push({
+          before,
+          after,
+          name: names[0],
           source,
-          source.replace(
-            `<${tag}`,
-            `<${tag} ${media ? `${media}="${after}"` : after}`,
-          ),
-        )
+          tag,
+          media,
+        })
+
+        // code = code.replace(
+        //   source,
+        //   source.replace(
+        //     `<${tag}`,
+        //     `<${tag} ${media ? `${media}="${after}"` : after}`,
+        //   ),
+        // )
       })
       // 删除原本class
       code = code.replace(value, '')
@@ -63,8 +80,9 @@ export function transformCss(style: string, code: string, media = '') {
       return all
     },
   )
+  // todo: resolveConflictClass
 
-  return code
+  return resolveConflictClass(allChanges, code)
 }
 
 // 查找下一级的
@@ -177,7 +195,7 @@ export function astFindTag(
         (prop: any) =>
           prop.name === selector
           && ((tagMatch && !tagMatch[0].indexOf('=') && !tagMatch[2])
-            || prop.value.content
+            || prop.value?.content
               === (tagMatch && tagMatch[2] ? tagMatch[2] : tag.slice(1))),
       )
       && (combine === undefined
@@ -234,4 +252,87 @@ export function astFindTag(
     )
   }
   return result
+}
+
+// 查找是否存在冲突样式按照names
+function resolveConflictClass(allChange: AllChange[], code: string) {
+  const changes = findSameSource(allChange)
+  return Object.keys(changes).reduce((result, key) => {
+    const value = changes[key]
+    const { tag, media } = value[0]
+    const after = getConflictClass(value)
+    return result.replace(
+      key,
+      key.replace(
+        `<${tag}`,
+        `<${tag} ${media ? `${media}="${after}"` : after}`,
+      ),
+    )
+  }, code)
+}
+
+function calculateWeight(c: string) {
+  // todo: 目前计算有问题，后续改进
+  let num = 0
+  c.replace(/#\w+/g, () => {
+    num += 100
+    return ''
+  })
+  c.replace(/.\w+/, () => {
+    num += 10
+    return ''
+  })
+  c.replace(/^\w+/, () => {
+    num += 10
+    return ''
+  })
+  c.replace(/\[[\w\s='"-]+\]/g, () => {
+    num += 10
+    return ''
+  })
+  c.replace(/:\w+/g, () => {
+    num += 1
+    return ''
+  })
+  return num
+}
+
+function findSameSource(allChange: AllChange[]) {
+  const result: any = {}
+  allChange.forEach((item) => {
+    const { source } = item
+    if (!result[source])
+      result[source] = []
+    result[source].push(item)
+  })
+  return result
+}
+
+function getConflictClass(allChange: AllChange[]) {
+  const map: Record<string, Array<number | string>> = {}
+
+  allChange.forEach((item) => {
+    const { before, name } = item
+    const data = before
+      .split(';')
+      .filter(Boolean)
+      .map(i => i.split(':'))
+
+    data.forEach((item) => {
+      const [key, value] = item
+      if (!map[key]) {
+        map[key] = [calculateWeight(name), value]
+      }
+      else {
+        const [preWeight] = map[key]
+        const curWeight = calculateWeight(name)
+        if (+curWeight > +preWeight)
+          map[key] = [+curWeight, value]
+      }
+    })
+  })
+  return Object.keys(map).reduce((result, key) => {
+    const transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)
+    return `${result}${transferCss} `
+  }, '')
 }
