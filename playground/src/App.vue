@@ -14,6 +14,8 @@ let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
 const display = ref('')
+const styleReg = /<style.*>(.*)<\/style>/s
+const classReg = /(.*){/g
 
 const editorInput = ref(`<template>
   <div style="background: red">hi</div>
@@ -74,9 +76,8 @@ useAnimationFrame(async () => {
       fontSize: 20,
     })
     // const app = createApp(code)
-    display.value = newInput
-      .replace('<template>', '')
-      .replace('<\/template>', '')
+
+    display.value = codeToHtml(newInput)
 
     // app.mount(display.value!)
   }
@@ -89,11 +90,24 @@ useAnimationFrame(async () => {
       fontFamily: 'Arial',
       fontSize: 20,
     })
-    display.value = newInput
-      .replace('<template>', '')
-      .replace('<\/template>', '')
+    display.value = codeToHtml(newInput)
   }
 }, 200)
+
+function codeToHtml(code: string) {
+  return code
+    .replace(styleReg, (all, v) =>
+      all.replace(
+        v,
+        v.replace(
+          classReg,
+          (_: any, match: any) => `[data-v-display]${match} {`,
+        ),
+      ),
+    )
+    .replace('<template>', '')
+    .replace('<\/template>', '')
+}
 </script>
 
 <template>
@@ -159,7 +173,7 @@ useAnimationFrame(async () => {
   <h1 pl2>
     render:
   </h1>
-  <div pb20 v-html="display" />
+  <div pb20 data-v-display v-html="display" />
 </template>
 
 <style scoped></style>
