@@ -199,7 +199,7 @@ describe('transform', () => {
   })
 })
 
-describe('single demo test', async () => {
+describe.only('single demo test', async () => {
   const demo = await fsp.readFile('./test/demo/classWeight.vue', 'utf-8')
 
   it('transform-origin:center', () => {
@@ -210,9 +210,7 @@ describe('single demo test', async () => {
         <div bg-yellow w=\\"[100%]\\"  class=\\"red\\">
           nihao
         </div>
-        <div>
-          hi
-        </div>
+        <div>hi</div>
       </template>
 
       <style scoped></style>

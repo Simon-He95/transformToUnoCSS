@@ -14,6 +14,8 @@ interface AllChange {
   after: string
   name: string
   source: string
+  tag: string
+  media: string
 }
 
 export function transformCss(style: string, code: string, media = '') {
@@ -25,7 +27,7 @@ export function transformCss(style: string, code: string, media = '') {
     (all: any, name: any, value: any) => {
       name = trim(name.replace(/\s+/g, ' '))
 
-      const before = trim(value.replaceAll('\n', ''), 'all')
+      const before = trim(value.replaceAll('\n', ''))
       const transfer = transformStyleToUnocss(before)
       const tailMatcher = name.match(tailReg)
 

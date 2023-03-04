@@ -84,6 +84,7 @@ useAnimationFrame(async () => {
   else if (pre !== code) {
     pre = code
     editorResult.value!.innerHTML = ''
+
     monaco.editor.create(editorResult.value!, {
       value: code,
       language: 'html',
