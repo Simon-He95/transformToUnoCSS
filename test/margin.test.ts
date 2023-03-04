@@ -43,7 +43,7 @@ describe('margin-top', () => {
   })
 })
 
-describe.only('margin-bottom', () => {
+describe('margin-bottom', () => {
   it('margin-bottom:50px', () => {
     expect(transformToUnocss('margin-bottom:50px')).toBe('mb-50px')
   })
