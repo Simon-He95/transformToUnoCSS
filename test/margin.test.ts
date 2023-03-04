@@ -5,6 +5,11 @@ describe('margin', () => {
   it('margin:50px', () => {
     expect(transformToUnocss('margin:50px')).toBe('m-50px')
   })
+
+  it('margin:10px 20px', () => {
+    expect(transformToUnocss('margin:10px 20px')).toBe('mx-20px my-10px')
+  })
+
   it('margin:50px 30px', () => {
     expect(transformToUnocss('margin:50px 30px')).toBe('mx-30px my-50px')
   })
@@ -38,7 +43,7 @@ describe('margin-top', () => {
   })
 })
 
-describe.only('margin-bottom', () => {
+describe('margin-bottom', () => {
   it('margin-bottom:50px', () => {
     expect(transformToUnocss('margin-bottom:50px')).toBe('mb-50px')
   })

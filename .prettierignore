@@ -10,3 +10,4 @@ playground/html/invalid.html
 playground/html/valid.html
 playground/worker/classic-worker.js
 .history
+test/

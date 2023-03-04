@@ -136,9 +136,7 @@ describe('transform', () => {
         <div bg-yellow w=\\"[100%]\\"  class=\\"red\\">
           nihao
         </div>
-        <div>
-          hi
-        </div>
+        <div>hi</div>
       </template>
 
       <style scoped></style>
@@ -210,9 +208,7 @@ describe('single demo test', async () => {
         <div bg-yellow w=\\"[100%]\\"  class=\\"red\\">
           nihao
         </div>
-        <div>
-          hi
-        </div>
+        <div>hi</div>
       </template>
 
       <style scoped></style>
