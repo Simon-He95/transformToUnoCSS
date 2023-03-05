@@ -26,6 +26,7 @@ export function transformCss(style: string, code: string, media = '') {
     /(.*){([\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any = '') => {
       name = trim(name.replace(/\s+/g, ' '))
+      const originClassName = name
       const before = trim(value.replace(/\n/g, ''))
       const transfer = transformStyleToUnocss(before)
       const tailMatcher = name.match(tailReg)
@@ -42,6 +43,7 @@ export function transformCss(style: string, code: string, media = '') {
         name = name.slice(0, `-${tailMatcher[0].length}`)
       // 找template > ast
       const names = name.replace(/\s*\+\s*/, '+').split(' ')
+
       const result = findDeepChild(names, stack)
 
       if (!result.length)
@@ -56,7 +58,7 @@ export function transformCss(style: string, code: string, media = '') {
         allChanges.push({
           before,
           after,
-          name: names[0],
+          name: originClassName,
           source,
           tag,
           media,
@@ -258,6 +260,7 @@ export function astFindTag(
 // 查找是否存在冲突样式按照names
 function resolveConflictClass(allChange: AllChange[], code: string) {
   const changes = findSameSource(allChange)
+
   return Object.keys(changes).reduce((result, key) => {
     const value = changes[key]
     const { tag, media } = value[0]
@@ -273,28 +276,32 @@ function resolveConflictClass(allChange: AllChange[], code: string) {
 }
 
 function calculateWeight(c: string) {
-  // todo: 目前计算有问题，后续改进
+  const data = c.split(' ').filter(i => i !== '+' && i !== '>')
   let num = 0
-  c.replace(/#\w+/g, () => {
-    num += 100
-    return ''
+
+  data.forEach((item) => {
+    item.replace(/#\w+/g, () => {
+      num += 100
+      return ''
+    })
+    item.replace(/.\w+/, () => {
+      num += 10
+      return ''
+    })
+    item.replace(/^\w+/, () => {
+      num += 10
+      return ''
+    })
+    item.replace(/\[[\w\s='"-]+\]/g, () => {
+      num += 10
+      return ''
+    })
+    item.replace(/:\w+/g, () => {
+      num += 1
+      return ''
+    })
   })
-  c.replace(/.\w+/, () => {
-    num += 10
-    return ''
-  })
-  c.replace(/^\w+/, () => {
-    num += 10
-    return ''
-  })
-  c.replace(/\[[\w\s='"-]+\]/g, () => {
-    num += 10
-    return ''
-  })
-  c.replace(/:\w+/g, () => {
-    num += 1
-    return ''
-  })
+
   return num
 }
 
