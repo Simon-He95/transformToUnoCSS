@@ -26,6 +26,7 @@ export function transfromCode(
     })
     let container: any = null
     let css = ''
+    let cssPath = ''
     babelTraverse(ast, {
       enter({ node }: any) {
         if (node.type === 'JSXElement') {
@@ -37,7 +38,7 @@ export function transfromCode(
           const value = node.source.value
           if (value.endsWith('.css')) {
             css += fs.readFileSync(
-              path.resolve(filepath, '../', value),
+              (cssPath = path.resolve(filepath, '../', value)),
               'utf-8',
             )
           }
@@ -55,6 +56,14 @@ export function transfromCode(
     </style>`
     let vueTransfer = transformVue(wrapperVue)
     vueTransfer = vueTransfer.replace(/class/g, 'className')
+    if (cssPath) {
+      const cssTransfer = vueTransfer.match(/<style scoped>(.*)<\/style>/s)![1]
+      fs.promises.writeFile(
+        cssPath.replace('.css', '.__unocss_transfer__.css'),
+        cssTransfer,
+        'utf-8',
+      )
+    }
     const jsxTransfer = vueTransfer.match(/<template>(.*)<\/template>/s)![1]
     // todo: 将attribute属性合并到className中
     return code.replace(jsxCode, jsxTransfer)

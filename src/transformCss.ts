@@ -199,7 +199,8 @@ export function astFindTag(
           prop.name === selector
           && ((tagMatch && !tagMatch[0].indexOf('=') && !tagMatch[2])
             || prop.value?.content
-              === (tagMatch && tagMatch[2] ? tagMatch[2] : tag.slice(1))),
+              .split(' ')
+              .includes(tagMatch && tagMatch[2] ? tagMatch[2] : tag.slice(1))),
       )
       && (combine === undefined
         || ast.props.some(

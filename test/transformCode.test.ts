@@ -3,8 +3,8 @@ import path from 'path'
 import { describe, expect, it } from 'vitest'
 import { transfromCode } from '../src'
 
-describe.only('transform', () => {
-  it('transform-origin:center', async () => {
+describe('transformCode', () => {
+  it('transformCode: all', async () => {
     const demos = await fsp.readdir('./test/demo')
     const contents = await Promise.all(
       demos.map(async (demo) => {
@@ -166,6 +166,7 @@ describe.only('transform', () => {
       <style scoped></style>
       ",
         undefined,
+        undefined,
         "
 
       -----    media.vue     -------
@@ -240,10 +241,10 @@ describe.only('transform', () => {
   })
 })
 
-describe('single demo test', async () => {
+describe('single demo classWeight', async () => {
   const demo = await fsp.readFile('./test/demo/classWeight.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classWeight.vue')
-  it('transform-origin:center', () => {
+  it('classWeight.vue', () => {
     expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
@@ -260,11 +261,32 @@ describe('single demo test', async () => {
   })
 })
 
-describe('single demo react', async () => {
+describe.only('single demo classCombine', async () => {
+  const demo = await fsp.readFile('./test/demo/classCombine.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/classCombine.vue')
+  it('classCombine.vue', () => {
+    expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div bg-red w=\\"[100%]\\" lh-20px>
+          <div bg-red w=\\"[100%]\\"  class=\\"red yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped></style>
+      "
+    `)
+  })
+})
+
+describe('single demo vue.tsx', async () => {
   const _path = './test/demo/vue.tsx'
   const demo = await fsp.readFile(_path, 'utf-8')
 
-  it('transform-origin:center', () => {
+  it('vue.tsx', () => {
     const filepath = path.resolve(process.cwd(), _path)
 
     expect(transfromCode(demo, filepath, 'tsx')).toMatchInlineSnapshot(`
