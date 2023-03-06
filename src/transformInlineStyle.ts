@@ -4,6 +4,8 @@ const styleReg
   = /<([\w\-]+).*(:)?style="([\w\:\-\s;\[\]\/\+%]+)"[\w=\-\_'"\s]*\/?>/
 
 export function tansformInlineStyle(code: string, isJsx?: boolean): string {
+  // todo: 如果存在未能被转换的style应该返回并保持部分的style
+
   const match = code.match(styleReg)
 
   if (!match)

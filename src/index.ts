@@ -123,6 +123,7 @@ export function transformToUnocss(css: String) {
 }
 
 export function transformStyleToUnocss(styles: string) {
+  // todo: 如果存在未能被转换的style应该返回并保持部分的style
   return styles
     .split(';')
     .filter(Boolean)
