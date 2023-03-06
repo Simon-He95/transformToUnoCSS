@@ -1,15 +1,23 @@
 import fsp from 'fs/promises'
+import path from 'path'
 import { describe, expect, it } from 'vitest'
 import { transfromCode } from '../src'
 
-describe('transform', () => {
+describe.only('transform', () => {
   it('transform-origin:center', async () => {
     const demos = await fsp.readdir('./test/demo')
     const contents = await Promise.all(
       demos.map(async (demo) => {
         const url = `./test/demo/${demo}`
-        return `\n\n-----    ${demo}.vue     -------\n\n${transfromCode(
+        const filepath = path.resolve(process.cwd(), url)
+        const suffix = demo.endsWith('.vue') ? 'vue' : demo.endsWith('.tsx') ? 'tsx' : ''
+        if (!suffix)
+          return
+
+        return `\n\n-----    ${demo}     -------\n\n${transfromCode(
           await fsp.readFile(url, 'utf-8'),
+          filepath,
+          suffix,
         )}`
       }),
     )
@@ -18,7 +26,7 @@ describe('transform', () => {
       [
         "
 
-      -----    classAdd.vue.vue     -------
+      -----    classAdd.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -35,7 +43,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    classAttribute.vue.vue     -------
+      -----    classAttribute.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -56,7 +64,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    classChild.vue.vue     -------
+      -----    classChild.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -72,7 +80,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    classCombine.vue.vue     -------
+      -----    classCombine.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -93,7 +101,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    classSpace.vue.vue     -------
+      -----    classSpace.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -109,7 +117,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    classTail.vue.vue     -------
+      -----    classTail.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -128,7 +136,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    classWeight.vue.vue     -------
+      -----    classWeight.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -143,7 +151,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    hover.vue.vue     -------
+      -----    hover.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -157,9 +165,10 @@ describe('transform', () => {
 
       <style scoped></style>
       ",
+        undefined,
         "
 
-      -----    media.vue.vue     -------
+      -----    media.vue     -------
 
       <script setup lang=\\"ts\\"></script>
 
@@ -179,7 +188,7 @@ describe('transform', () => {
       ",
         "
 
-      -----    test.vue.vue     -------
+      -----    test.vue     -------
 
       <template>
         <div id=\\"nihao\\" bg-red>
@@ -192,6 +201,40 @@ describe('transform', () => {
 
       <style scoped></style>
       ",
+        "
+
+      -----    vue.tsx     -------
+
+      import { defineComponent, ref } from 'vue'
+      import './index.css'
+
+      export const component = defineComponent({
+        name: 'Component',
+        props: {
+          title: {
+            type: String,
+            default: '',
+          },
+          content: {
+            type: String,
+            default: '',
+          },
+        },
+        setup(props) {
+          const count = ref(0)
+          const increment = () => count.value++
+          return () => (
+            <div>
+              <h1 text-red  bg-red className=\\"red\\">{props.title}</h1>
+              <p>{props.content}</p>
+              <div onClick={increment}>
+                count: {count.value}
+              </div>
+            </div>
+          )
+        },
+      })
+      ",
       ]
     `)
   })
@@ -199,9 +242,9 @@ describe('transform', () => {
 
 describe('single demo test', async () => {
   const demo = await fsp.readFile('./test/demo/classWeight.vue', 'utf-8')
-
+  const filepath = path.resolve(process.cwd(), './test/demo/classWeight.vue')
   it('transform-origin:center', () => {
-    expect(transfromCode(demo)).toMatchInlineSnapshot(`
+    expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
@@ -212,6 +255,48 @@ describe('single demo test', async () => {
       </template>
 
       <style scoped></style>
+      "
+    `)
+  })
+})
+
+describe('single demo react', async () => {
+  const _path = './test/demo/vue.tsx'
+  const demo = await fsp.readFile(_path, 'utf-8')
+
+  it('transform-origin:center', () => {
+    const filepath = path.resolve(process.cwd(), _path)
+
+    expect(transfromCode(demo, filepath, 'tsx')).toMatchInlineSnapshot(`
+      "import { defineComponent, ref } from 'vue'
+      import './index.css'
+
+      export const component = defineComponent({
+        name: 'Component',
+        props: {
+          title: {
+            type: String,
+            default: '',
+          },
+          content: {
+            type: String,
+            default: '',
+          },
+        },
+        setup(props) {
+          const count = ref(0)
+          const increment = () => count.value++
+          return () => (
+            <div>
+              <h1 text-red  bg-red className=\\"red\\">{props.title}</h1>
+              <p>{props.content}</p>
+              <div onClick={increment}>
+                count: {count.value}
+              </div>
+            </div>
+          )
+        },
+      })
       "
     `)
   })

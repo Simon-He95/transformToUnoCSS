@@ -20,15 +20,16 @@ export async function cli() {
   }
   const fileDir = path.resolve(process.cwd(), asset)
   const isRevert = process.argv[3] === '-r' || process.argv[3] === '--revert'
-  const entries = await fg(['**.vue'], { cwd: fileDir })
-  const flag = '.__unocss_transfer__.vue'
+  const entries = await fg(['**.vue', '**.tsx'], { cwd: fileDir })
+  const flag = '.__unocss_transfer__'
   entries
     .filter(entry => !entry.endsWith(flag))
     .forEach(async (entry) => {
       const filepath = `${fileDir}/${entry}`
+      const suffix = filepath.endsWith('.vue') ? 'vue' : 'tsx'
       const newfilepath = filepath.endsWith(flag)
         ? filepath
-        : filepath.replace('.vue', flag)
+        : filepath.replace(`.${suffix}`, `${flag}.${suffix}`)
       if (fs.existsSync(newfilepath)) {
         if (isRevert) {
           // 删除
@@ -63,7 +64,7 @@ export async function cli() {
         return
       }
       const code = await fs.promises.readFile(filepath, 'utf-8')
-      const codeTransfer = transfromCode(code)
+      const codeTransfer = transfromCode(code, filepath, suffix)
       // 创建新文件
       try {
         await fs.promises.writeFile(newfilepath, codeTransfer)
