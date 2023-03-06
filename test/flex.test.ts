@@ -10,6 +10,10 @@ describe('flex', () => {
     expect(transformToUnocss('flex-grow: 1;')).toBe('grow-1')
   })
 
+  it('flex-grow: 1;', () => {
+    expect(transformToUnocss('flex: 1;')).toBe('flex="[1]"')
+  })
+
   it('flex-shrink: 1;', () => {
     expect(transformToUnocss('flex-shrink: 1;')).toBe('shrink-1')
   })

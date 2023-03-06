@@ -204,12 +204,8 @@ describe('transformCode', () => {
       -----    test.vue     -------
 
       <template>
-        <div bg-red id=\\"nihao\\">
-          hi
-        </div>
-        <div text-20px bg-yellow class=\\"hi\\">
-          hi
-        </div>
+        <div text-20px bg-red>hi</div>
+        <div text-20px bg-yellow class=\\"hi\\">hi</div>
       </template>
 
       <style scoped></style>
@@ -356,6 +352,28 @@ describe('single demo styleWeight', async () => {
         </div>
         <div bg-yellow class=\\"yellow\\" >
           hi
+        </div>
+      </template>
+
+      <style scoped></style>
+      "
+    `)
+  })
+})
+
+describe.only('single test', async () => {
+  const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+  it('test.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div bg-red w=\\"[100%]\\" lh-20px>
+          <div flex flex=\\"[1]\\" h-100px bg-red class=\\"container\\">
+            <div flex=\\"[1]\\" h-100px bg-red />
+            <div />
+          </div>
         </div>
       </template>
 

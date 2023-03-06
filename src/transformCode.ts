@@ -16,8 +16,9 @@ export async function transfromCode(
     const ast = babelParse(code, {
       babelrc: false,
       comments: true,
-      plugins: [[vueJsxPlugin, {}]],
+      plugins: [[vueJsxPlugin]],
     })
+
     let container: any = null
     let css = ''
     let cssPath = ''
@@ -83,6 +84,7 @@ export async function transformVue(code: string, isJsx?: boolean) {
   const [transferMediaCode, transformBack] = await transformMedia(code, isJsx)
 
   code = transferMediaCode
+
   // transform class
   const {
     attrs: { scoped },

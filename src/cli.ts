@@ -64,7 +64,7 @@ export async function cli() {
         return
       }
       const code = await fs.promises.readFile(filepath, 'utf-8')
-      const codeTransfer = transfromCode(code, filepath, suffix)
+      const codeTransfer = await transfromCode(code, filepath, suffix)
       // 创建新文件
       try {
         await fs.promises.writeFile(newfilepath, codeTransfer)

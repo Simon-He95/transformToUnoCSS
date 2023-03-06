@@ -33,8 +33,9 @@ export async function transformCss(
     /(.*){([\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any = '') => {
       name = trim(name.replace(/\s+/g, ' '))
+
       const originClassName = name
-      const before = trim(value.replace(/\n/g, ''))
+      const before = trim(value.replace(/\n\s*/g, ''))
       const transfer = transformStyleToUnocss(before)[0]
       const tailMatcher = name.match(tailReg)
 
@@ -278,6 +279,7 @@ async function resolveConflictClass(
   isJsx?: boolean,
 ) {
   const changes = findSameSource(allChange)
+
   let result = code
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
@@ -285,6 +287,7 @@ async function resolveConflictClass(
 
     // eslint-disable-next-line prefer-const
     let [after, transform] = await getConflictClass(value)
+
     if (!after)
       continue
 

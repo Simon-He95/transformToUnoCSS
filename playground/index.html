@@ -12,6 +12,8 @@
   <body class="font-sans dark:text-white dark:bg-hex-121212">
     <div id="app"></div>
     <script>
+      window.Buffer = {}
+      window.process = { env: {} }
       ;(function () {
         const prefersDark =
           window.matchMedia &&
