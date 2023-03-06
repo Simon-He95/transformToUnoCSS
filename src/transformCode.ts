@@ -54,7 +54,7 @@ export function transfromCode(
     <style scoped>
     ${css}
     </style>`
-    let vueTransfer = transformVue(wrapperVue)
+    let vueTransfer = transformVue(wrapperVue, true)
     vueTransfer = vueTransfer.replace(/class/g, 'className')
     if (cssPath) {
       const cssTransfer = vueTransfer.match(/<style scoped>(.*)<\/style>/s)![1]
@@ -65,13 +65,12 @@ export function transfromCode(
       )
     }
     const jsxTransfer = vueTransfer.match(/<template>(.*)<\/template>/s)![1]
-    // todo: 将attribute属性合并到className中
     return code.replace(jsxCode, jsxTransfer)
   }
   return transformVue(code)
 }
 
-export function transformVue(code: string) {
+export function transformVue(code: string, isJsx?: boolean) {
   const {
     descriptor: { template, styles },
     errors,
@@ -81,7 +80,7 @@ export function transformVue(code: string) {
     return code
   // transform inline-style
 
-  code = tansformInlineStyle(code)
+  code = tansformInlineStyle(code, isJsx)
 
   if (!template || !styles.length)
     return code
@@ -96,7 +95,7 @@ export function transformVue(code: string) {
 
   // 只针对scoped css处理
   if (scoped)
-    code = transformCss(style, code)
+    code = transformCss(style, code, isJsx)
 
   // 还原@media 未匹配到的class
   code = transformBack(code)

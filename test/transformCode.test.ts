@@ -86,18 +86,13 @@ describe('transformCode', () => {
 
       <template>
         <div bg-red w=\\"[100%]\\" lh-20px>
-          <div class=\\"red yellow\\">
+          <div bg-red w=\\"[100%]\\"  class=\\"red yellow\\">
             hi
           </div>
         </div>
       </template>
 
-      <style scoped>
-      .red.yellow {
-        background-color: red;
-        width: 100%;
-      }
-      </style>
+      <style scoped></style>
       ",
         "
 
@@ -122,7 +117,7 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red w=\\"[100%]\\"  class=\\"container\\">
+        <div focus-within=\\"bg-red w-\\"[100%]\\" \\" class=\\"container\\">
           <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
             nihao
           </div>
@@ -157,7 +152,7 @@ describe('transformCode', () => {
 
       <template>
         <div bg-red w=\\"[100%]\\" lh-20px>
-          <div text-yellow  class=\\"red\\">
+          <div hover=\\"text-yellow \\" class=\\"red\\">
             hi
           </div>
         </div>
@@ -174,7 +169,7 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red  max-2xl=\\"bg-red \\" sm=\\"bg-red \\" class=\\"red\\">
+        <div bg-red  class=\\"red bg-red  bg-red \\">
           nihao
         </div>
       </template>
@@ -226,7 +221,7 @@ describe('transformCode', () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 text-red  bg-red className=\\"red\\">{props.title}</h1>
+              <h1 className=\\"red bg-red text-red \\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}
@@ -261,7 +256,7 @@ describe('single demo classWeight', async () => {
   })
 })
 
-describe.only('single demo classCombine', async () => {
+describe('single demo classCombine', async () => {
   const demo = await fsp.readFile('./test/demo/classCombine.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classCombine.vue')
   it('classCombine.vue', () => {
@@ -271,6 +266,30 @@ describe.only('single demo classCombine', async () => {
       <template>
         <div bg-red w=\\"[100%]\\" lh-20px>
           <div bg-red w=\\"[100%]\\"  class=\\"red yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+
+      <style scoped></style>
+      "
+    `)
+  })
+})
+
+describe('single demo classTail', async () => {
+  const demo = await fsp.readFile('./test/demo/classTail.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+  it('classTail.vue', () => {
+    expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div focus-within=\\"bg-red w-\\"[100%]\\" \\" class=\\"container\\">
+          <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+            nihao
+          </div>
+          <div class=\\"yellow\\">
             hi
           </div>
         </div>
@@ -310,7 +329,7 @@ describe('single demo vue.tsx', async () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 text-red  bg-red className=\\"red\\">{props.title}</h1>
+              <h1 className=\\"red bg-red text-red \\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}

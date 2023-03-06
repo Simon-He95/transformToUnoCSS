@@ -15,10 +15,10 @@ interface AllChange {
   name: string
   source: string
   tag: string
-  media: string
+  prefix: string
 }
 
-export function transformCss(style: string, code: string, media = '') {
+export function transformCss(style: string, code: string, isJsx?: boolean) {
   let stack = parse(code).descriptor.template?.ast
   const allChanges: AllChange[] = []
 
@@ -32,6 +32,7 @@ export function transformCss(style: string, code: string, media = '') {
       const tailMatcher = name.match(tailReg)
 
       const prefix = tailMatcher ? tail(tailMatcher[1]) : ''
+
       const after
         = prefix && transfer
           ? `${prefix}="${transfer.replace(/="\[(.*)\]"/g, (_, v) => `-${v}`)}"`
@@ -55,22 +56,15 @@ export function transformCss(style: string, code: string, media = '') {
         } = r
 
         // todo: 如果存在相同的属性根据css权重来进行替换
+
         allChanges.push({
           before,
           after,
           name: originClassName,
           source,
           tag,
-          media,
+          prefix,
         })
-
-        // code = code.replace(
-        //   source,
-        //   source.replace(
-        //     `<${tag}`,
-        //     `<${tag} ${media ? `${media}="${after}"` : after}`,
-        //   ),
-        // )
       })
       // 删除原本class
       code = code.replace(value, '')
@@ -83,9 +77,8 @@ export function transformCss(style: string, code: string, media = '') {
       return all
     },
   )
-  // todo: resolveConflictClass
 
-  return resolveConflictClass(allChanges, code)
+  return resolveConflictClass(allChanges, code, isJsx)
 }
 
 // 查找下一级的
@@ -259,20 +252,40 @@ export function astFindTag(
 }
 
 // 查找是否存在冲突样式按照names
-function resolveConflictClass(allChange: AllChange[], code: string) {
+function resolveConflictClass(
+  allChange: AllChange[],
+  code: string,
+  isJsx?: boolean,
+) {
   const changes = findSameSource(allChange)
 
   return Object.keys(changes).reduce((result, key) => {
     const value = changes[key]
-    const { tag, media } = value[0]
-    const after = getConflictClass(value)
-    return result.replace(
-      key,
-      key.replace(
-        `<${tag}`,
-        `<${tag} ${media ? `${media}="${after}"` : after}`,
-      ),
-    )
+    const { tag, prefix } = value[0]
+    let after = getConflictClass(value)
+    if (prefix)
+      after = after.replace(/="\[/g, '-"[')
+    const returnValue = prefix ? `${prefix}="${after}"` : after
+
+    if (isJsx) {
+      const newReg = new RegExp(`<${tag}.*class="(.*)"[=\\w\\-\\_'"\\s]*\/?>`)
+      const matcher = key.match(newReg)
+      if (matcher) {
+        return result.replace(
+          key,
+          key.replace(
+            `class="${matcher[1]}"`,
+            `class="${matcher[1]} ${returnValue}"`,
+          ),
+        )
+      }
+      return result.replace(
+        key,
+        key.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
+      )
+    }
+
+    return result.replace(key, key.replace(`<${tag}`, `<${tag} ${returnValue}`))
   }, code)
 }
 
