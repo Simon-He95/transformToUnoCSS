@@ -1,5 +1,5 @@
 import { parse } from 'vue/compiler-sfc'
-import { trim } from './utils'
+import { transformUnocssBack, trim } from './utils'
 import { tail } from './tail'
 import { transformStyleToUnocss } from '.'
 const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
@@ -16,9 +16,16 @@ interface AllChange {
   source: string
   tag: string
   prefix: string
+  attr: string[]
+  media: string
 }
 
-export function transformCss(style: string, code: string, isJsx?: boolean) {
+export async function transformCss(
+  style: string,
+  code: string,
+  media = '',
+  isJsx?: boolean,
+): Promise<string> {
   let stack = parse(code).descriptor.template?.ast
   const allChanges: AllChange[] = []
 
@@ -28,7 +35,7 @@ export function transformCss(style: string, code: string, isJsx?: boolean) {
       name = trim(name.replace(/\s+/g, ' '))
       const originClassName = name
       const before = trim(value.replace(/\n/g, ''))
-      const transfer = transformStyleToUnocss(before)
+      const transfer = transformStyleToUnocss(before)[0]
       const tailMatcher = name.match(tailReg)
 
       const prefix = tailMatcher ? tail(tailMatcher[1]) : ''
@@ -53,9 +60,20 @@ export function transformCss(style: string, code: string, isJsx?: boolean) {
         const {
           loc: { source },
           tag,
+          props,
         } = r
 
         // todo: 如果存在相同的属性根据css权重来进行替换
+        const attr = props.reduce((result: string[], cur: any) => {
+          let item
+          // eslint-disable-next-line no-cond-assign
+          if (cur.name === 'class' && (item = cur.value?.content))
+            result.push(item)
+          else if (!cur.value)
+            result.push(cur.name)
+
+          return result
+        }, [] as string[])
 
         allChanges.push({
           before,
@@ -63,7 +81,9 @@ export function transformCss(style: string, code: string, isJsx?: boolean) {
           name: originClassName,
           source,
           tag,
+          attr,
           prefix,
+          media,
         })
       })
       // 删除原本class
@@ -78,7 +98,7 @@ export function transformCss(style: string, code: string, isJsx?: boolean) {
     },
   )
 
-  return resolveConflictClass(allChanges, code, isJsx)
+  return await resolveConflictClass(allChanges, code, isJsx)
 }
 
 // 查找下一级的
@@ -252,41 +272,61 @@ export function astFindTag(
 }
 
 // 查找是否存在冲突样式按照names
-function resolveConflictClass(
+async function resolveConflictClass(
   allChange: AllChange[],
   code: string,
   isJsx?: boolean,
 ) {
   const changes = findSameSource(allChange)
-
-  return Object.keys(changes).reduce((result, key) => {
+  let result = code
+  for await (const key of Object.keys(changes)) {
     const value = changes[key]
-    const { tag, prefix } = value[0]
-    let after = getConflictClass(value)
+    const { tag, prefix, media, source } = value[0]
+
+    // eslint-disable-next-line prefer-const
+    let [after, transform] = await getConflictClass(value)
+    if (!after)
+      continue
+
+    result = transform(result)
+    const target = transform(source)
+    if (media)
+      after = `${media}:${after}`
     if (prefix)
       after = after.replace(/="\[/g, '-"[')
+
     const returnValue = prefix ? `${prefix}="${after}"` : after
 
     if (isJsx) {
-      const newReg = new RegExp(`<${tag}.*class="(.*)"[=\\w\\-\\_'"\\s]*\/?>`)
-      const matcher = key.match(newReg)
+      const newReg = new RegExp(
+        `<${tag}.*class="([\\w\\:\\-\\s;\\[\\]\\/\\+%]+)"[=\\w\\-\\_'"\\s:]*\/?>`,
+      )
+      const matcher = target.match(newReg)
+
       if (matcher) {
-        return result.replace(
-          key,
-          key.replace(
+        result = result.replace(
+          target,
+          target.replace(
             `class="${matcher[1]}"`,
             `class="${matcher[1]} ${returnValue}"`,
           ),
         )
+        continue
       }
-      return result.replace(
-        key,
-        key.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
+      result = result.replace(
+        target,
+        target.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
       )
+      continue
     }
 
-    return result.replace(key, key.replace(`<${tag}`, `<${tag} ${returnValue}`))
-  }, code)
+    result = result.replace(
+      target,
+      target.replace(`<${tag}`, `<${tag} ${returnValue}`),
+    )
+  }
+
+  return result
 }
 
 function calculateWeight(c: string) {
@@ -330,11 +370,13 @@ function findSameSource(allChange: AllChange[]) {
   return result
 }
 
-function getConflictClass(allChange: AllChange[]) {
+async function getConflictClass(
+  allChange: AllChange[],
+): Promise<[string, (code: string) => string]> {
   const map: Record<string, Array<number | string>> = {}
-
-  allChange.forEach((item) => {
-    const { before, name } = item
+  let transform = (code: string) => code
+  for await (const item of allChange) {
+    const { before, name, source, attr, after, prefix, media } = item
     const data = before
       .split(';')
       .filter(Boolean)
@@ -352,9 +394,44 @@ function getConflictClass(allChange: AllChange[]) {
           map[key] = [+curWeight, value]
       }
     })
-  })
-  return Object.keys(map).reduce((result, key) => {
-    const transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)
-    return `${result}${transferCss} `
-  }, '')
+
+    // map如果已存在内联转换的unocss且为相同属性的判断是否需要删除
+    if (attr) {
+      const res = (await transformUnocssBack(
+        attr.map((i) => {
+          if (prefix)
+            return `${prefix}="i"`
+          if (media)
+            return `${media}:${i}`
+          return i
+        }),
+      )) as any[]
+      Object.keys(map).forEach((i) => {
+        const index = res.findIndex(r => r === i)
+        if (index !== -1) {
+          const inline = item.attr[index]
+
+          if (inline.endsWith('!') || !after.endsWith('!')) {
+            // 需要删除
+            return delete map[i]
+          }
+          else {
+            // 不需要删除，移除原本的inlineStyle的转换后的结果
+            transform = (code: string) =>
+              code.replace(source, source.replace(` ${inline}`, ''))
+          }
+        }
+      })
+    }
+  }
+
+  return [
+    Object.keys(map)
+      .reduce((result, key) => {
+        const transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)[0]
+        return `${result}${transferCss} `
+      }, '')
+      .trim(),
+    transform,
+  ]
 }

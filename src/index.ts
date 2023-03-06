@@ -122,13 +122,22 @@ export function transformToUnocss(css: String) {
   return typeMap[first]?.(key, val)
 }
 
-export function transformStyleToUnocss(styles: string) {
+export function transformStyleToUnocss(styles: string): [string, string[]] {
   // todo: 如果存在未能被转换的style应该返回并保持部分的style
-  return styles
-    .split(';')
-    .filter(Boolean)
-    .reduce((result, cur) => (result += `${transformToUnocss(cur) || ''} `), '')
-    .slice(0, -1)
+  const noTransfer: string[] = []
+  return [
+    styles
+      .split(';')
+      .filter(Boolean)
+      .reduce((result, cur) => {
+        const val = transformToUnocss(cur) || ''
+        if (!val)
+          noTransfer.push(cur)
+        return (result += `${val} `)
+      }, '')
+      .trim(),
+    noTransfer,
+  ]
 }
 
 export { transfromCode, vitePluginTransformToUnocss }

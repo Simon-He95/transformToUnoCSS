@@ -14,7 +14,7 @@ describe('transformCode', () => {
         if (!suffix)
           return
 
-        return `\n\n-----    ${demo}     -------\n\n${transfromCode(
+        return `\n\n-----    ${demo}     -------\n\n${await transfromCode(
           await fsp.readFile(url, 'utf-8'),
           filepath,
           suffix,
@@ -31,10 +31,10 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+        <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
           nihao
         </div>
-        <div bg-yellow! w=\\"[100%]\\" h=\\"[100%]\\"  class=\\"yellow\\">
+        <div bg-yellow! w=\\"[100%]\\" h=\\"[100%]\\" class=\\"yellow\\">
           hi
         </div>
       </template>
@@ -48,10 +48,10 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div w=\\"[100%]\\" h=\\"[100%]\\"  class=\\"red\\" name=\\"hi\\" haha>
+        <div w=\\"[100%]\\" h=\\"[100%]\\" class=\\"red\\" name=\\"hi\\" haha>
           nihao
         </div>
-        <div h=\\"[100%]\\"  class=\\"yellow\\">
+        <div h=\\"[100%]\\" class=\\"yellow\\">
           hi
         </div>
       </template>
@@ -69,8 +69,8 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red w=\\"[100%]\\"  class=\\"yellow\\">
+        <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+          <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
             hi
           </div>
         </div>
@@ -86,7 +86,7 @@ describe('transformCode', () => {
 
       <template>
         <div bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red w=\\"[100%]\\"  class=\\"red yellow\\">
+          <div bg-red w=\\"[100%]\\" class=\\"red yellow\\">
             hi
           </div>
         </div>
@@ -101,8 +101,8 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red! w=\\"[100%]\\"  class=\\"yellow\\">
+        <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+          <div bg-red! w=\\"[100%]\\" class=\\"yellow\\">
             hi
           </div>
         </div>
@@ -117,8 +117,8 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div focus-within=\\"bg-red w-\\"[100%]\\" \\" class=\\"container\\">
-          <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+        <div focus-within=\\"bg-red w-\\"[100%]\\"\\" class=\\"container\\">
+          <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
             nihao
           </div>
           <div class=\\"yellow\\">
@@ -136,7 +136,7 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-yellow w=\\"[100%]\\"  class=\\"red\\">
+        <div bg-yellow w=\\"[100%]\\" class=\\"red\\">
           nihao
         </div>
         <div>hi</div>
@@ -152,7 +152,7 @@ describe('transformCode', () => {
 
       <template>
         <div bg-red w=\\"[100%]\\" lh-20px>
-          <div hover=\\"text-yellow \\" class=\\"red\\">
+          <div hover=\\"text-yellow\\" class=\\"red\\">
             hi
           </div>
         </div>
@@ -169,7 +169,7 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-red  class=\\"red bg-red  bg-red \\">
+        <div max-2xl:bg-red sm:bg-red class=\\"red\\">
           nihao
         </div>
       </template>
@@ -184,13 +184,30 @@ describe('transformCode', () => {
       ",
         "
 
+      -----    styleWeight.vue     -------
+
+      <script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div bg-pink style=\\"hi:123\\" class=\\"red\\">
+          nihao
+        </div>
+        <div bg-yellow class=\\"yellow\\" >
+          hi
+        </div>
+      </template>
+
+      <style scoped></style>
+      ",
+        "
+
       -----    test.vue     -------
 
       <template>
-        <div id=\\"nihao\\" bg-red>
+        <div bg-red id=\\"nihao\\">
           hi
         </div>
-        <div text-20px bg-yellow  class=\\"hi\\">
+        <div text-20px bg-yellow class=\\"hi\\">
           hi
         </div>
       </template>
@@ -221,7 +238,7 @@ describe('transformCode', () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 className=\\"red bg-red text-red \\">{props.title}</h1>
+              <h1 className=\\"red bg-red text-red\\" style=\\"hi:123\\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}
@@ -239,12 +256,12 @@ describe('transformCode', () => {
 describe('single demo classWeight', async () => {
   const demo = await fsp.readFile('./test/demo/classWeight.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classWeight.vue')
-  it('classWeight.vue', () => {
-    expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+  it('classWeight.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
-        <div bg-yellow w=\\"[100%]\\"  class=\\"red\\">
+        <div bg-yellow w=\\"[100%]\\" class=\\"red\\">
           nihao
         </div>
         <div>hi</div>
@@ -259,13 +276,13 @@ describe('single demo classWeight', async () => {
 describe('single demo classCombine', async () => {
   const demo = await fsp.readFile('./test/demo/classCombine.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classCombine.vue')
-  it('classCombine.vue', () => {
-    expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+  it('classCombine.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
         <div bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red w=\\"[100%]\\"  class=\\"red yellow\\">
+          <div bg-red w=\\"[100%]\\" class=\\"red yellow\\">
             hi
           </div>
         </div>
@@ -280,13 +297,13 @@ describe('single demo classCombine', async () => {
 describe('single demo classTail', async () => {
   const demo = await fsp.readFile('./test/demo/classTail.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
-  it('classTail.vue', () => {
-    expect(transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+  it('classTail.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
-        <div focus-within=\\"bg-red w-\\"[100%]\\" \\" class=\\"container\\">
-          <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
+        <div focus-within=\\"bg-red w-\\"[100%]\\"\\" class=\\"container\\">
+          <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
             nihao
           </div>
           <div class=\\"yellow\\">
@@ -301,14 +318,61 @@ describe('single demo classTail', async () => {
   })
 })
 
+describe('single demo Media', async () => {
+  const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/media.vue')
+  it('Media.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div max-2xl:bg-red sm:bg-red class=\\"red\\">
+          nihao
+        </div>
+      </template>
+
+      <style scoped>
+      @media (min-width: 120px) {
+        .red {
+          background-color: red;
+        }
+      }
+      </style>
+      "
+    `)
+  })
+})
+
+describe('single demo styleWeight', async () => {
+  const demo = await fsp.readFile('./test/demo/styleWeight.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+  it('styleWeight.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+
+      <template>
+        <div bg-pink style=\\"hi:123\\" class=\\"red\\">
+          nihao
+        </div>
+        <div bg-yellow class=\\"yellow\\" >
+          hi
+        </div>
+      </template>
+
+      <style scoped></style>
+      "
+    `)
+  })
+})
+
 describe('single demo vue.tsx', async () => {
   const _path = './test/demo/vue.tsx'
   const demo = await fsp.readFile(_path, 'utf-8')
 
-  it('vue.tsx', () => {
+  it('vue.tsx', async () => {
     const filepath = path.resolve(process.cwd(), _path)
 
-    expect(transfromCode(demo, filepath, 'tsx')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, filepath, 'tsx')).toMatchInlineSnapshot(`
       "import { defineComponent, ref } from 'vue'
       import './index.css'
 
@@ -329,7 +393,7 @@ describe('single demo vue.tsx', async () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 className=\\"red bg-red text-red \\">{props.title}</h1>
+              <h1 className=\\"red bg-red text-red\\" style=\\"hi:123\\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}

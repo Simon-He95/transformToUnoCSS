@@ -1,3 +1,5 @@
+import { createGenerator, presetUno } from 'unocss'
+
 export function isCalc(s: string) {
   return s.startsWith('calc(')
 }
@@ -69,4 +71,36 @@ export function transformImportant(v: string) {
   if (v.endsWith('!important'))
     return [v.replace(/\s*\!important/, ''), '!']
   return [v, '']
+}
+
+export function transformUnocssBack(code: string[]) {
+  const result: string[] = []
+  return new Promise((resolve) => {
+    createGenerator(
+      {},
+      {
+        presets: [presetUno()],
+      },
+    )
+      .generate(code || '')
+      .then((res: any) => {
+        const css = res.getLayers()
+        code.forEach((item) => {
+          const reg = new RegExp(`${item.replace(/!/g, '\\\\!')}{(.*)}`)
+          const match = css.match(reg)
+          if (!match)
+            return
+          const matcher = match[1]
+
+          result.push(
+            matcher
+              .split(';')
+              .filter((i: any) => /^\w+[\w\-]*:/.test(i))[0]
+              .split(':')[0],
+          )
+        })
+
+        resolve(result)
+      })
+  })
 }

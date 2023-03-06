@@ -1,50 +1,62 @@
 import { transformStyleToUnocss } from '.'
 
 const styleReg
-  = /<([\w\-]+).*(:)?style="([\w\:\-\s;\[\]\/\+%]+)"[\w=\-\_'"\s]*\/?>/
+  = /<([\w\-]+).*(:)?style="([\w\:\-\s;\[\]\/\+%]+)"[\w=\-\_'"\s]*\/?>/g
 
+const removeStyleReg = / style="([\w\:\-\s;\[\]\/\+%]+)"/
 export function tansformInlineStyle(code: string, isJsx?: boolean): string {
   // todo: 如果存在未能被转换的style应该返回并保持部分的style
+  code.replace(styleReg, (target, tag, comma, inlineStyle) => {
+    if (comma)
+      return code
 
-  const match = code.match(styleReg)
+    const [after, noMap] = transformStyleToUnocss(inlineStyle)
 
-  if (!match)
-    return code
-  const [target, tag, comma, inlineStyle] = match
+    // transform inline-style
 
-  if (comma)
-    return code
+    if (isJsx) {
+      const newReg = new RegExp(`<${tag}.*class="(.*)"[=\\w\\-\\_'"\\s]*\/?>`)
+      const matcher = target.match(newReg)
 
-  // transform inline-style
-  if (isJsx) {
-    const newReg = new RegExp(`<${tag}.*class="(.*)"[=\\w\\-\\_'"\\s]*\/?>`)
-    const matcher = target.match(newReg)
-    if (matcher) {
-      code = code.replace(
+      if (matcher) {
+        return (code = code.replace(
+          target,
+          target
+            .replace(removeStyleReg, '')
+            .replace(
+              `class="${matcher[1]}"`,
+              noMap.length
+                ? `class="${matcher[1]} ${after}" style="${noMap.join(';')}"`
+                : `class="${matcher[1]} ${after}"`,
+            ),
+        ))
+      }
+
+      return (code = code.replace(
         target,
-        target.replace(
-          `class="${matcher[1]}"`,
-          `class="${matcher[1]} ${transformStyleToUnocss(inlineStyle)}"`,
-        ),
-      )
+        target
+          .replace(removeStyleReg, '')
+          .replace(
+            `<${tag}`,
+            noMap.length
+              ? `<${tag} class="${after}" style="${noMap.join(';')}`
+              : `<${tag} class="${after}"`,
+          ),
+      ))
     }
 
-    code = code.replace(` style="${inlineStyle}"`, '')
-
-    return code.replace(
+    return (code = code.replace(
       target,
-      target.replace(
-        `<${tag}`,
-        `<${tag} class="${transformStyleToUnocss(inlineStyle)}"`,
-      ),
-    )
-  }
+      target
+        .replace(removeStyleReg, '')
+        .replace(
+          `<${tag}`,
+          noMap.length
+            ? `<${tag} ${after} style="${noMap.join(';')}"`
+            : `<${tag} ${after}`,
+        ),
+    ))
+  })
 
-  return code.replace(
-    target,
-    target.replace(
-      `style="${inlineStyle}"`,
-      transformStyleToUnocss(inlineStyle),
-    ),
-  )
+  return code
 }

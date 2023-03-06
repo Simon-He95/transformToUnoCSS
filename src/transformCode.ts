@@ -7,7 +7,7 @@ import { transformCss } from './transformCss'
 import { tansformInlineStyle } from './transformInlineStyle'
 import { transformMedia } from './transformMedia'
 
-export function transfromCode(
+export async function transfromCode(
   code: string,
   filepath: string,
   type: 'vue' | 'tsx',
@@ -48,7 +48,8 @@ export function transfromCode(
     <style scoped>
     ${css}
     </style>`
-    let vueTransfer = transformVue(wrapperVue, true)
+
+    let vueTransfer = await transformVue(wrapperVue, true)
     vueTransfer = vueTransfer.replace(/class/g, 'className')
     if (cssPath) {
       const cssTransfer = vueTransfer.match(/<style scoped>(.*)<\/style>/s)![1]
@@ -64,7 +65,7 @@ export function transfromCode(
   return transformVue(code)
 }
 
-export function transformVue(code: string, isJsx?: boolean) {
+export async function transformVue(code: string, isJsx?: boolean) {
   const {
     descriptor: { template, styles },
     errors,
@@ -79,7 +80,8 @@ export function transformVue(code: string, isJsx?: boolean) {
   if (!template || !styles.length)
     return code
   // transform @media 注：transformBack是将@media中内容用一个占位符替换等到transformCss处理完将结果还原回去
-  const [transferMediaCode, transformBack] = transformMedia(code)
+  const [transferMediaCode, transformBack] = await transformMedia(code, isJsx)
+
   code = transferMediaCode
   // transform class
   const {
@@ -89,7 +91,7 @@ export function transformVue(code: string, isJsx?: boolean) {
 
   // 只针对scoped css处理
   if (scoped)
-    code = transformCss(style, code, isJsx)
+    code = await transformCss(style, code, '', isJsx)
 
   // 还原@media 未匹配到的class
   code = transformBack(code)
