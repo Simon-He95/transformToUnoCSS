@@ -34,7 +34,7 @@ describe('transformCode', () => {
         <div class=\\"red\\" bg-red w=\\"[100%]\\" lh-20px>
           nihao
         </div>
-        <div bg-red w=\\"[100%]\\" h=\\"[100%]\\"  class=\\"yellow\\">
+        <div bg-yellow! w=\\"[100%]\\" h=\\"[100%]\\"  class=\\"yellow\\">
           hi
         </div>
       </template>

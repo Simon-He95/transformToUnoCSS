@@ -51,3 +51,4 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 - [x] 属性选择器支持[name="xxx"]
 - [x] calculateWeight 权重计算方式改进
 - [x] support tsx
+- [ ] 如果当前内联样式和 class 冲突并且没有!important, 则不添加 class 中的属性

@@ -11,7 +11,7 @@
 
 <style scoped>
 .red + .yellow {
-  background-color: red;
+  background-color: yellow !important;
   width: 100%;
 }
 

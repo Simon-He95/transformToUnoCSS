@@ -3,8 +3,6 @@ import path from 'path'
 import { parse } from 'vue/compiler-sfc'
 import { parse as babelParse, traverse as babelTraverse } from '@babel/core'
 import vueJsxPlugin from '@vue/babel-plugin-jsx'
-import typescriptPlugin from '@babel/plugin-transform-typescript'
-import importMeta from '@babel/plugin-syntax-import-meta'
 import { transformCss } from './transformCss'
 import { tansformInlineStyle } from './transformInlineStyle'
 import { transformMedia } from './transformMedia'
@@ -18,11 +16,7 @@ export function transfromCode(
     const ast = babelParse(code, {
       babelrc: false,
       comments: true,
-      plugins: [
-        importMeta,
-        [vueJsxPlugin, {}],
-        [typescriptPlugin, { isTSX: true, allowExtensions: true }],
-      ],
+      plugins: [[vueJsxPlugin, {}]],
     })
     let container: any = null
     let css = ''
