@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 describe('clear', () => {
   it('clear-left', () => {
-    expect(transformToUnocss('clear:left')).toBe('clear-left')
+    expect(toUnocss('clear:left')).toBe('clear-left')
   })
 
   it('clear-none', () => {
-    expect(transformToUnocss('clear:none')).toBe('clear-none')
+    expect(toUnocss('clear:none')).toBe('clear-none')
   })
 })

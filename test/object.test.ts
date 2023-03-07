@@ -1,23 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('object', () => {
   it('object-fit: contain;', () => {
-    expect(transformToUnocss('object-fit: contain;')).toBe('object-contain')
+    expect(toUnocss('object-fit: contain;')).toBe('object-contain')
   })
 
   it('object-fit: scale-down;', () => {
-    expect(transformToUnocss('object-fit: scale-down;')).toBe(
+    expect(toUnocss('object-fit: scale-down;')).toBe(
       'object-scale-down',
     )
   })
 
   it('object-position: bottom;', () => {
-    expect(transformToUnocss('object-position: bottom;')).toBe('object-bottom')
+    expect(toUnocss('object-position: bottom;')).toBe('object-bottom')
   })
 
   it('object-position: left bottom;', () => {
-    expect(transformToUnocss('object-position: left bottom;')).toBe(
+    expect(toUnocss('object-position: left bottom;')).toBe(
       'object-left-bottom',
     )
   })

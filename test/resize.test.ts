@@ -1,20 +1,20 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('resize', () => {
   it('resize: none;', () => {
-    expect(transformToUnocss('resize: none;')).toBe('resize-none')
+    expect(toUnocss('resize: none;')).toBe('resize-none')
   })
 
   it('resize: vertical;', () => {
-    expect(transformToUnocss('resize: vertical;')).toBe('resize-y')
+    expect(toUnocss('resize: vertical;')).toBe('resize-y')
   })
 
   it('resize: horizontal;', () => {
-    expect(transformToUnocss('resize: horizontal;')).toBe('resize-x')
+    expect(toUnocss('resize: horizontal;')).toBe('resize-x')
   })
 
   it('resize: both;', () => {
-    expect(transformToUnocss('resize: both;')).toBe('resize')
+    expect(toUnocss('resize: both;')).toBe('resize')
   })
 })

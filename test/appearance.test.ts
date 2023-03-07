@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('appearance', () => {
   it('appearance: none;', () => {
-    expect(transformToUnocss('appearance: none;')).toBe('appearance-none')
+    expect(toUnocss('appearance: none;')).toBe('appearance-none')
   })
 })

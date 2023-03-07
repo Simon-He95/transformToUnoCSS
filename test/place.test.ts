@@ -1,24 +1,24 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('place', () => {
   it('place-content: center;', () => {
-    expect(transformToUnocss('place-content: center;')).toBe(
+    expect(toUnocss('place-content: center;')).toBe(
       'place-content-center',
     )
   })
 
   it('place-content: space-between;', () => {
-    expect(transformToUnocss('place-content: space-between;')).toBe(
+    expect(toUnocss('place-content: space-between;')).toBe(
       'place-content-between',
     )
   })
 
   it('place-items: start;', () => {
-    expect(transformToUnocss('place-items: start;')).toBe('place-items-start')
+    expect(toUnocss('place-items: start;')).toBe('place-items-start')
   })
 
   it('place-self: auto;', () => {
-    expect(transformToUnocss('place-self: auto;')).toBe('place-self-auto')
+    expect(toUnocss('place-self: auto;')).toBe('place-self-auto')
   })
 })

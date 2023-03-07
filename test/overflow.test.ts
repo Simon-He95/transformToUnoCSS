@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('overflow', () => {
   it('overflow: auto;', () => {
-    expect(transformToUnocss('overflow: auto;')).toBe('overflow-auto')
+    expect(toUnocss('overflow: auto;')).toBe('overflow-auto')
   })
 
   it('overflow-y: auto;', () => {
-    expect(transformToUnocss('overflow-y: auto;')).toBe('overflow-y-auto')
+    expect(toUnocss('overflow-y: auto;')).toBe('overflow-y-auto')
   })
 
   it('overflow-x: visible;', () => {
-    expect(transformToUnocss('overflow-x: visible;')).toBe('overflow-x-visible')
+    expect(toUnocss('overflow-x: visible;')).toBe('overflow-x-visible')
   })
 })

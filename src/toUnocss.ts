@@ -69,6 +69,7 @@ const typeMap: any = {
   align,
   place,
   padding: transformMargin,
+  perspective: float,
   margin: transformMargin,
   width: size,
   min: max,

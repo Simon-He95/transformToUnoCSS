@@ -1,20 +1,20 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('user', () => {
   it('user-select: none;', () => {
-    expect(transformToUnocss('user-select: none;')).toBe('select-none')
+    expect(toUnocss('user-select: none;')).toBe('select-none')
   })
 
   it('user-select: text;', () => {
-    expect(transformToUnocss('user-select: text;')).toBe('select-text')
+    expect(toUnocss('user-select: text;')).toBe('select-text')
   })
 
   it('user-select: all;', () => {
-    expect(transformToUnocss('user-select: all;')).toBe('select-all')
+    expect(toUnocss('user-select: all;')).toBe('select-all')
   })
 
   it('user-select: auto;', () => {
-    expect(transformToUnocss('user-select: auto;')).toBe('select-auto')
+    expect(toUnocss('user-select: auto;')).toBe('select-auto')
   })
 })

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 describe('float', () => {
   it('float-left', () => {
-    expect(transformToUnocss('float:left')).toBe('float-left')
+    expect(toUnocss('float:left')).toBe('float-left')
   })
 
   it('float-none', () => {
-    expect(transformToUnocss('float:none')).toBe('float-none')
+    expect(toUnocss('float:none')).toBe('float-none')
   })
 })

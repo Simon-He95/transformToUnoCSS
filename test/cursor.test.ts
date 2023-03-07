@@ -1,44 +1,44 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('cursor', () => {
   it('cursor: pointer', () => {
-    expect(transformToUnocss('cursor: pointer')).toBe('cursor-pointer')
+    expect(toUnocss('cursor: pointer')).toBe('cursor-pointer')
   })
 
   it('cursor: default', () => {
-    expect(transformToUnocss('cursor: default')).toBe('cursor-default')
+    expect(toUnocss('cursor: default')).toBe('cursor-default')
   })
 
   it('cursor: grab', () => {
-    expect(transformToUnocss('cursor: grab')).toBe('cursor-grab')
+    expect(toUnocss('cursor: grab')).toBe('cursor-grab')
   })
 
   it('cursor: help', () => {
-    expect(transformToUnocss('cursor: help')).toBe('cursor-help')
+    expect(toUnocss('cursor: help')).toBe('cursor-help')
   })
 
   it('cursor: none', () => {
-    expect(transformToUnocss('cursor: none')).toBe('cursor-none')
+    expect(toUnocss('cursor: none')).toBe('cursor-none')
   })
 
   it('cursor: zoom-in', () => {
-    expect(transformToUnocss('cursor: zoom-in')).toBe('cursor-zoom-in')
+    expect(toUnocss('cursor: zoom-in')).toBe('cursor-zoom-in')
   })
 
   it('cursor: url("hyper.cur"), auto;', () => {
-    expect(transformToUnocss('cursor: url("hyper.cur"), auto;')).toBe(
+    expect(toUnocss('cursor: url("hyper.cur"), auto;')).toBe(
       'cursor="[url("hyper.cur"),auto]"',
     )
   })
 
   it('cursor: url(hyper.cur), auto;', () => {
-    expect(transformToUnocss('cursor: url(hyper.cur), auto;')).toBe(
+    expect(toUnocss('cursor: url(hyper.cur), auto;')).toBe(
       'cursor="[url(hyper.cur),auto]"',
     )
   })
 
   it('cursor: not-allowed;', () => {
-    expect(transformToUnocss('cursor: not-allowed;')).toBe('cursor-not-allowed')
+    expect(toUnocss('cursor: not-allowed;')).toBe('cursor-not-allowed')
   })
 })

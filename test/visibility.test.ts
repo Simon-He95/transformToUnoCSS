@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('visibility', () => {
   it('visibility: visible;', () => {
-    expect(transformToUnocss('visibility: visible;')).toBe('visible')
+    expect(toUnocss('visibility: visible;')).toBe('visible')
   })
 
   it('visibility: hidden;', () => {
-    expect(transformToUnocss('visibility: hidden;')).toBe('invisible')
+    expect(toUnocss('visibility: hidden;')).toBe('invisible')
   })
 
   it('visibility: collapse;', () => {
-    expect(transformToUnocss('visibility: collapse;')).toBe('collapse')
+    expect(toUnocss('visibility: collapse;')).toBe('collapse')
   })
 })

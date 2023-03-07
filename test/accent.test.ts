@@ -1,22 +1,22 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('accent', () => {
   it('accent-color: inherit;', () => {
-    expect(transformToUnocss('accent-color: inherit !important;')).toBe(
+    expect(toUnocss('accent-color: inherit !important;')).toBe(
       'accent-inherit!',
     )
   })
 
   it('accent-color: #fff;', () => {
-    expect(transformToUnocss('accent-color: #fff;')).toBe('accent-#fff')
+    expect(toUnocss('accent-color: #fff;')).toBe('accent-#fff')
   })
 
   it('align-self: center;', () => {
-    expect(transformToUnocss('align-self: center;')).toBe('self-center')
+    expect(toUnocss('align-self: center;')).toBe('self-center')
   })
 
   it('align-self: flex-start;', () => {
-    expect(transformToUnocss('align-self: flex-start;')).toBe('self-start')
+    expect(toUnocss('align-self: flex-start;')).toBe('self-start')
   })
 })

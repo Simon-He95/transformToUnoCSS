@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { transformStyleToUnocss } from '../src'
+import { transformStyleToUnocss } from '../src/transformStyleToUnocss'
 
 describe('transformStyleToUnocss', () => {
   it('transformStyleToUnocss', () => {

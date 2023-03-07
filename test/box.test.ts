@@ -1,27 +1,27 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 describe('box-shadow', () => {
   it('box-decoration-break: clone;', () => {
-    expect(transformToUnocss('box-decoration-break: clone;')).toBe(
+    expect(toUnocss('box-decoration-break: clone;')).toBe(
       'box-decoration-clone',
     )
   })
 
   it('box-sizing: border-box;', () => {
-    expect(transformToUnocss('box-sizing: border-box  !important;')).toBe(
+    expect(toUnocss('box-sizing: border-box  !important;')).toBe(
       'box-border!',
     )
   })
 
   it('box-shadow red', () => {
     expect(
-      transformToUnocss('box-shadow: 10px 20px 10px 10px red  !important;'),
+      toUnocss('box-shadow: 10px 20px 10px 10px red  !important;'),
     ).toBe('shadow="[10px_20px_10px_10px_red]!"')
   })
 
   it('box-shadow rgb', () => {
     expect(
-      transformToUnocss(
+      toUnocss(
         'box-shadow: 10px 20px 10px 10px rgb(255, 255, 255)  !important;',
       ),
     ).toBe('shadow="[10px_20px_10px_10px_rgb(255,255,255)]!"')
@@ -29,7 +29,7 @@ describe('box-shadow', () => {
 
   it('box-shadow rgba', () => {
     expect(
-      transformToUnocss(
+      toUnocss(
         'box-shadow: 10px 20px 10px 10px rgba(255, 255, 255,0.1) !important;',
       ),
     ).toBe('shadow="[10px_20px_10px_10px_rgba(255,255,255,0.1)]!"')

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 describe('display', () => {
   it('display:none', () => {
-    expect(transformToUnocss('display:none')).toBe('hidden')
+    expect(toUnocss('display:none')).toBe('hidden')
   })
 
   it('inline-flex', () => {
-    expect(transformToUnocss('display: inline-flex')).toBe('inline-flex')
+    expect(toUnocss('display: inline-flex')).toBe('inline-flex')
   })
 })

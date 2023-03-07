@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 describe('top', () => {
   it('rem;', () => {
-    expect(transformToUnocss('top: 0.25rem;')).toBe('top-0.25rem')
+    expect(toUnocss('top: 0.25rem;')).toBe('top-0.25rem')
   })
 
   it('px', () => {
-    expect(transformToUnocss('top: 20px;')).toBe('top-20px')
+    expect(toUnocss('top: 20px;')).toBe('top-20px')
   })
   it('em', () => {
-    expect(transformToUnocss('top: 20em;')).toBe('top-20em')
+    expect(toUnocss('top: 20em;')).toBe('top-20em')
   })
 
   it('calc', () => {
-    expect(transformToUnocss('top: calc(100% - 20px);')).toBe(
+    expect(toUnocss('top: calc(100% - 20px);')).toBe(
       'top="[calc(100%-20px)]"',
     )
   })

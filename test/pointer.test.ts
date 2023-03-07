@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { transformToUnocss } from '../src'
+import { toUnocss } from '../src/toUnocss'
 
 describe('pointer', () => {
   it('pointer-events: none;', () => {
-    expect(transformToUnocss('pointer-events: none;')).toBe(
+    expect(toUnocss('pointer-events: none;')).toBe(
       'pointer-events-none',
     )
   })
 
   it('pointer-events: auto;', () => {
-    expect(transformToUnocss('pointer-events: auto;')).toBe(
+    expect(toUnocss('pointer-events: auto;')).toBe(
       'pointer-events-auto',
     )
   })
