@@ -27,7 +27,6 @@ importers:
       prettier: ^2.8.1
       rimraf: ^3.0.2
       simple-git-hooks: ^2.8.1
-      transform-to-unocss: ^0.0.19
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
@@ -57,7 +56,6 @@ importers:
       prettier: 2.8.1
       rimraf: 3.0.2
       simple-git-hooks: 2.8.1
-      transform-to-unocss: 0.0.19
       tsup: 6.5.0_typescript@4.7.4
       tsx: 3.12.1
       typescript: 4.7.4
@@ -6370,14 +6368,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       punycode: 2.1.1
-    dev: true
-
-  /transform-to-unocss/0.0.19:
-    resolution: {integrity: sha512-A/4KvfbUjFy5yBnjt006G8oFOXCN6Ww3M+z/IZCY7xKTvHF4h285MArJ0OIJzYjbLfkNPLU2VA1D/pKwcbDQrA==}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      fast-glob: 3.2.12
     dev: true
 
   /tree-kill/1.2.2:
