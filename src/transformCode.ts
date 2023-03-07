@@ -9,8 +9,8 @@ import { transformMedia } from './transformMedia'
 
 export async function transfromCode(
   code: string,
-  filepath: string,
-  type: 'vue' | 'tsx',
+  filepath?: string,
+  type?: 'vue' | 'tsx',
 ) {
   if (type === 'tsx') {
     const ast = babelParse(code, {
@@ -33,7 +33,7 @@ export async function transfromCode(
           const value = node.source.value
           if (value.endsWith('.css')) {
             css += fs.readFileSync(
-              (cssPath = path.resolve(filepath, '../', value)),
+              (cssPath = path.resolve(filepath!, '../', value)),
               'utf-8',
             )
           }

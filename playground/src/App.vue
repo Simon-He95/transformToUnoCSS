@@ -3,9 +3,10 @@ import { computed, ref } from 'vue'
 import { VividTyping } from 'vivid-typing'
 import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-import { useAnimationFrame } from 'lazy-js-utils'
+import { copy, useAnimationFrame } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
-import { transformToUnocss, transfromCode } from '../../src'
+import { transformToUnocss, transfromCode } from 'transform-to-unocss'
+
 const input = ref('')
 let pre: any = null
 const transform = computed(() => transformToUnocss(input.value))
@@ -73,11 +74,8 @@ useAnimationFrame(async () => {
       fontFamily: 'Arial',
       fontSize: 20,
     })
-    // const app = createApp(code)
 
     display.value = codeToHtml(newInput)
-
-    // app.mount(display.value!)
   }
   else if (pre !== code) {
     pre = code
@@ -107,6 +105,11 @@ function codeToHtml(code: string) {
     .replace('<template>', '')
     .replace('<\/template>', '')
 }
+
+const copyStyle = () => {
+  if (copy(transform.value))
+    alert('copy successfully')
+}
 </script>
 
 <template>
@@ -133,8 +136,16 @@ function codeToHtml(code: string) {
     >
     <div v-if="transform">
       <h2>结果：</h2>
-      <div :style="input">
-        {{ transform }}
+      <div flex gap-2>
+        <div :style="input">
+          {{ transform }}
+        </div>
+        <div
+          i-carbon:copy
+          cursor-pointer
+          hover="color-orange"
+          @click="copyStyle"
+        />
       </div>
     </div>
     <div v-else>

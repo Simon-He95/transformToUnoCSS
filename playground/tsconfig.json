@@ -15,7 +15,10 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["vite/client", "vite-plugin-pages/client"],
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "@unocss/preset-icons/browser": [
+        "./node_modules/@unocss/preset-icons/dist/browser"
+      ]
     }
   },
   "exclude": ["dist", "node_modules"]

@@ -5,10 +5,14 @@ export function transform(key: string, val: string) {
 
   if (key === 'transform-origin')
     return `origin-${joinWithLine(v)}${important}`
+  if (key === 'transform-style')
+    return `transform-${v}`
+
+  const matcher = v.match(/([a-z]+)([A-Z])?\((.*)\)/)
+  if (!matcher)
+    return
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, namePrefix, nameSuffix, value] = v.match(
-    /([a-z]+)([A-Z])?\((.*)\)/,
-  )!
+  const [_, namePrefix, nameSuffix, value] = matcher
 
   if (nameSuffix) {
     if (namePrefix === 'scale') {

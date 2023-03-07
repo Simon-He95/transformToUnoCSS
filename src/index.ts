@@ -123,7 +123,7 @@ export function transformToUnocss(css: String) {
 }
 
 export function transformStyleToUnocss(styles: string): [string, string[]] {
-  // todo: 如果存在未能被转换的style应该返回并保持部分的style
+  // 如果存在未能被转换的style应该返回并保持部分的style
   const noTransfer: string[] = []
   return [
     styles
