@@ -5,7 +5,7 @@ import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import { copy, useAnimationFrame } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
-import { transformToUnocss, transfromCode } from 'transform-to-unocss'
+import { transformToUnocss, transfromCode } from '../../src'
 
 const input = ref('')
 let pre: any = null
