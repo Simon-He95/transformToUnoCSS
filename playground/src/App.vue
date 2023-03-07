@@ -5,11 +5,12 @@ import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import { copy, useAnimationFrame } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
-import { transformToUnocss, transfromCode } from '../../src'
+import { transformVue } from '../../src/transformVue'
+import { toUnocss } from '../../src/toUnocss'
 
 const input = ref('')
 let pre: any = null
-const transform = computed(() => transformToUnocss(input.value))
+const transform = computed(() => toUnocss(input.value))
 let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
@@ -62,7 +63,7 @@ onMounted(() => {
 
 useAnimationFrame(async () => {
   const newInput = editorComponent!.getValue()
-  const code = await transfromCode(newInput)
+  const code = await transformVue(newInput)
   if (!editorResult.value)
     return
   if (!pre && code) {

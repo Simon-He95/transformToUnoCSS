@@ -1,4 +1,4 @@
-import { transformStyleToUnocss } from '.'
+import { transformStyleToUnocss } from './transformStyleToUnocss'
 
 const styleReg
   = /<([\w\-]+).*(:)?style="([\w\:\-\s;\[\]\/\+%]+)"[\w=\-\_'"\s]*\/?>/g

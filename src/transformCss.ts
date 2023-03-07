@@ -1,7 +1,7 @@
 import { parse } from 'vue/compiler-sfc'
 import { transformUnocssBack, trim } from './utils'
 import { tail } from './tail'
-import { transformStyleToUnocss } from '.'
+import { transformStyleToUnocss } from './transformStyleToUnocss'
 const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
 
 const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
