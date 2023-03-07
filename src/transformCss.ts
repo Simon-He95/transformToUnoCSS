@@ -279,12 +279,10 @@ async function resolveConflictClass(
   isJsx?: boolean,
 ) {
   const changes = findSameSource(allChange)
-
   let result = code
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
     const { tag, prefix, media, source } = value[0]
-
     // eslint-disable-next-line prefer-const
     let [after, transform] = await getConflictClass(value)
 
@@ -380,7 +378,7 @@ async function getConflictClass(
   let transform = (code: string) => code
   for await (const item of allChange) {
     const { before, name, source, attr, after, prefix, media } = item
-    const data = before
+    const data = `${prefix ? `${prefix}|` : ''}${before}`
       .split(';')
       .filter(Boolean)
       .map(i => i.split(':'))
@@ -431,8 +429,14 @@ async function getConflictClass(
   return [
     Object.keys(map)
       .reduce((result, key) => {
+        const keys = key.split('|')
+        const prefix = keys.length > 1 ? keys[0] : ''
         const transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)[0]
-        return `${result}${transferCss} `
+        return `${result}${
+          prefix
+            ? `${prefix}="${transferCss.replace(/=\[/g, '-[')}"`
+            : transferCss
+        } `
       }, '')
       .trim(),
     transform,
