@@ -9,6 +9,10 @@ describe('background', () => {
     expect(toUnocss('background-color:red')).toBe('bg-red')
   })
 
+  it('background:#67c23a ', () => {
+    expect(toUnocss('background-color:#67c23a ')).toBe('bg="[#67c23a]"')
+  })
+
   it('background:auto', () => {
     expect(toUnocss('background:auto')).toBe('bg-auto')
   })

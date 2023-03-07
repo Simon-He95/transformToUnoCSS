@@ -70,8 +70,8 @@ export function trim(s: string, type: TrimType = 'around'): string {
 
 export function transformImportant(v: string) {
   if (v.endsWith('!important'))
-    return [v.replace(/\s*\!important/, ''), '!']
-  return [v, '']
+    return [v.replace(/\s*\!important/, '').trim(), '!']
+  return [v.trim(), '']
 }
 
 export function transformUnocssBack(code: string[]) {

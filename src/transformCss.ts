@@ -28,9 +28,8 @@ export async function transformCss(
 ): Promise<string> {
   let stack = parse(code).descriptor.template?.ast
   const allChanges: AllChange[] = []
-
   style.replace(
-    /(.*){([\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
+    /(.*){([#\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any = '') => {
       name = trim(name.replace(/\s+/g, ' '))
 
@@ -432,9 +431,13 @@ async function getConflictClass(
         const keys = key.split('|')
         const prefix = keys.length > 1 ? keys[0] : ''
         const transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)[0]
+
         return `${result}${
           prefix
-            ? `${prefix}="${transferCss.replace(/=\[/g, '-[')}"`
+            ? `${prefix}="${transferCss.replace(
+                /="\[(.*)\]"/g,
+                (_, v) => `-${v}`,
+              )}"`
             : transferCss
         } `
       }, '')

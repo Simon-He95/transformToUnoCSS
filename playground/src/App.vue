@@ -5,8 +5,10 @@ import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import { copy, useAnimationFrame } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
+import { useI18n } from 'vue-i18n'
 import { transformVue } from '../../src/transformVue'
 import { toUnocss } from '../../src/toUnocss'
+const { t, locale } = useI18n()
 
 const input = ref('')
 let pre: any = null
@@ -19,14 +21,27 @@ const styleReg = /<style.*>(.*)<\/style>/s
 const classReg = /(.*){/g
 
 const editorInput = ref(`<template>
-  <div style="background: red">hi</div>
-  <div class="hi">hi</div>
+  <button>button</button>
 </template>
 
 <style scoped>
-  .hi {
-    font-size: 20px;
-    background: yellow;
+  button {
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+    padding:8px 15px;
+    border-radius: 4px;
+    border:none;
+    box-sizing: border-box;
+    color:#fff;
+    background-color: #409eff;
+  }
+  button:hover{
+    background-color:#67c23a ;
   }
 </style>
 `)
@@ -111,9 +126,24 @@ const copyStyle = () => {
   if (copy(transform.value))
     alert('copy successfully')
 }
+
+const changelanguage = () => {
+  if (locale.value === 'en')
+    locale.value = 'zh'
+  else locale.value = 'en'
+}
 </script>
 
 <template>
+  <div
+    i-fa:language
+    absolute
+    top-2
+    left-4
+    cursor-pointer
+    z-2
+    @click="changelanguage"
+  />
   <gitForkVue
     link="https://github.com/Simon-He95"
     type="trapeziumType"
@@ -128,19 +158,19 @@ const copyStyle = () => {
       class="!outline-none"
       w="40%"
       text-4
-      placeholder="输入css值，如:width:100rem..."
+      :placeholder="t('placeholder')"
       type="text"
       autocomplete="off"
       p="x6 y4"
       hover:border-pink
       border-1
     >
-    <div v-if="transform">
-      <h2>结果：</h2>
-      <div flex gap-2>
-        <div :style="input">
-          {{ transform }}
-        </div>
+    <div v-if="transform" flex="~ gap-4" align-center>
+      <h2>{{ t('result') }}</h2>
+
+      <div flex gap-2 items-center>
+        {{ transform }}
+
         <div
           i-carbon:copy
           cursor-pointer
@@ -149,40 +179,31 @@ const copyStyle = () => {
         />
       </div>
     </div>
-    <div v-else>
-      <div v-if="input">
-        <h2>当前值不对，或匹配错误！</h2>
-        如果你输入的是一个合法的值，你可以再这里添加你的例子。
-        <a
-          href="https://github.com/Simon-He95/transformToUnocss/issues"
-          target="_blank"
-        >issues</a>
-        <div />
-      </div>
-      <div v-else>
-        你可以在<a
-          href="https://github.com/Simon-He95/transformToUnocss"
-          target="_blank"
-        ><b>transform-to-unocss</b></a>查看现在支持的属性，进行体验。已有vite插件和cli版本~
-      </div>
-    </div>
+    <template v-else>
+      <template v-if="input">
+        <div h-20 v-html="t('issue')" />
+      </template>
+      <template v-else>
+        <div h-20 box-border pt6 v-html="t('find')" />
+      </template>
+    </template>
   </div>
   <div flex>
     <div w="50%">
       <h1 pl2>
-        inputs:
+        {{ t('inputs') }}
       </h1>
       <div ref="editor" h-100 />
     </div>
     <div w="50%">
       <h1 pl2>
-        outputs:
+        {{ t('outputs') }}
       </h1>
-      <div ref="editorResult" h-100 pointer-events-none />
+      <div ref="editorResult" h-100 />
     </div>
   </div>
   <h1 pl2>
-    render:
+    {{ t('render') }}
   </h1>
   <div pb20 data-v-display v-html="display" />
 </template>

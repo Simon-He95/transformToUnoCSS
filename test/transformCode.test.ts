@@ -366,15 +366,8 @@ describe.only('single test', async () => {
   const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
   it('test.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
-      "<script setup lang=\\"ts\\"></script>
-
-      <template>
-        <div bg-red w=\\"[100%]\\" lh-20px>
-          <div flex flex=\\"[1]\\" h-100px bg-red class=\\"container\\">
-            <div flex=\\"[1]\\" h-100px bg-red />
-            <div />
-          </div>
-        </div>
+      "<template>
+        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text=\\"[#fff]\\" bg=\\"[#409eff]\\" hover=\\"bg-#67c23a\\">button</button>
       </template>
 
       <style scoped></style>

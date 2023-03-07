@@ -13,9 +13,10 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 # cli
 
 ```
-  转换：tounocss + 目录
+  ## command: tounocss + directory
   tounocss playground
-  撤销： tounocss + 目录 + --revert
+
+  ## revoke: tounocss + directory + --revert
   tounocss payground --revert
 ```
 
@@ -37,18 +38,3 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 ## After
 
 ![after](/assets/after.png)
-
-# todo
-
-- [x] support xx + xx
-- [x] support attribute selector .xx[]
-- [x] support .a.b
-- [x] support @media
-- [x] support tail
-- [x] support !important
-- [x] Working with style weights
-- [ ] support react
-- [x] 属性选择器支持[name="xxx"]
-- [x] calculateWeight 权重计算方式改进
-- [x] support tsx
-- [x] 如果当前内联样式和 class 冲突并且没有!important, 则不添加 class 中的属性
