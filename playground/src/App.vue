@@ -148,8 +148,18 @@ const changelanguage = () => {
     content="Follow Me"
     color="pink"
   />
-  <VividTyping content="Css To Unocss" text-3xl color-pink py4 text-center />
-  <div h="100%" flex justify-center items-center flex-col p="y-10">
+  <VividTyping
+    content="Css To Unocss"
+    animate-bounce-alt
+    animate-delay-1500
+    animate-count-infinite
+    animate-duration-1s
+    text-3xl
+    color-pink
+    py6
+    text-center
+  />
+  <div h="100%" flex justify-center items-center flex-col p="y10">
     <input
       v-model="input"
       class="!outline-none"
@@ -162,7 +172,7 @@ const changelanguage = () => {
       hover:border-pink
       border-1
     >
-    <div v-if="transform" flex="~ gap-4" align-center>
+    <div v-if="transform" flex="~ gap-4" h-20 items-center>
       <h2>{{ t('result') }}</h2>
 
       <div flex gap-2 items-center>
