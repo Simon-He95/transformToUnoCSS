@@ -81,7 +81,7 @@ useAnimationFrame(async () => {
   const code = await transformVue(newInput)
   if (!editorResult.value)
     return
-  if (!pre && code) {
+  if ((!pre && code) || pre !== code) {
     pre = code
     editorResult.value!.innerHTML = ''
     monaco.editor.create(editorResult.value!, {
@@ -89,20 +89,10 @@ useAnimationFrame(async () => {
       language: 'html',
       fontFamily: 'Arial',
       fontSize: 20,
+      readOnly: true,
+      acceptSuggestionOnEnter: 'smart',
     })
 
-    display.value = codeToHtml(newInput)
-  }
-  else if (pre !== code) {
-    pre = code
-    editorResult.value!.innerHTML = ''
-
-    monaco.editor.create(editorResult.value!, {
-      value: code,
-      language: 'html',
-      fontFamily: 'Arial',
-      fontSize: 20,
-    })
     display.value = codeToHtml(newInput)
   }
 }, 200)
