@@ -114,9 +114,14 @@ function codeToHtml(code: string) {
     .replace('<\/template>', '')
 }
 
+const isCopy = ref(false)
 const copyStyle = () => {
   if (copy(transform.value))
-    alert('copy successfully')
+    isCopy.value = true
+
+  setTimeout(() => {
+    isCopy.value = false
+  }, 1000)
 }
 
 const changelanguage = () => {
@@ -164,7 +169,11 @@ const changelanguage = () => {
         {{ transform }}
 
         <div
-          i-carbon:copy
+          :class="[
+            isCopy
+              ? 'i-carbon:checkmark-outline text-green!'
+              : ' i-carbon:copy',
+          ]"
           cursor-pointer
           hover="color-orange"
           @click="copyStyle"
