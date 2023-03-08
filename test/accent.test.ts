@@ -9,7 +9,7 @@ describe('accent', () => {
   })
 
   it('accent-color: #fff;', () => {
-    expect(toUnocss('accent-color: #fff;')).toBe('accent-#fff')
+    expect(toUnocss('accent-color: #fff;')).toBe('accent="[#fff]"')
   })
 
   it('align-self: center;', () => {

@@ -13,4 +13,8 @@ describe('word-break', () => {
   it('word-break: keep-all;', () => {
     expect(toUnocss('word-break: keep-all;')).toBe('break-keep')
   })
+
+  it('word-spacing: 0em;', () => {
+    expect(toUnocss('word-spacing: 0em;')).toBe('word-spacing-0em')
+  })
 })

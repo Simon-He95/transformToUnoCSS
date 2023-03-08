@@ -36,4 +36,22 @@ describe('border', () => {
       'border-spacing="[0px_0px]"',
     )
   })
+
+  it('border-bottom-width: 1px;', () => {
+    expect(toUnocss('border-bottom-width: 1px;')).toBe(
+      'border-b-1px',
+    )
+  })
+
+  it('border-bottom-style: dashed;', () => {
+    expect(toUnocss('border-bottom-style: dashed;')).toBe(
+      'border-b-dashed',
+    )
+  })
+
+  it('border-left-color: #333;', () => {
+    expect(toUnocss('border-left-color: #333;')).toBe(
+      'border-l="[#333]"',
+    )
+  })
 })

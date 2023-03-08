@@ -3,7 +3,7 @@ import { toUnocss } from '../src/toUnocss'
 
 describe('stroke', () => {
   it('stroke: #312e81;', () => {
-    expect(toUnocss('stroke: #312e81;')).toBe('stroke-#312e81')
+    expect(toUnocss('stroke: #312e81;')).toBe('stroke="[#312e81]"')
   })
 
   it('stroke: transparent;', () => {

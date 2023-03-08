@@ -40,13 +40,22 @@ import { resize } from './resize'
 import { scroll } from './scroll'
 import { user } from './user'
 import { will } from './will'
+import { animation } from './animation'
+import { content } from './content'
+import { empty } from './empty'
+import { writing } from './writing'
 
 const typeMap: any = {
+  animation,
   aspect,
+  backface: list,
+  caption: list,
   column,
   columns: float,
   break: float,
+  empty,
   box,
+  writing,
   display,
   float,
   clear: float,
@@ -83,7 +92,7 @@ const typeMap: any = {
   vertical,
   white,
   word,
-  content: list,
+  content,
   background,
   border,
   outline,

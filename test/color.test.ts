@@ -6,7 +6,7 @@ describe('color', () => {
   })
 
   it('color:hex', () => {
-    expect(toUnocss('color: #ffffff')).toBe('text-#ffffff')
+    expect(toUnocss('color: #ffffff')).toBe('text="[#ffffff]"')
   })
   // size
   it('color:rgb', () => {

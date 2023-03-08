@@ -7,6 +7,6 @@ describe('caret', () => {
   })
 
   it('caret-color: #fff;', () => {
-    expect(toUnocss('caret-color: #fff;')).toBe('caret-#fff')
+    expect(toUnocss('caret-color: #fff;')).toBe('caret="[#fff]"')
   })
 })
