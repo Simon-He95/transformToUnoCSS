@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { VividTyping } from 'vivid-typing'
 import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-import { copy, useAnimationFrame } from 'lazy-js-utils'
+import { copy, useAnimationFrame, useFocus } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
 import { useI18n } from 'vue-i18n'
 import { transformVue } from '../../src/transformVue'
@@ -62,6 +62,8 @@ monaco.editor.defineTheme('myTheme', {
 monaco.editor.setTheme('myTheme')
 
 onMounted(() => {
+  useFocus('input') // 自动聚焦input
+
   self.MonacoEnvironment = {
     getWorker() {
       return new HtmlWorker()
