@@ -1,5 +1,5 @@
 import { parse } from 'vue/compiler-sfc'
-import { transformUnocssBack, trim } from './utils'
+import { joinWithUnderLine, transformUnocssBack, trim } from './utils'
 import { tail } from './tail'
 import { transformStyleToUnocss } from './transformStyleToUnocss'
 const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
@@ -278,9 +278,11 @@ async function resolveConflictClass(
   isJsx?: boolean,
 ) {
   const changes = findSameSource(allChange)
+
   let result = code
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
+
     const { tag, prefix, media, source } = value[0]
     // eslint-disable-next-line prefer-const
     let [after, transform] = await getConflictClass(value)
@@ -430,7 +432,10 @@ async function getConflictClass(
       .reduce((result, key) => {
         const keys = key.split('|')
         const prefix = keys.length > 1 ? keys[0] : ''
-        const transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)[0]
+        let transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)[0]
+        const match = transferCss.match(/(.*)="\[(.*)\]"/)
+        if (match)
+          transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
 
         return `${result}${
           prefix

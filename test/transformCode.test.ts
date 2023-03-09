@@ -367,7 +367,7 @@ describe.only('single test', async () => {
   it('test.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<template>
-        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text=\\"[#fff]\\" bg=\\"[#409eff]\\" hover=\\"bg-#67c23a\\">button</button>
+        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff hover=\\"bg-#67c23a\\">button</button>
       </template>
 
       <style scoped></style>

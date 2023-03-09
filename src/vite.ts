@@ -3,7 +3,7 @@ import { transfromCode } from './transformCode'
 export function vitePluginTransformToUnocss() {
   return {
     name: 'vite-plugin-transform-to-unocss',
-    transform(code: string, id: string) {
+    async transform(code: string, id: string) {
       const suffix = id.endsWith('.vue')
         ? 'vue'
         : id.endsWith('.tsx')
@@ -11,7 +11,8 @@ export function vitePluginTransformToUnocss() {
           : ''
       if (!suffix)
         return code
-      return transfromCode(code, id, suffix)
+
+      return await transfromCode(code, id, suffix)
     },
     enforce: 'pre',
   }
