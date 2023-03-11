@@ -28,8 +28,9 @@ export async function transformCss(
 ): Promise<string> {
   let stack = parse(code).descriptor.template?.ast
   const allChanges: AllChange[] = []
+
   style.replace(
-    /(.*){([#\\n\s\w\-.:;%\(\)\+'"!]*)}/g,
+    /(.*){([#\\n\s\w\-.:;,%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any = '') => {
       name = trim(name.replace(/\s+/g, ' '))
 
@@ -56,6 +57,7 @@ export async function transformCss(
 
       if (!result.length)
         return
+
       result.forEach((r) => {
         const {
           loc: { source },
@@ -63,7 +65,6 @@ export async function transformCss(
           props,
         } = r
 
-        // todo: 如果存在相同的属性根据css权重来进行替换
         const attr = props.reduce((result: string[], cur: any) => {
           let item
           // eslint-disable-next-line no-cond-assign
@@ -87,6 +88,7 @@ export async function transformCss(
         })
       })
       // 删除原本class
+
       code = code.replace(value, '')
 
       // 如果class中内容全部被移除删除这个定义的class
@@ -297,7 +299,13 @@ async function resolveConflictClass(
     if (prefix)
       after = after.replace(/="\[/g, '-"[')
 
-    const returnValue = prefix ? `${prefix}="${after}"` : after
+    const returnValue = isJsx
+      ? after
+        .replace(/\[(.*)\]/g, (all, v) =>
+          all.replace(v, joinWithUnderLine(v)),
+        )
+        .replace(/="([\w\-\,.\(\)\+\_\s#]+)"/g, '-$1')
+      : after
 
     if (isJsx) {
       const newReg = new RegExp(
@@ -315,6 +323,7 @@ async function resolveConflictClass(
         )
         continue
       }
+
       result = result.replace(
         target,
         target.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
@@ -402,7 +411,7 @@ async function getConflictClass(
       const res = (await transformUnocssBack(
         attr.map((i) => {
           if (prefix)
-            return `${prefix}="i"`
+            return `${prefix}="${i}"`
           if (media)
             return `${media}:${i}`
           return i

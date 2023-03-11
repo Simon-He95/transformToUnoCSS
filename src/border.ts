@@ -1,4 +1,4 @@
-import { getVal, joinWithUnderLine, transformImportant } from './utils'
+import { getVal, joinWithUnderLine, transformImportant, trim } from './utils'
 
 const borderSize = [
   'border-left',
@@ -7,7 +7,8 @@ const borderSize = [
   'border-bottom',
 ]
 export function border(key: string, val: string) {
-  const [value, important] = transformImportant(val)
+  // eslint-disable-next-line prefer-const
+  let [value, important] = transformImportant(val)
 
   if (key === 'border-spacing')
     return `${key}="[${joinWithUnderLine(value)}]${important}"`
@@ -21,6 +22,11 @@ export function border(key: string, val: string) {
     return `border-${key.split('-')[1][0]}${getVal(value)}`
   if (key.startsWith('border-image'))
     return ''
+  if (/rgb/.test(value)) {
+    value = value.replace(/rgb[a](.*)/, (all, v) =>
+      all.replace(v, trim(v, 'all')),
+    )
+  }
 
-  return `border-${value}${important}`
+  return `border="[${joinWithUnderLine(value)}]${important}"`
 }
