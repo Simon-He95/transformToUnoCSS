@@ -1,7 +1,19 @@
+import fsp from 'fs/promises'
+import path from 'path'
 import { parse } from 'vue/compiler-sfc'
-import { joinWithUnderLine, transformUnocssBack, trim } from './utils'
+import {
+  diffTemplateStyle,
+  flag,
+  getStyleScoped,
+  isEmptyStyle,
+  joinWithUnderLine,
+  transformUnocssBack,
+  trim,
+} from './utils'
 import { tail } from './tail'
 import { transformStyleToUnocss } from './transformStyleToUnocss'
+import { transformVue } from './transformVue'
+import { wrapperVueTemplate } from './wrapperVueTemplate'
 const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
 
 const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
@@ -25,10 +37,12 @@ export async function transformCss(
   code: string,
   media = '',
   isJsx?: boolean,
+  filepath?: string,
 ): Promise<string> {
-  let stack = parse(code).descriptor.template?.ast
   const allChanges: AllChange[] = []
-  // todo: 处理style中@import xxx.css
+  code = (await importCss(code, style, filepath, isJsx)) as string
+  let stack = parse(code).descriptor.template?.ast
+
   style.replace(
     /(.*){([#\\n\s\w\-.:;,%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any = '') => {
@@ -101,6 +115,56 @@ export async function transformCss(
   )
 
   return await resolveConflictClass(allChanges, code, isJsx)
+}
+
+async function importCss(
+  code: string,
+  style: string,
+  filepath?: string,
+  isJsx?: boolean,
+) {
+  const originCode = code
+  for await (const match of style.matchAll(
+    /@import (url\()?["']*(.*.css)["']*\)?;/g,
+  )) {
+    if (!match)
+      continue
+    const url = path.resolve(filepath!, '..', match[2])
+
+    const content = await fsp.readFile(
+      path.resolve(filepath!, '..', url),
+      'utf-8',
+    )
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, beforeStyle] = code.match(/<style.*>(.*)<\/style>/s)!
+    code = code.replace(beforeStyle, '')
+
+    const vue = wrapperVueTemplate(code, content)
+
+    const transfer = await transformVue(vue, isJsx)
+
+    if (diffTemplateStyle(transfer, vue)) {
+      code = originCode
+      continue
+    }
+    // 如果<style scoped>为空全部转换删除@import
+
+    if (isEmptyStyle(transfer)) {
+      code = wrapperVueTemplate(transfer, beforeStyle.replace(match[0], ''))
+      continue
+    }
+    // 否则剩余的生成新的@import css
+    const restStyle = getStyleScoped(transfer)
+
+    fsp.writeFile(url.replace('.css', `${flag}.css`), restStyle, 'utf-8')
+
+    code = wrapperVueTemplate(
+      transfer.replace(/<style scoped>.*<\/style>/s, ''),
+      beforeStyle,
+    )
+    continue
+  }
+  return code
 }
 
 // 查找下一级的

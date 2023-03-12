@@ -3,6 +3,7 @@
 </template>
 
 <style scoped>
+  @import url(./index.css);
   button {
     height: 32px;
     display: flex;

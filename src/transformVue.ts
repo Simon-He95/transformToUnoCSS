@@ -4,7 +4,11 @@ import { transformCss } from './transformCss'
 import { tansformInlineStyle } from './transformInlineStyle'
 import { transformMedia } from './transformMedia'
 
-export async function transformVue(code: string, isJsx?: boolean) {
+export async function transformVue(
+  code: string,
+  isJsx?: boolean,
+  filepath?: string,
+) {
   const {
     descriptor: { template, styles },
     errors,
@@ -31,7 +35,7 @@ export async function transformVue(code: string, isJsx?: boolean) {
 
   // 只针对scoped css处理
   if (scoped)
-    code = await transformCss(style, code, '', isJsx)
+    code = await transformCss(style, code, '', isJsx, filepath)
 
   // 还原@media 未匹配到的class
   code = transformBack(code)

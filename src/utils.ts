@@ -1,6 +1,7 @@
 import { createGenerator } from '@unocss/core'
 import presetUno from '@unocss/preset-uno'
 
+export const flag = '.__unocss_transfer__'
 export function isCalc(s: string) {
   return s.startsWith('calc(')
 }
@@ -104,4 +105,22 @@ export function transformUnocssBack(code: string[]) {
         resolve(result)
       })
   })
+}
+
+export function diffTemplateStyle(before: string, after: string) {
+  const s1 = before.match(/<style scoped>.*<\/style>/s)!
+  const s2 = after.match(/<style scoped>.*<\/style>/s)!
+
+  return s1[0] === s2[0]
+}
+
+export function isEmptyStyle(code: string) {
+  return /<style scoped>[\n\s]*<\/style>/.test(code)
+}
+
+export function getStyleScoped(code: string) {
+  const match = code.match(/<style scoped>(.*)<\/style>/s)
+  if (!match)
+    return ''
+  return match[1]
 }

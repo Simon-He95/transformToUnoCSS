@@ -3,6 +3,7 @@ import fsp from 'fs/promises'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 import { transformVue } from './transformVue'
 import { prettierCode } from './prettierCode'
+import { diffTemplateStyle } from './utils'
 const linkCssReg = /<link.*href="(.*.css)".*>/g
 const styleReg = /[\s\n]*<style.*>(.*)<\/style>[\s\n]*/s
 
@@ -77,10 +78,4 @@ async function generateNewCode(
   }
 
   return code.replace(originBody, getBody(template))
-}
-
-function diffTemplateStyle(before: string, after: string) {
-  const s1 = before.match('<style scoped>.*</style>')!
-  const s2 = after.match('<style scoped>.*</style>')!
-  return s1[0] === s2[0]
 }

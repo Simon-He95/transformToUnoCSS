@@ -4,6 +4,7 @@ import fg from 'fast-glob'
 import colorize from '@simon_he/colorize'
 import { transfromCode } from './transformCode'
 import type { SuffixType } from './type'
+import { flag } from './utils'
 const log = console.log
 
 export async function cli() {
@@ -24,7 +25,6 @@ export async function cli() {
     ['**.vue', '**.tsx', '**.html', '**.svelte', '**.astro'],
     { cwd: fileDir },
   )
-  const flag = '.__unocss_transfer__'
   entries
     .filter(entry => !entry.endsWith(flag))
     .forEach(async (entry) => {
