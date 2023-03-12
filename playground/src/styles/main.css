@@ -13,3 +13,6 @@ a {
   text-decoration: none;
   color: pink;
 }
+a:hover {
+  color: hsl(0, 97%, 77%);
+}

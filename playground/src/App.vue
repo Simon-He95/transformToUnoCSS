@@ -133,14 +133,20 @@ const changelanguage = () => {
 
 <template>
   <div
-    i-fa:language
+    p1
+    hover="rotate-y-180deg "
     absolute
-    top-2
-    left-4
-    cursor-pointer
     z-2
+    left-2
+    top-2
+    p2
+    transition-all-800
+    cursor-pointer
     @click="changelanguage"
-  />
+  >
+    <div text-xl i-fa:language />
+  </div>
+
   <gitForkVue
     link="https://github.com/Simon-He95"
     type="trapeziumType"
