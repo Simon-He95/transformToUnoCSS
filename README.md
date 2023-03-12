@@ -29,7 +29,7 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 
 # Feature
 
-- transform class to unocss
+- support css in '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' to unocss
 
 ## Before
 

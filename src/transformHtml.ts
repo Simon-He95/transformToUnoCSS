@@ -6,8 +6,8 @@ import { prettierCode } from './prettierCode'
 const linkCssReg = /<link.*href="(.*.css)".*>/g
 const styleReg = /[\s\n]*<style.*>(.*)<\/style>[\s\n]*/s
 
-export async function transformHtml(code: string, filepath: string) {
-  const css = await getLinkCss(code, filepath)
+export async function transformHtml(code: string, filepath?: string) {
+  const css = await getLinkCss(code, filepath!)
   const style = getStyleCss(code)
   const newCode = await generateNewCode(css, style, code)
   return prettierCode(newCode)

@@ -3,8 +3,7 @@ import fs from 'fs'
 import fg from 'fast-glob'
 import colorize from '@simon_he/colorize'
 import { transfromCode } from './transformCode'
-import { transformHtml } from './transformHtml'
-
+import type { SuffixType } from './type'
 const log = console.log
 
 export async function cli() {
@@ -21,17 +20,17 @@ export async function cli() {
   }
   const fileDir = path.resolve(process.cwd(), asset)
   const isRevert = process.argv[3] === '-r' || process.argv[3] === '--revert'
-  const entries = await fg(['**.vue', '**.tsx', '**.html'], { cwd: fileDir })
+  const entries = await fg(
+    ['**.vue', '**.tsx', '**.html', '**.svelte', '**.astro'],
+    { cwd: fileDir },
+  )
   const flag = '.__unocss_transfer__'
   entries
     .filter(entry => !entry.endsWith(flag))
     .forEach(async (entry) => {
       const filepath = `${fileDir}/${entry}`
-      const suffix = filepath.endsWith('.html')
-        ? 'html'
-        : filepath.endsWith('.vue')
-          ? 'vue'
-          : 'tsx'
+      const suffix = entry.slice(entry.lastIndexOf('.') + 1) as SuffixType
+
       const newfilepath = filepath.endsWith(flag)
         ? filepath
         : filepath.replace(`.${suffix}`, `${flag}.${suffix}`)
@@ -69,10 +68,7 @@ export async function cli() {
         return
       }
       const code = await fs.promises.readFile(filepath, 'utf-8')
-      const codeTransfer
-        = suffix === 'html'
-          ? await transformHtml(code, filepath)
-          : await transfromCode(code, filepath, suffix)
+      const codeTransfer = await transfromCode(code, filepath, suffix)
       // 创建新文件
       try {
         await fs.promises.writeFile(newfilepath, codeTransfer)
@@ -93,4 +89,5 @@ export async function cli() {
       }
     })
 }
+
 cli()
