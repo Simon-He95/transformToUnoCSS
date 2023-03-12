@@ -142,13 +142,9 @@ const changelanguage = () => {
     p2
     transition-all-800
     cursor-pointer
-    class="group"
     @click="changelanguage"
   >
     <div text-xl i-fa:language />
-  </div>
-  <div group-hover="text-red">
-    nihao
   </div>
 
   <gitForkVue
