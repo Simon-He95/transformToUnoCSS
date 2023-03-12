@@ -1,7 +1,6 @@
 import { getVal, isRgb, transformImportant, trim } from './utils'
 
 const backgroundMap = [
-  'background',
   'background-color',
   'background-size',
   'background-attachment',
@@ -13,7 +12,10 @@ const gradientReg
 export function background(key: string, val: string) {
   const [value, important] = transformImportant(val)
 
-  if (backgroundMap.includes(key)) {
+  if (backgroundMap.includes(key))
+    return `bg${getVal(value, transformSpaceToLine)}${important}`
+
+  if (key === 'background') {
     if (value.startsWith('linear-gradient')) {
       const matcher = value.match(gradientReg)
       if (!matcher)
@@ -30,8 +32,9 @@ export function background(key: string, val: string) {
           : `-${toColor}${important}`
       }`
     }
-    return `bg${getVal(value, transformSpaceToLine)}${important}`
+    return `bg="${value}${important}"`
   }
+
   if (key === 'background-blend-mode')
     return `bg-blend-${value}${important}`
 

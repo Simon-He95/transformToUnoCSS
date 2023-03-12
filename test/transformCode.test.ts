@@ -22,23 +22,21 @@ describe('transformCode', () => {
       }),
     )
 
-    expect(contents).toMatchInlineSnapshot(`
+    expect(contents.filter(Boolean)).toMatchInlineSnapshot(`
       [
         "
 
       -----    classAdd.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
           nihao
         </div>
-        <div bg-yellow! w=\\"[100%]\\" h=\\"[100%]\\" class=\\"yellow\\">
+        <div bg-yellow! w-100% h-100% class=\\"yellow\\">
           hi
         </div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -48,10 +46,10 @@ describe('transformCode', () => {
       <script setup lang=\\"ts\\"></script>
 
       <template>
-        <div w=\\"[100%]\\" h=\\"[100%]\\" class=\\"red\\" name=\\"hi\\" haha>
+        <div w-100% h-100% class=\\"red\\" name=\\"hi\\" haha>
           nihao
         </div>
-        <div h=\\"[100%]\\" class=\\"yellow\\">
+        <div h-100% class=\\"yellow\\">
           hi
         </div>
       </template>
@@ -67,15 +65,13 @@ describe('transformCode', () => {
       -----    classChild.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
-          <div bg-red w=\\"[100%]\\" class=\\"yellow\\">
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
+          <div bg-red w-100% class=\\"yellow\\">
             hi
           </div>
         </div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -83,15 +79,13 @@ describe('transformCode', () => {
       -----    classCombine.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red w=\\"[100%]\\" class=\\"red yellow\\">
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px>
+          <div bg-red w-100% class=\\"red yellow\\">
             hi
           </div>
         </div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -99,15 +93,13 @@ describe('transformCode', () => {
       -----    classSpace.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
-          <div bg-red! w=\\"[100%]\\" class=\\"yellow\\">
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
+          <div bg-red! w-100% class=\\"yellow\\">
             hi
           </div>
         </div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -115,10 +107,9 @@ describe('transformCode', () => {
       -----    classTail.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div focus-within=\\"bg-red w-\\"[100%]\\"\\" class=\\"container\\">
-          <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+        <div focus-within=\\"bg-red\\" w-100% class=\\"container\\">
+          <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
             nihao
           </div>
           <div class=\\"yellow\\">
@@ -126,7 +117,6 @@ describe('transformCode', () => {
           </div>
         </div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -134,14 +124,12 @@ describe('transformCode', () => {
       -----    classWeight.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-yellow w=\\"[100%]\\" class=\\"red\\">
+        <div bg-yellow w-100% class=\\"red\\">
           nihao
         </div>
         <div>hi</div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -149,19 +137,15 @@ describe('transformCode', () => {
       -----    hover.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-red w=\\"[100%]\\" lh-20px>
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px>
           <div hover=\\"text-yellow\\" class=\\"red\\">
             hi
           </div>
         </div>
       </template>
-
       <style scoped></style>
       ",
-        undefined,
-        undefined,
         "
 
       -----    media.vue     -------
@@ -187,16 +171,14 @@ describe('transformCode', () => {
       -----    styleWeight.vue     -------
 
       <script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-pink style=\\"hi:123\\" class=\\"red\\">
+        <div bg-red bg=\\"pink\\" style=\\"hi:123\\" class=\\"red\\">
           nihao
         </div>
-        <div bg-yellow class=\\"yellow\\" >
+        <div bg=\\"yellow\\" class=\\"yellow\\" >
           hi
         </div>
       </template>
-
       <style scoped></style>
       ",
         "
@@ -204,12 +186,12 @@ describe('transformCode', () => {
       -----    test.vue     -------
 
       <template>
-        <div text-20px bg-red>hi</div>
-        <div text-20px bg-yellow class=\\"hi\\">hi</div>
+        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff hover=\\"bg-#67c23a\\" bg=\\"red\\">button</button>
       </template>
 
-      <style scoped></style>
-      ",
+      <style scoped>
+        @import url(./index.css);
+      </style>",
         "
 
       -----    vue.tsx     -------
@@ -234,7 +216,7 @@ describe('transformCode', () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 className=\\"red bg-red text-red\\" style=\\"hi:123\\">{props.title}</h1>
+              <h1 className=\\"red bg=\\"red\\"\\" style=\\"hi:123\\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}
@@ -255,14 +237,12 @@ describe('single demo classWeight', async () => {
   it('classWeight.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-yellow w=\\"[100%]\\" class=\\"red\\">
+        <div bg-yellow w-100% class=\\"red\\">
           nihao
         </div>
         <div>hi</div>
       </template>
-
       <style scoped></style>
       "
     `)
@@ -275,15 +255,13 @@ describe('single demo classCombine', async () => {
   it('classCombine.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-red w=\\"[100%]\\" lh-20px>
-          <div bg-red w=\\"[100%]\\" class=\\"red yellow\\">
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px>
+          <div bg-red w-100% class=\\"red yellow\\">
             hi
           </div>
         </div>
       </template>
-
       <style scoped></style>
       "
     `)
@@ -296,10 +274,9 @@ describe('single demo classTail', async () => {
   it('classTail.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
-
       <template>
-        <div focus-within=\\"bg-red w-\\"[100%]\\"\\" class=\\"container\\">
-          <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+        <div focus-within=\\"bg-red\\" w-100% class=\\"container\\">
+          <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
             nihao
           </div>
           <div class=\\"yellow\\">
@@ -307,7 +284,6 @@ describe('single demo classTail', async () => {
           </div>
         </div>
       </template>
-
       <style scoped></style>
       "
     `)
@@ -345,30 +321,28 @@ describe('single demo styleWeight', async () => {
   it('styleWeight.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
-
       <template>
-        <div bg-pink style=\\"hi:123\\" class=\\"red\\">
+        <div bg-red bg=\\"pink\\" style=\\"hi:123\\" class=\\"red\\">
           nihao
         </div>
-        <div bg-yellow class=\\"yellow\\" >
+        <div bg=\\"yellow\\" class=\\"yellow\\" >
           hi
         </div>
       </template>
-
       <style scoped></style>
       "
     `)
   })
 })
 
-describe.only('single test', async () => {
+describe('single test', async () => {
   const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
   it('test.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(
-   `
+  `
       "<template>
-        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff hover=\\"bg-#67c23a\\" bg-red>button</button>
+        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff hover=\\"bg-#67c23a\\" bg=\\"red\\">button</button>
       </template>
 
       <style scoped>
@@ -406,7 +380,7 @@ describe('single demo vue.tsx', async () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 className=\\"red bg-red text-red\\" style=\\"hi:123\\">{props.title}</h1>
+              <h1 className=\\"red bg=\\"red\\"\\" style=\\"hi:123\\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}

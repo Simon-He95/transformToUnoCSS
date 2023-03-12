@@ -9,7 +9,7 @@ describe('accent', () => {
     const filepath = path.resolve(process.cwd(), './test/demo/index.html')
 
     expect(await transformHtml(html, filepath)).toMatchInlineSnapshot(
-    `
+   `
       "<!DOCTYPE html>
       <html lang=\\"en\\">
       <head>
@@ -17,9 +17,9 @@ describe('accent', () => {
         <meta http-equiv=\\"X-UA-Compatible\\" content=\\"IE=edge\\">
         <meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1.0\\">
         <title>Document</title>
-        </head>
+        <link rel=\\"stylesheet\\" href=\\"./index.css\\"></head>
       <body>
-        <div class=\\"red text-10px text-red\\">hello world</div>
+        <div class=\\"red text-10px\\">hello world</div>
       </body>
       </html>
       "

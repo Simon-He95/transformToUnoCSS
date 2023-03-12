@@ -2,7 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { toUnocss } from '../src/toUnocss'
 describe('background', () => {
   it('background:red', () => {
-    expect(toUnocss('background:red !important')).toBe('bg-red!')
+    expect(toUnocss('background:red !important')).toBe('bg="red!"')
+  })
+
+  it('background:red', () => {
+    expect(toUnocss('background:red center no-repeat url("./xxx.jpg")')).toBe('bg="red center no-repeat url("./xxx.jpg")"')
   })
 
   it('background:red', () => {
@@ -14,7 +18,7 @@ describe('background', () => {
   })
 
   it('background:auto', () => {
-    expect(toUnocss('background:auto')).toBe('bg-auto')
+    expect(toUnocss('background:auto')).toBe('bg="auto"')
   })
   // size
   it('background-size:auto', () => {
@@ -102,7 +106,7 @@ describe('background', () => {
   })
 
   it('background: red', () => {
-    expect(toUnocss('background: red')).toBe('bg-red')
+    expect(toUnocss('background: red')).toBe('bg="red"')
   })
 
   it('background-blend-mode: normal;', () => {
