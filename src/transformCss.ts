@@ -42,7 +42,6 @@ export async function transformCss(
   const allChanges: AllChange[] = []
   code = (await importCss(code, style, filepath, isJsx)) as string
   let stack = parse(code).descriptor.template?.ast
-
   style.replace(
     /(.*){([#\\n\s\w\-.:;,%\(\)\+'"!]*)}/g,
     (all: any, name: any, value: any = '') => {
@@ -53,7 +52,9 @@ export async function transformCss(
       const transfer = transformStyleToUnocss(before)[0]
       const tailMatcher = name.match(tailReg)
 
-      const prefix = tailMatcher ? tail(tailMatcher[1]) : ''
+      const prefix = tailMatcher
+        ? (name.endsWith(tailMatcher[0]) ? '' : 'group-') + tail(tailMatcher[1])
+        : ''
 
       const after
         = prefix && transfer
@@ -62,8 +63,9 @@ export async function transformCss(
       // 未被转换跳过
       if (before === after)
         return
+
       if (prefix)
-        name = name.slice(0, `-${tailMatcher[0].length}`)
+        name = name.replace(tailMatcher[0], '')
       // 找template > ast
       const names = name.replace(/\s*\+\s*/, '+').split(' ')
 
@@ -73,6 +75,21 @@ export async function transformCss(
         return
 
       result.forEach((r) => {
+        const parent = r.parent
+        if (prefix.startsWith('group-') && parent) {
+          // 给result的parent添加class="group"
+          const hasClass = parent.props.find((i: any) => i.name === 'class')
+          if (hasClass) {
+            // 如果有class
+            const index = hasClass.value.loc.start.offset
+            code = `${code.slice(0, index + 1)}group ${code.slice(index + 1)}`
+          }
+          else {
+            const index = parent.loc.start.offset + parent.tag.length + 1
+            code = `${code.slice(0, index)} class="group" ${code.slice(index)}`
+          }
+        }
+
         const {
           loc: { source },
           tag,
@@ -208,6 +225,8 @@ function findDeepChild(
 ) {
   for (let i = 0; i < list.length; i++) {
     const cur = list[i]
+    if (cur === '>')
+      continue
     const curs = cur.split('>')
     if (targets) {
       targets.forEach((t: any) =>
@@ -232,6 +251,15 @@ function findDeepChild(
       return result
     }
   }
+  return sort(result)
+}
+
+function sort(data: any[]) {
+  const result: any[] = []
+  data.forEach((item) => {
+    if (!result.some(k => k.loc.source === item.loc.source))
+      result.push(item)
+  })
   return result
 }
 
@@ -330,9 +358,10 @@ export function astFindTag(
 
   if (ast.children && ast.children.length && deps) {
     deps--
-    ast.children.forEach((child: any) =>
-      astFindTag(child, tag, deps, combine, add, result, ast.children),
-    )
+    ast.children.forEach((child: any) => {
+      child.parent = ast
+      astFindTag(child, tag, deps, combine, add, result, ast.children)
+    })
   }
   return result
 }
