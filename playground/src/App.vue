@@ -8,6 +8,8 @@ import gitForkVue from '@simon_he/git-fork-vue'
 import { useI18n } from 'vue-i18n'
 import { transformVue } from '../../src/transformVue'
 import { toUnocss } from '../../src/toUnocss'
+import { isDark, toggleDark } from '~/composables'
+
 const { t, locale } = useI18n()
 
 const input = ref('')
@@ -33,15 +35,16 @@ const editorInput = ref(`<template>
     font-size: 14px;
     cursor: pointer;
     user-select: none;
-    padding:8px 15px;
+    padding: 8px 15px;
     border-radius: 4px;
-    border:none;
+    border: none;
     box-sizing: border-box;
-    color:#fff;
+    color: #fff;
     background-color: #409eff;
+    margin: auto;
   }
   button:hover{
-    background-color:#67c23a ;
+    background-color: #67c23a ;
   }
 </style>
 `)
@@ -132,21 +135,23 @@ const changelanguage = () => {
 </script>
 
 <template>
-  <div
-    p1
-    hover="rotate-y-180deg "
-    absolute
-    z-2
-    left-2
-    top-2
-    p2
-    transition-all-800
-    cursor-pointer
-    @click="changelanguage"
-  >
-    <div text-xl i-fa:language />
+  <div absolute flex="~ gap-2" z-2 left-2 top-2>
+    <div
+      hover="rotate-y-180deg "
+      transition-all-800
+      cursor-pointer
+      @click="changelanguage"
+    >
+      <div i-fa:language />
+    </div>
+    <button
+      class="icon-btn !outline-none border-none bg-transparent"
+      @click="toggleDark()"
+    >
+      <div v-if="isDark" i-carbon-moon text-white />
+      <div v-else i-carbon-sun />
+    </button>
   </div>
-
   <gitForkVue
     link="https://github.com/Simon-He95"
     type="trapeziumType"
