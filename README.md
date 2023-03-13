@@ -4,13 +4,13 @@
 
 This library is to convert css in vue to unocss. [unocss](https://github.com/unocss/unocss) can reuse styles better to reduce the packaging volume, which can be converted as a performance optimization method, and it can also make it easier for old projects to upgrade to unocss
 
-# Install
+# 📦 Install
 
 ```
   npm i -g transform-to-unocss
 ```
 
-# cli
+# 🦄 cli
 
 ```
   ## command: tounocss + directory
@@ -20,14 +20,14 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
   tounocss payground --revert
 ```
 
-# vite
+# 🖖 vite
 
 ```
   import { vitePluginTransformToUnocss } from 'transform-to-unocss'
   plugins: [ vitePluginTransformToUnocss() ]
 ```
 
-# Feature
+# ⭐ Feature
 
 - support css in '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' to unocss
 
@@ -38,3 +38,10 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 ## After
 
 ![after](/assets/after.png)
+
+## :coffee:
+[请我喝一杯咖啡](https://github.com/Simon-He95/sponsor)
+
+## License
+
+[MIT](./license)
