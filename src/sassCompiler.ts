@@ -1,6 +1,6 @@
-import sass from 'sass'
-export function sassCompiler(css: string) {
-  const result = sass.compileString(css)
+// import { compileString } from 'sass'
+export async function sassCompiler(css: string) {
+  const result = (await import('sass')).default.compileString(css)
   return result.css
 }
 // const input = `

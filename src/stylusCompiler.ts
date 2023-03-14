@@ -1,4 +1,3 @@
-import stylus from 'stylus'
-export function stylusCompiler(css: string) {
-  return stylus.render(css)
+export async function stylusCompiler(css: string) {
+  return (await import('stylus')).default.render(css)
 }

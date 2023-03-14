@@ -1,9 +1,8 @@
 <template>
-  <button>button</button>
+  <button>button <span></span></button>
 </template>
 
-<style scoped>
-  @import url(./index.css);
+<style scoped lang="scss">
   button {
     height: 32px;
     display: flex;
@@ -18,8 +17,9 @@
     box-sizing: border-box;
     color:#fff;
     background-color: #409eff;
+    span{
+      color:red
+    }
   }
-  button:hover{
-    background-color:#67c23a ;
-  }
+
 </style>
