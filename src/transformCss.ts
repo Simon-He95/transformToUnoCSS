@@ -4,6 +4,7 @@ import { parse } from 'vue/compiler-sfc'
 import {
   diffTemplateStyle,
   flag,
+  getCssType,
   getStyleScoped,
   isEmptyStyle,
   joinWithUnderLine,
@@ -14,6 +15,7 @@ import { tail } from './tail'
 import { transformStyleToUnocss } from './transformStyleToUnocss'
 import { transformVue } from './transformVue'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
+import { compilerCss } from './compilerCss'
 const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
 
 const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
@@ -142,7 +144,7 @@ async function importCss(
 ) {
   const originCode = code
   for await (const match of style.matchAll(
-    /@import (url\()?["']*(.*.css)["']*\)?;/g,
+    /@import (url\()?["']*([\w.\/\-\_]*)["']*\)?;/g,
   )) {
     if (!match)
       continue
@@ -152,11 +154,13 @@ async function importCss(
       path.resolve(filepath!, '..', url),
       'utf-8',
     )
+    const type = getCssType(url)
+    const css = await compilerCss(content, type)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, beforeStyle] = code.match(/<style.*>(.*)<\/style>/s)!
     code = code.replace(beforeStyle, '')
 
-    const vue = wrapperVueTemplate(code, content)
+    const vue = wrapperVueTemplate(code, css)
 
     const transfer = await transformVue(vue, isJsx)
 
@@ -173,7 +177,11 @@ async function importCss(
     // 否则剩余的生成新的@import css
     const restStyle = getStyleScoped(transfer)
 
-    fsp.writeFile(url.replace('.css', `${flag}.css`), restStyle, 'utf-8')
+    fsp.writeFile(
+      url.replace(`.${type}`, `${flag}.${type}`),
+      restStyle,
+      'utf-8',
+    )
 
     code = wrapperVueTemplate(
       transfer.replace(/<style scoped>.*<\/style>/s, ''),

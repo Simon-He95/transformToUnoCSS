@@ -1,8 +1,10 @@
 import { parse } from 'vue/compiler-sfc'
+import { compilerCss } from './compilerCss'
 import { prettierCode } from './prettierCode'
 import { transformCss } from './transformCss'
 import { tansformInlineStyle } from './transformInlineStyle'
 import { transformMedia } from './transformMedia'
+import type { CssType } from './utils'
 
 export async function transformVue(
   code: string,
@@ -26,16 +28,19 @@ export async function transformVue(
   const [transferMediaCode, transformBack] = await transformMedia(code, isJsx)
 
   code = transferMediaCode
-
   // transform class
   const {
     attrs: { scoped },
     content: style,
+    lang = 'css',
   } = styles[0]
+
+  const css = await compilerCss(style, lang as CssType)
+  code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
 
   // 只针对scoped css处理
   if (scoped)
-    code = await transformCss(style, code, '', isJsx, filepath)
+    code = await transformCss(css, code, '', isJsx, filepath)
 
   // 还原@media 未匹配到的class
   code = transformBack(code)
