@@ -4,14 +4,21 @@ export async function lessCompiler(css: string, alias = {}) {
   const { LessPluginModuleResolver } = await (
     await import('less-plugin-module-resolver')
   ).default
-  const data = await (
-    await import('less')
-  ).default.render(css, {
-    plugins: [
-      new LessPluginModuleResolver({
-        alias,
-      }),
-    ],
-  })
-  return data.css
+  let result = css
+  try {
+    result = (
+      await (
+        await import('less')
+      ).default.render(css, {
+        plugins: [
+          new LessPluginModuleResolver({
+            alias,
+          }),
+        ],
+      })
+    ).css
+  }
+  catch (error) {}
+
+  return result
 }

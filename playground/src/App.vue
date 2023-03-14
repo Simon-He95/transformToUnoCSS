@@ -83,17 +83,23 @@ onMounted(() => {
 
 useAnimationFrame(async () => {
   const newInput = editorComponent!.getValue()
-  let code
-  try {
-    code = await transformVue(newInput)
-  }
-  catch (err: any) {
-    code = err.message
-  }
   if (!editorResult.value)
     return
-  if ((!pre && code) || pre !== code) {
-    pre = code
+  let code
+
+  if ((!pre && newInput) || pre !== newInput) {
+    pre = newInput
+
+    try {
+      code = await fetch('/.netlify/functions/server', {
+        method: 'POST',
+        body: newInput,
+      }).then(res => res.text())
+    }
+    catch (error) {
+      code = await transformVue(newInput)
+    }
+
     editorResult.value!.innerHTML = ''
     monaco.editor.create(editorResult.value!, {
       value: code,
