@@ -83,7 +83,13 @@ onMounted(() => {
 
 useAnimationFrame(async () => {
   const newInput = editorComponent!.getValue()
-  const code = await transformVue(newInput)
+  let code
+  try {
+    code = await transformVue(newInput)
+  }
+  catch (err: any) {
+    code = err.message
+  }
   if (!editorResult.value)
     return
   if ((!pre && code) || pre !== code) {
