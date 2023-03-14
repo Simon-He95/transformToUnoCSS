@@ -30,6 +30,7 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 # ⭐ Feature
 
 - support css in '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' to unocss
+- support sass less stylus convert
 
 ## Before
 
