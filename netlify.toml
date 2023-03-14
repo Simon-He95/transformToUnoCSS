@@ -3,5 +3,4 @@
 [build]
   publish = "./playground/dist"
   command = "npm run play:build"
-[dev]
- functions="functions"
+ functions="./playground/functions/server.zip"
