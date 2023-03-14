@@ -1,7 +1,7 @@
 import { createGenerator } from '@unocss/core'
 import presetUno from '@unocss/preset-uno'
 
-export type CssType = 'less' | 'scss' | 'css' | 'styl'
+export type CssType = 'less' | 'scss' | 'css' | 'stylus'
 export const flag = '.__unocss_transfer__'
 export function isCalc(s: string) {
   return s.startsWith('calc(')
@@ -128,5 +128,6 @@ export function getStyleScoped(code: string) {
 
 export function getCssType(filename: string) {
   const ext = filename.split('.').pop()!
-  return ext as CssType
+  const result = ext === 'styl' ? 'stylus' : ext
+  return result as CssType
 }

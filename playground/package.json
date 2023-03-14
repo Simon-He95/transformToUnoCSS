@@ -2,9 +2,6 @@
   "name": "playground",
   "private": true,
   "packageManager": "pnpm@7.6.0",
-  "browser": {
-    "sass-dart": false
-  },
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3333 --open",
