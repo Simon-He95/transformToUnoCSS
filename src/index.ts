@@ -1,5 +1,10 @@
 import { transfromCode } from './transformCode'
-import { vitePluginTransformToUnocss } from './vite'
+import {
+  esbuildTransformToUnocss,
+  rollupTransformToUnocss,
+  viteTransformToUnocss,
+  webpackTransformToUnocss,
+} from './unplugin'
 import { transformVue } from './transformVue'
 import { transformSvelte } from './transformSvelte'
 import { transformHtml } from './transformHtml'
@@ -13,5 +18,8 @@ export {
   transformHtml,
   transformAstro,
   transformSvelte,
-  vitePluginTransformToUnocss,
+  viteTransformToUnocss,
+  rollupTransformToUnocss,
+  webpackTransformToUnocss,
+  esbuildTransformToUnocss,
 }

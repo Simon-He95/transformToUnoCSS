@@ -4,13 +4,13 @@
 
 This library is to convert css in vue to unocss. [unocss](https://github.com/unocss/unocss) can reuse styles better to reduce the packaging volume, which can be converted as a performance optimization method, and it can also make it easier for old projects to upgrade to unocss
 
-# 📦 Install
+## 📦 Install
 
 ```
   npm i -g transform-to-unocss
 ```
 
-# 🦄 cli
+## 🦄 cli
 
 ```
   ## command: tounocss + directory
@@ -20,17 +20,90 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
   tounocss payground --revert
 ```
 
-# 🖖 vite
+## 🌈 Usage
 
+<details>
+<summary>Vite</summary>
+
+```ts
+// vite.config.ts
+import { vitePluginTransformToUnocss } from 'transform-to-unocss'
+export default defineConfig({
+  plugins: [vitePluginTransformToUnocss(/* options */)],
+})
 ```
-  import { vitePluginTransformToUnocss } from 'transform-to-unocss'
-  plugins: [ vitePluginTransformToUnocss() ]
+
+</details>
+<br>
+<details>
+<summary>Rollup</summary>
+
+```ts
+// rollup.config.js
+import { resolve } from 'path'
+import { rollupTransformToUnocss } from 'transform-to-unocss'
+export default {
+  plugins: [rollupTransformToUnocss(/* options */)],
+}
 ```
+
+</details>
+<br>
+<details>
+<summary>Webpack</summary>
+
+```ts
+// webpack.config.js
+module.exports = {
+  /* ... */
+  plugins: [
+    require('transform-to-unocss').webpackTransformToUnocss({
+      /* options */
+    }),
+  ],
+}
+```
+
+</details>
+<br>
+<details>
+<summary>Vue CLI</summary>
+
+```ts
+// vue.config.js
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      require('transform-to-unocss').webpackTransformToUnocss({
+        /* options */
+      }),
+    ],
+  },
+}
+```
+
+</details>
+<br>
+<details>
+<summary>Esbuild</summary>
+
+```ts
+// esbuild.config.js
+import { build } from 'esbuild'
+import { esbuildTransformToUnocss } from 'transform-to-unocss'
+
+build({
+  plugins: [esbuildTransformToUnocss(/* options */)],
+})
+```
+
+</details>
 
 # ⭐ Feature
 
 - support css in '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' to unocss
 - support sass less stylus convert
+- support vite | rollup | webpack | vue-cli | esbuild
 
 ## Before
 
@@ -41,6 +114,7 @@ This library is to convert css in vue to unocss. [unocss](https://github.com/uno
 ![after](/assets/after.png)
 
 ## :coffee:
+
 [请我喝一杯咖啡](https://github.com/Simon-He95/sponsor)
 
 ## License

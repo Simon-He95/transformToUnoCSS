@@ -1,4 +1,5 @@
 import { createGenerator } from '@unocss/core'
+import type { FilterPattern } from '@rollup/pluginutils'
 import presetUno from '@unocss/preset-uno'
 
 export type CssType = 'less' | 'scss' | 'css' | 'stylus'
@@ -130,4 +131,9 @@ export function getCssType(filename: string) {
   const ext = filename.split('.').pop()!
   const result = ext === 'styl' ? 'stylus' : ext
   return result as CssType
+}
+
+export interface Options {
+  include?: FilterPattern
+  exclude?: FilterPattern
 }
