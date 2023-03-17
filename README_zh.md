@@ -1,8 +1,9 @@
 <p align="center">
 <img height="200" src="./assets/kv.png" alt="to unocss">
 </p>
-<p align="center"> English | <a href="./README_zh.md">简体中文</a></p>
-This library is to convert css in vue to unocss. [unocss](https://github.com/unocss/unocss) can reuse styles better to reduce the packaging volume, which can be converted as a performance optimization method, and it can also make it easier for old projects to upgrade to unocss
+<p align="center"> <a href="./README.md">English</a> | 简体中文</p>
+
+这个库就是把 vue 中的 css 转成 unocss 的。 [unocss](https://github.com/unocss/unocss) 可以更好的复用样式减少打包体积，可以转化为一种性能优化的方式，也可以让老项目更容易升级到 unocss。
 
 ## 📦 Install
 
@@ -101,15 +102,15 @@ build({
 
 # ⭐ Feature
 
-- support css in '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' to unocss
-- support sass less stylus convert
-- support vite | rollup | webpack | vue-cli | esbuild
+- 支持 css 在 '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' 转换到 unocss
+- 支持 sass less stylus 类型的转换
+- 支持 vite | rollup | webpack | vue-cli | esbuild 作为插件使用
 
-## Before
+## 编译前
 
 ![before](/assets/before.png)
 
-## After
+## 编译后
 
 ![after](/assets/after.png)
 
