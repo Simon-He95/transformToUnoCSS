@@ -10,7 +10,7 @@ import { transformSvelte } from './transformSvelte'
 import { transformHtml } from './transformHtml'
 import { transformAstro } from './transformAstro'
 import { transformJsx } from './transformJsx'
-import { tansformInlineStyle } from './transformInlineStyle'
+import { transformInlineStyle } from './transformInlineStyle'
 
 export {
   transfromCode,
@@ -23,5 +23,5 @@ export {
   rollupTransformToUnocss,
   webpackTransformToUnocss,
   esbuildTransformToUnocss,
-  tansformInlineStyle,
+  transformInlineStyle,
 }

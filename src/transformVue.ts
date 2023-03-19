@@ -2,7 +2,7 @@ import { parse } from 'vue/compiler-sfc'
 import { compilerCss } from './compilerCss'
 import { prettierCode } from './prettierCode'
 import { transformCss } from './transformCss'
-import { tansformInlineStyle } from './transformInlineStyle'
+import { transformInlineStyle } from './transformInlineStyle'
 import { transformMedia } from './transformMedia'
 import type { CssType } from './utils'
 
@@ -20,7 +20,7 @@ export async function transformVue(
     return code
   // transform inline-style
 
-  code = tansformInlineStyle(code, isJsx)
+  code = transformInlineStyle(code, isJsx)
 
   if (!template || !styles.length)
     return code
