@@ -39,7 +39,6 @@
     "dist"
   ],
   "scripts": {
-    "postinstall": "simple-git-hooks",
     "build": "tsup ./src/index.ts ./src/cli.ts",
     "dev": "npm run build -- --watch src",
     "format": "prettier --write --cache .",
