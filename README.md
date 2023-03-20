@@ -115,7 +115,7 @@ build({
 
 ## :coffee:
 
-[请我喝一杯咖啡](https://github.com/Simon-He95/sponsor)
+[buy me a cup of coffee](https://github.com/Simon-He95/sponsor)
 
 ## License
 
