@@ -16,5 +16,5 @@ export function flex(key: string, val: string) {
   if (key === 'flex' && (firstVal === '0' || firstVal === '1'))
     return `flex="[${joinWithUnderLine(value)}]${important}"`
 
-  return `${getFirstName(key)}-${value}${important}`
+  return `${getFirstName(key)}-${value.replace('column', 'col')}${important}`
 }

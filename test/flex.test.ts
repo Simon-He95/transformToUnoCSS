@@ -6,6 +6,18 @@ describe('flex', () => {
     expect(toUnocss('flex: none;')).toBe('flex-none')
   })
 
+  it('flex-direction: column-reverse;', () => {
+    expect(toUnocss('flex-direction: column-reverse;')).toBe('flex-col-reverse')
+  })
+
+  it('flex-direction: column;', () => {
+    expect(toUnocss('flex-direction: column;')).toBe('flex-col')
+  })
+
+  it('flex-direction: column-reverse;', () => {
+    expect(toUnocss('flex-direction: column-reverse;')).toBe('flex-col-reverse')
+  })
+
   it('flex-grow: 1;', () => {
     expect(toUnocss('flex-grow: 1;')).toBe('grow-1')
   })
