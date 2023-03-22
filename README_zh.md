@@ -105,6 +105,7 @@ build({
 - 支持 css 在 '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' 转换到 unocss
 - 支持 sass less stylus 类型的转换
 - 支持 vite | rollup | webpack | vue-cli | esbuild 作为插件使用
+- vscode 扩展 [To Unocss](https://github.com/Simon-He95/tounocss)
 
 ## 编译前
 
