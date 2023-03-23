@@ -1,15 +1,19 @@
 import { describe, expect, it } from 'vitest'
 import { toUnocss } from '../src/toUnocss'
 describe('background', () => {
-  it('background:red', () => {
+  it('background:red !important', () => {
     expect(toUnocss('background:red !important')).toBe('bg="red!"')
   })
 
-  it('background:red', () => {
+  it('background:rgb(125, 188, 234)', () => {
+    expect(toUnocss('background:rgb(125, 188, 234) center')).toBe('bg="[rgb(125,188,234)] center"')
+  })
+
+  it('background:red center no-repeat url("./xxx.jpg")', () => {
     expect(toUnocss('background:red center no-repeat url("./xxx.jpg")')).toBe('bg="red center no-repeat url("./xxx.jpg")"')
   })
 
-  it('background:red', () => {
+  it('background-color:red', () => {
     expect(toUnocss('background-color:red')).toBe('bg-red')
   })
 

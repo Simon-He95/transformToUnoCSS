@@ -32,6 +32,13 @@ export function background(key: string, val: string) {
           : `-${toColor}${important}`
       }`
     }
+    // console.log({value});
+    const match = value.match(/rgba?\([\w,\s]+\)/)
+    if (match) {
+      const rgb = match[0]
+      return `bg="${value.replace(rgb, `[${trim(rgb, 'all')}]`)}${important}"`
+    }
+
     return `bg="${value}${important}"`
   }
 
