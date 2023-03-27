@@ -49,6 +49,12 @@ describe('background', () => {
     )
   })
 
+    it('background-clip:border-box', () => {
+      expect(toUnocss('background-clip:padding-box')).toBe(
+        'bg-clip-padding',
+      )
+    })
+
   it('background-clip:test', () => {
     expect(toUnocss('background-clip:test')).toBe('bg-clip-test')
   })
@@ -105,12 +111,16 @@ describe('background', () => {
 
   it('background-image:url(\'picture.png\')', () => {
     expect(toUnocss('background-image:url(\'picture.png\')')).toBe(
-      'bg="[url(\'picture.png\')]"',
+      'bg="[url(picture.png)]"',
     )
   })
 
   it('background: red', () => {
     expect(toUnocss('background: red')).toBe('bg="red"')
+  })
+
+  it('background: url("../aa.jpg")', () => {
+    expect(toUnocss('background: url("../aa.jpg")')).toBe('bg="[url(../aa.jpg)]"')
   })
 
   it('background-blend-mode: normal;', () => {

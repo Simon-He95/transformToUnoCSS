@@ -21,7 +21,7 @@ describe('transform', () => {
   })
 
   it('transform: rotate(0deg);', () => {
-    expect(toUnocss('transform: rotate( 0deg );')).toBe('rotate="[0]"')
+    expect(toUnocss('transform: rotate( 0deg );')).toBe('rotate="0"')
   })
 
   it('transform: translateX(1px);', () => {
@@ -43,7 +43,7 @@ describe('transform', () => {
   })
   it('transform: ranslate(10%, 20%);', () => {
     expect(toUnocss('transform: translate(10%, 20%);')).toBe(
-      'translate="[10%_20%]"',
+      'translate="10% 20%"',
     )
   })
 

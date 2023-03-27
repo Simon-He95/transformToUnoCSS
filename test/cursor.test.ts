@@ -28,7 +28,7 @@ describe('cursor', () => {
 
   it('cursor: url("hyper.cur"), auto;', () => {
     expect(toUnocss('cursor: url("hyper.cur"), auto;')).toBe(
-      'cursor="[url("hyper.cur"),auto]"',
+      'cursor="[url(hyper.cur),auto]"',
     )
   })
 

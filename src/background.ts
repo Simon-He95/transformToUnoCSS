@@ -32,12 +32,14 @@ export function background(key: string, val: string) {
           : `-${toColor}${important}`
       }`
     }
-    // console.log({value});
     const match = value.match(/rgba?\([\w,\s]+\)/)
     if (match) {
       const rgb = match[0]
       return `bg="${value.replace(rgb, `[${trim(rgb, 'all')}]`)}${important}"`
     }
+
+    if (value.startsWith('url'))
+      return `bg="[${value.replace(/['"]/g, '')}]"`
 
     return `bg="${value}${important}"`
   }
@@ -55,7 +57,7 @@ function replaceBackground(s: string, val: string) {
 }
 
 function transformBox(s: string) {
-  const reg = /(border)|(content)-box/
+  const reg = /(border)|(content)|(padding)-box/
   if (reg.test(s))
     return s.replace('-box', '')
   if (s.startsWith('repeat-'))

@@ -35,7 +35,7 @@ export function isRgb(s: string) {
 
 export function getVal(val: string, transform?: Function) {
   if (isCalc(val) || isUrl(val) || isHex(val) || isRgb(val) || isPercent(val))
-    return `="[${trim(val, 'all')}]"`
+    return `="[${trim(val, 'all').replace(/['"]/g, '')}]"`
   return `-${transform ? transform(val) : val}`
 }
 
