@@ -21,22 +21,33 @@ describe('transform', () => {
   })
 
   it('transform: rotate(0deg);', () => {
-    expect(toUnocss('transform: rotate( 0deg );')).toBe('rotate-0')
+    expect(toUnocss('transform: rotate( 0deg );')).toBe('rotate="[0]"')
   })
 
   it('transform: translateX(1px);', () => {
     expect(toUnocss('transform: translateX(1px);')).toBe(
-      'translate-x-1px',
+      'translate-x="1px"',
     )
   })
 
   it('transform: translateX(1px);', () => {
     expect(toUnocss('transform: translateX(1px);')).toBe(
-      'translate-x-1px',
+      'translate-x="1px"',
+    )
+  })
+
+  it('transform: translateX(10%);', () => {
+    expect(toUnocss('transform: translateX(10%);')).toBe(
+      'translate-x="10%"',
+    )
+  })
+  it('transform: ranslate(10%, 20%);', () => {
+    expect(toUnocss('transform: translate(10%, 20%);')).toBe(
+      'translate="[10%_20%]"',
     )
   })
 
   it('transform: skewX(2deg);', () => {
-    expect(toUnocss('transform: skewX(2deg);')).toBe('skew-x-2')
+    expect(toUnocss('transform: skewX(2deg);')).toBe('skew-x="2"')
   })
 })

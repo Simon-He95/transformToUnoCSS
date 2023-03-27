@@ -20,14 +20,17 @@ export function transform(key: string, val: string) {
         value,
       )}${important}`
     }
-    return `${namePrefix}-${nameSuffix.toLowerCase()}-${transformVal(
+    return `${namePrefix}-${nameSuffix.toLowerCase()}="${transformVal(
       value,
-    )}${important}`
+    )}${important}"`
   }
   else {
     if (namePrefix === 'scale')
       return `${namePrefix}-${getHundred(value)}${important}`
-    return `${namePrefix}-${transformVal(value)}${important}`
+    return `${namePrefix}="[${transformVal(value).replace(
+      /,/g,
+      '_',
+    )}]${important}"`
   }
 }
 
