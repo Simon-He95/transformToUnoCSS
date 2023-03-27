@@ -37,9 +37,14 @@ export function background(key: string, val: string) {
       const rgb = match[0]
       return `bg="${value.replace(rgb, `[${trim(rgb, 'all')}]`)}${important}"`
     }
+    const urlMatch = value.match(/url\(["'\s\.\-_\w\/]*\)/)
 
-    if (value.startsWith('url'))
-      return `bg="[${value.replace(/['"]/g, '')}]"`
+    if (urlMatch) {
+      return `bg="${value.replace(
+        urlMatch[0],
+        `[${urlMatch[0].replace(/['"]/g, '')}]${important}`,
+      )}"`
+    }
 
     return `bg="${value}${important}"`
   }
