@@ -381,7 +381,6 @@ async function resolveConflictClass(
   isJsx?: boolean,
 ) {
   const changes = findSameSource(allChange)
-
   let result = code
   for await (const key of Object.keys(changes)) {
     const value = changes[key]

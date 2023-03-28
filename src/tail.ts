@@ -12,5 +12,7 @@ export function tail(css: string) {
     return css.split('=')[1]
   if (css === 'file-selector-button')
     return 'file'
+  if (css.endsWith('-child'))
+    return css.split('-')[0]
   return css
 }

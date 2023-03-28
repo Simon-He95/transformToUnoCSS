@@ -34,7 +34,7 @@ importers:
       sass: ^1.59.2
       simple-git-hooks: ^2.8.1
       stylus: ^0.59.0
-      transform-to-unocss: workspace:^0.0.35
+      transform-to-unocss: ^0.0.35
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
@@ -72,7 +72,7 @@ importers:
       sass: 1.59.2
       simple-git-hooks: 2.8.1
       stylus: 0.59.0
-      transform-to-unocss: 'link:'
+      transform-to-unocss: 0.0.35
       tsup: 6.5.0_typescript@4.7.4
       tsx: 3.12.1
       typescript: 4.7.4
@@ -6584,6 +6584,14 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       punycode: 2.1.1
+    dev: true
+
+  /transform-to-unocss/0.0.35:
+    resolution: {integrity: sha512-tQkJ36jmsAixi0rZUvkAUy1zwLcZuhragWhCL1Ib0e0ZIFNzIp1+pYQRi80wj0B3eT925z88Vpxycpg7IR6A7Q==}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      fast-glob: 3.2.12
     dev: true
 
   /tree-kill/1.2.2:
