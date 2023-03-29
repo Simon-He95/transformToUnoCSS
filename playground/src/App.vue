@@ -181,6 +181,9 @@ const changelanguage = () => {
     color-pink
     py6
     text-center
+    spilt-class="textshadow"
+    class="typing"
+    data-text="Css To Unocss"
   />
   <div h="100%" flex justify-center items-center flex-col p="y10">
     <input
@@ -224,22 +227,44 @@ const changelanguage = () => {
   </div>
   <div flex>
     <div w="50%">
-      <h1 pl2>
+      <h1 pl2 class="textshadow" :data-text="t('inputs')" indent-10>
         {{ t('inputs') }}
       </h1>
       <div ref="editor" h-100 />
     </div>
     <div w="50%">
-      <h1 pl2>
+      <h1 pl2 class="textshadow" :data-text="t('outputs')" indent-10>
         {{ t('outputs') }}
       </h1>
       <div ref="editorResult" h-100 />
     </div>
   </div>
-  <h1 pl2>
+  <h1 pl2 class="textshadow" :data-text="t('render')" indent-10>
     {{ t('render') }}
   </h1>
   <div pb20 data-v-display v-html="display" />
 </template>
 
-<style scoped></style>
+<style scoped>
+.textshadow {
+  position: relative;
+  z-index: 2;
+}
+.textshadow::after {
+  bottom: 0;
+  color: #000;
+  content: attr(data-text);
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
+  left: 0;
+  -webkit-mask-image: linear-gradient(transparent, #000);
+  mask-image: linear-gradient(transparent, #000);
+  position: absolute;
+  -webkit-transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
+  transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
+  z-index: 1;
+}
+.dark .textshadow::after {
+  color: #fff;
+}
+</style>
