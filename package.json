@@ -1,7 +1,7 @@
 {
   "name": "transform-to-unocss",
   "version": "0.0.46",
-  "packageManager": "pnpm@7.2.1",
+  "packageManager": "pnpm@8.0.0",
   "description": "",
   "author": "Simon He",
   "license": "MIT",
@@ -81,6 +81,7 @@
     "magic-string": "^0.30.0",
     "monaco-editor": "^0.36.1",
     "picocolors": "^1.0.0",
+    "pnpm": "^8.0.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "sass": "^1.59.2",
