@@ -1,4 +1,10 @@
-import { getVal, joinWithUnderLine, transformImportant, trim } from './utils'
+import {
+  getVal,
+  isCalc,
+  joinWithUnderLine,
+  transformImportant,
+  trim,
+} from './utils'
 
 const borderSize = [
   'border-left',
@@ -15,8 +21,11 @@ export function border(key: string, val: string) {
   if (key === 'border-color')
     return `border${getVal(value)}${important}`
 
-  if (key === 'border-radius')
-    return `border-rd${getVal(value)}${important}`
+  if (key === 'border-radius') {
+    return isCalc(value)
+      ? `border-rd${getVal(value)}${important}`
+      : `border-rd="[${joinWithUnderLine(value)}]${important}"`
+  }
 
   if (borderSize.some(b => key.startsWith(b)))
     return `border-${key.split('-')[1][0]}${getVal(value)}`

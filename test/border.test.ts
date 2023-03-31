@@ -11,7 +11,7 @@ describe('border', () => {
 
   it('radius', () => {
     expect(toUnocss('border-radius: 0.25rem;')).toBe(
-      'border-rd-0.25rem',
+      'border-rd="[0.25rem]"',
     )
   })
 
@@ -22,6 +22,12 @@ describe('border', () => {
   it('radius-calc', () => {
     expect(toUnocss('border-radius: calc(100% - 20px)')).toBe(
       'border-rd="[calc(100%-20px)]"',
+    )
+  })
+
+  it('border-radius: 10px 20px 30px 40px', () => {
+    expect(toUnocss('border-radius: 10px 20px 30px 40px;')).toBe(
+      'border-rd="[10px_20px_30px_40px]"',
     )
   })
 
