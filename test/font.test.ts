@@ -12,6 +12,12 @@ describe('font-size', () => {
   })
 })
 
+describe('font', () => {
+  it('rem', () => {
+    expect(toUnocss('font: bold 16px/20px;')).toBe('font="bold text-16px/20px"')
+  })
+})
+
 describe('font-weight', () => {
   it('100', () => {
     expect(toUnocss('font-weight: 100')).toBe('font-100')

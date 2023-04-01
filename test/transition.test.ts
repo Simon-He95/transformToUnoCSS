@@ -2,13 +2,14 @@ import { describe, expect, it } from 'vitest'
 import { toUnocss } from '../src/toUnocss'
 
 describe('transition', () => {
-  it('transition: none;', () => {
-    expect(toUnocss('transition: none;')).toBe('transition-none')
+  it('transition: background-color 0.5s ease;', () => {
+    expect(toUnocss('transition: background-color 0.5s ease;')).toBe('transition="color duration-0.5s ease"')
   })
 
   it('transition: none;', () => {
-    expect(toUnocss('transition: none;')).toBe('transition-none')
+    expect(toUnocss('transition: none;')).toBe('transition="none"')
   })
+
   it('transition-property: all;', () => {
     expect(toUnocss('transition-property: all;')).toBe(
       'transition-all',
@@ -26,7 +27,7 @@ describe('transition', () => {
       toUnocss(
         'transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;',
       ),
-    ).toBe('transition-colors')
+    ).toBe('transition-color')
   })
 
   it('transition-duration: 75ms;', () => {

@@ -127,6 +127,5 @@ export function toUnocss(css: String) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, key, val] = match
   const first = getFirstName(key)
-
   return typeMap[first]?.(key, val)
 }
