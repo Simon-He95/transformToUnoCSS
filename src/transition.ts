@@ -24,10 +24,17 @@ export function transition(key: string, val: string) {
 }
 
 function transformTransition(v: string) {
+  let hasDuration = false
   return v
     .split(' ')
-    .map(item =>
-      /^[0-9]/.test(item) ? `duration-${item}` : getLastName(item),
-    )
+    .map((item) => {
+      if (/^[0-9]/.test(item)) {
+        if (hasDuration)
+          return `delay-${item}`
+        hasDuration = true
+        return `duration-${item}`
+      }
+      return getLastName(item)
+    })
     .join(' ')
 }
