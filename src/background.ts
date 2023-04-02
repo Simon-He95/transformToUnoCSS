@@ -8,7 +8,7 @@ const backgroundMap = [
   'background-image',
 ]
 const gradientReg
-  = /linear-gradient\(\s*to\s+(\w+)\s*(\w+)?\s*,\s*([\w\(\), ]+)\s*,\s*([\w\(\), ]+)\s*\)$/
+  = /linear-gradient\(\s*to\s+(\w+)\s*(\w+)?\s*,\s*([\w\(\),#% ]+)\s*,\s*([\w\(\),#% ]+)\s*\)$/
 export function background(key: string, val: string) {
   const [value, important] = transformImportant(val)
 
@@ -22,15 +22,13 @@ export function background(key: string, val: string) {
         return
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, from, to, fromColor, toColor] = matcher
-      return `bg-gradient-to-${from?.[0] || ''}${to?.[0] || ''} from${
-        isRgb(fromColor)
-          ? `="[${trim(fromColor, 'all')}]${important}"`
-          : `-${fromColor}${important}`
-      } to${
-        isRgb(toColor)
-          ? `="[${trim(toColor, 'all')}]${important}"`
-          : `-${toColor}${important}`
-      }`
+      return `bg-gradient-to-${from?.[0] || ''}${
+        to?.[0] || ''
+      } from="${`${transformColor(
+        trim(fromColor, 'around'),
+      )}${important}`}" to="${`${transformColor(
+        trim(toColor, 'around'),
+      )}${important}`}"`
     }
     const match = value.match(/rgba?\([\w,\s]+\)/)
     if (match) {
@@ -72,4 +70,17 @@ function transformBox(s: string) {
 
 function transformSpaceToLine(s: string) {
   return s.replace(/\s+/, ' ').replace(' ', '-')
+}
+
+function transformColor(val: string) {
+  if (val.startsWith('rgb')) {
+    val = val.replace(/rgba?\(([\w\s,\.]+)\)/, (all, v) =>
+      all.replace(v, trim(v, 'all')),
+    )
+  }
+
+  return val
+    .split(' ')
+    .map(item => (isRgb(item) ? `[${item}]` : item))
+    .join(' ')
 }

@@ -53,11 +53,11 @@ describe('background', () => {
     )
   })
 
-    it('background-clip:border-box', () => {
-      expect(toUnocss('background-clip:padding-box')).toBe(
-        'bg-clip-padding',
-      )
-    })
+  it('background-clip:border-box', () => {
+    expect(toUnocss('background-clip:padding-box')).toBe(
+      'bg-clip-padding',
+    )
+  })
 
   it('background-clip:test', () => {
     expect(toUnocss('background-clip:test')).toBe('bg-clip-test')
@@ -138,7 +138,7 @@ describe('background', () => {
       toUnocss(
         'background: linear-gradient(to top, rgba(255, 255, 255), cyan);',
       ),
-    ).toBe('bg-gradient-to-t from="[rgba(255,255,255)]" to-cyan')
+    ).toBe('bg-gradient-to-t from="[rgba(255,255,255)]" to="cyan"')
   })
 
   it('background: linear-gradient(to left top, black, cyan);', () => {
@@ -146,6 +146,15 @@ describe('background', () => {
       toUnocss(
         'background: linear-gradient(to left top, black, cyan);',
       ),
-    ).toBe('bg-gradient-to-lt from-black to-cyan')
+    ).toBe('bg-gradient-to-lt from="black" to="cyan"')
+  })
+
+  // unocss 支持 to-10% from-10%
+  it('background: linear-gradient(to bottom, #00ffff 0%, #0066ff 100%);', () => {
+    expect(
+      toUnocss(
+        'background: linear-gradient(to bottom, #00ffff 0%, #0066ff 100%);',
+      ),
+    ).toBe('bg-gradient-to-b from="#00ffff 0%" to="#0066ff 100%"')
   })
 })
