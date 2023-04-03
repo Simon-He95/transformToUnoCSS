@@ -157,4 +157,28 @@ describe('background', () => {
       ),
     ).toBe('bg-gradient-to-b from="#00ffff 0%" to="#0066ff 100%"')
   })
+
+  it('background: linear-gradient(to bottom, #00ffff 0, #0ea5e9 ,#0066ff 100%);', () => {
+    expect(
+      toUnocss(
+        'background: linear-gradient(to bottom, #00ffff 0, #0ea5e9 ,#0066ff 100%);',
+      ),
+    ).toBe('bg-gradient-to-b from="#00ffff 0" via="#0ea5e9" to="#0066ff 100%"')
+  })
+
+  it('background: linear-gradient(to bottom right, #00ffff 0, #0ea5e9 ,#0066ff 100%);', () => {
+    expect(
+      toUnocss(
+        'background: linear-gradient(to bottom right, #00ffff 10 , #0ea5e9 20%,#0066ff 50%);',
+      ),
+    ).toBe('bg-gradient-to-br from="#00ffff 10" via="#0ea5e9 20%" to="#0066ff 50%"')
+  })
+
+  it('background: linear-gradient(to bottom, #00ffff 0, #0ea5e9 ,#0066ff 100%);', () => {
+    expect(
+      toUnocss(
+        'background: linear-gradient(to bottom, #00ffff 0, #0ea5e9 30 ,#0066ff 100%);',
+      ),
+    ).toBe('bg-gradient-to-b from="#00ffff 0" via="#0ea5e9 30" to="#0066ff 100%"')
+  })
 })

@@ -8,7 +8,7 @@ const backgroundMap = [
   'background-image',
 ]
 const gradientReg
-  = /linear-gradient\(\s*to\s+(\w+)\s*(\w+)?\s*,\s*([\w\(\),#% ]+)\s*,\s*([\w\(\),#% ]+)\s*\)$/
+  = /linear-gradient\(\s*to([\w\s]+),?([\w\(\)#%\s]+)?,([\w\(\)#%\s]+)?,?([\w#%\s]+)?\)$/
 export function background(key: string, val: string) {
   const [value, important] = transformImportant(val)
 
@@ -17,18 +17,75 @@ export function background(key: string, val: string) {
 
   if (key === 'background') {
     if (value.startsWith('linear-gradient')) {
-      const matcher = value.match(gradientReg)
+      const commaReplacer = '__comma__'
+      // 区分rgba中的,和linear-gradient中的,
+      const newValue = value.replace(/rgba?\(([\w\s,]+)\)/g, (all, v) =>
+        all.replace(v, v.replace(/\s*,\s*/g, commaReplacer)),
+      )
+
+      const matcher = newValue.match(gradientReg)
       if (!matcher)
         return
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_, from, to, fromColor, toColor] = matcher
-      return `bg-gradient-to-${from?.[0] || ''}${
-        to?.[0] || ''
-      } from="${`${transformColor(
-        trim(fromColor, 'around'),
-      )}${important}`}" to="${`${transformColor(
-        trim(toColor, 'around'),
-      )}${important}`}"`
+
+      let [direction, from, via, to] = matcher.slice(1)
+      if (via && !to) {
+        to = via
+        via = ''
+      }
+      direction = trim(direction, 'around')
+        .split(' ')
+        .map(item => item[0])
+        .join('')
+
+      let result = ''
+      if (from) {
+        from = from.replaceAll(commaReplacer, ',')
+        const [fromColor, fromPosition] = trim(from, 'around')
+          .replace(/rgba?\(([\w,\s]+)\)/, (all, v) =>
+            all.replace(v, trim(v, 'all')),
+          )
+          .split(' ')
+        if (fromPosition) {
+          result += ` from="${
+            isRgb(fromColor) ? `[${fromColor}]` : fromColor
+          } ${fromPosition}"`
+        }
+        else if (fromColor) { result += ` from="${isRgb(fromColor) ? `[${fromColor}]` : fromColor}"` }
+      }
+
+      if (via) {
+        via = via.replaceAll(commaReplacer, ',')
+        const [viaColor, viaPosition] = trim(via, 'around')
+          .replace(/rgba?\(([\w,\s]+)\)/, (all, v) =>
+            all.replace(v, trim(v, 'all')),
+          )
+          .split(' ')
+        if (viaPosition) {
+          result += ` via="${
+            isRgb(viaColor) ? `[${viaColor}]` : viaColor
+          } ${viaPosition}"`
+        }
+        else if (viaColor) { result += ` via="${isRgb(viaColor) ? `[${viaColor}]` : viaColor}"` }
+      }
+
+      if (to) {
+        to = to.replaceAll(commaReplacer, ',')
+        const [toColor, toPosition] = trim(to, 'around')
+          .replace(/rgba?\(([\w,\s]+)\)/, (all, v) =>
+            all.replace(v, trim(v, 'all')),
+          )
+          .split(' ')
+        if (toPosition) {
+          result += ` to="${
+            isRgb(toColor) ? `[${toColor}]` : toColor
+          } ${toPosition}"`
+        }
+        else if (toColor) { result += ` to="${isRgb(toColor) ? `[${toColor}]` : toColor}"` }
+      }
+      if (direction)
+        result = `bg-gradient-to-${direction}${result}`
+
+      return result
     }
     const match = value.match(/rgba?\([\w,\s]+\)/)
     if (match) {
@@ -70,17 +127,4 @@ function transformBox(s: string) {
 
 function transformSpaceToLine(s: string) {
   return s.replace(/\s+/, ' ').replace(' ', '-')
-}
-
-function transformColor(val: string) {
-  if (val.startsWith('rgb')) {
-    val = val.replace(/rgba?\(([\w\s,\.]+)\)/, (all, v) =>
-      all.replace(v, trim(v, 'all')),
-    )
-  }
-
-  return val
-    .split(' ')
-    .map(item => (isRgb(item) ? `[${item}]` : item))
-    .join(' ')
 }
