@@ -1,4 +1,6 @@
 export function tail(css: string) {
+  if (/not\(/.test(css))
+    return `[&:${css}]:`
   if (css.startsWith('nth')) {
     if (css === 'nth-child(odd)')
       return 'odd'
