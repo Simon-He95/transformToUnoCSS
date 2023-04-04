@@ -181,4 +181,12 @@ describe('background', () => {
       ),
     ).toBe('bg-gradient-to-b from="#00ffff 0" via="#0ea5e9 30" to="#0066ff 100%"')
   })
+
+  it('background: conic-gradient(#fff 0.25turn, #000 0.25turn 0.5turn, #fff 0.5turn 0.75turn);', () => {
+    expect(
+      toUnocss(
+        'background: conic-gradient(#fff 0.25turn, #000 0.25turn 0.5turn, #fff 0.5turn 0.75turn);',
+      ),
+    ).toBe('bg-gradient-conic from="#fff 0.25turn" via="#000 0.25turn" to="#fff 0.5turn"')
+  })
 })
