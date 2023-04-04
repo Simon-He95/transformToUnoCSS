@@ -1,6 +1,6 @@
 {
   "name": "transform-to-unocss",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "packageManager": "pnpm@8.0.0",
   "description": "",
   "author": "Simon He",
