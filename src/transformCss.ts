@@ -7,6 +7,7 @@ import {
   getCssType,
   getStyleScoped,
   isEmptyStyle,
+  isNot,
   joinWithUnderLine,
   transformUnocssBack,
   trim,
@@ -22,7 +23,7 @@ const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
 const tailReg = /:([\w-\(\)]+)/ // :after
 const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 
-const emptyClass = /[\w>.#\-\+>:\[\]="' ]+\s*{}\n/g
+const emptyClass = /[\w>\.\#\-\+>\:\[\]\="'\s\(\)]+\s*{}\n/g
 interface AllChange {
   before: string
   after: string
@@ -120,12 +121,16 @@ export async function transformCss(
           media,
         })
       })
-      // 删除原本class
+      // 拿出class
+      const _class = code.match(/<style[^>]+>(.*)<\/style>/s)![1]
 
-      code = code.replace(value, '')
+      // 删除原本class
+      let newClass = _class.replace(value, '')
 
       // 如果class中内容全部被移除删除这个定义的class
-      code = code.replace(emptyClass, '')
+      newClass = newClass.replace(emptyClass, '')
+
+      code = code.replace(_class, newClass)
 
       // update stack
       stack = parse(code).descriptor!.template!.ast
@@ -382,13 +387,13 @@ async function resolveConflictClass(
 ) {
   const changes = findSameSource(allChange)
   let result = code
+
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
 
     const { tag, prefix, media, source } = value[0]
     // eslint-disable-next-line prefer-const
     let [after, transform] = await getConflictClass(value)
-
     if (!after)
       continue
 
@@ -396,8 +401,24 @@ async function resolveConflictClass(
     const target = transform(source)
     if (media)
       after = `${media}:${after}`
-    if (prefix)
-      after = after.replace(/="\[/g, '-"[')
+    if (prefix) {
+      if (isNot(prefix)) {
+        const match = target.match(/<[^>]*(class="[^"]+)[^>]*/)
+        if (match) {
+          // 将class合并
+          after = after.replace(
+            /class="(\[&:not\([\w\s\-\_\.\#]+\)\]:[\w\-\.]+)"\s*/,
+            (_, v) => {
+              result = result.replace(match[1], `${match[1]} ${v}`)
+              return ''
+            },
+          )
+        }
+      }
+      else {
+        after = after.replace(/="\[/g, '-"[')
+      }
+    }
 
     const returnValue = isJsx
       ? after
@@ -548,10 +569,15 @@ async function getConflictClass(
           transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
 
         const _transferCss = prefix
-          ? `${prefix}="${transferCss.replace(
-              /="\[(.*)\]"/g,
-              (_, v) => `-${v}`,
-            )}"`
+          ? isNot(prefix)
+            ? `class="${prefix}${transferCss.replace(
+                /="\[(.*)\]"/g,
+                (_, v) => `-${v}`,
+              )}"`
+            : `${prefix}="${transferCss.replace(
+                /="\[(.*)\]"/g,
+                (_, v) => `-${v}`,
+              )}"`
           : transferCss
         // 如果存在相同的prefix, 进行合并
         if (prefix && result.includes(prefix)) {

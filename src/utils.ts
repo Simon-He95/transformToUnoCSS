@@ -4,6 +4,10 @@ import presetUno from '@unocss/preset-uno'
 
 export type CssType = 'less' | 'scss' | 'css' | 'stylus'
 export const flag = '.__unocss_transfer__'
+
+export function isNot(s: string) {
+  return /\[&:not\(/.test(s)
+}
 export function isCalc(s: string) {
   return s.startsWith('calc(')
 }

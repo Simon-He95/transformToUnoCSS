@@ -108,7 +108,7 @@ describe('transformCode', () => {
 
       <script setup lang=\\"ts\\"></script>
       <template>
-        <div focus-within=\\"bg-red\\" w-100% class=\\"container\\">
+        <div focus-within=\\"bg-red w-100%\\" class=\\"container\\">
           <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
             nihao
           </div>
@@ -186,12 +186,18 @@ describe('transformCode', () => {
       -----    test.vue     -------
 
       <template>
-        <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff hover=\\"bg-#67c23a\\" bg=\\"red\\">button</button>
+        <button text-red w=\\"[100%]\\" \\">button</button>
       </template>
 
       <style scoped>
-        @import url(./index.css);
-      </style>",
+        button {
+          height: 32px;
+        }
+        button:hover{
+          background-color:#67c23a ;
+        }
+      </style>
+      ",
         "
 
       -----    vue.tsx     -------
@@ -335,7 +341,7 @@ describe('single demo styleWeight', async () => {
   })
 })
 
-describe.only('single test', async () => {
+describe('single test', async () => {
   const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
   it('test.vue', async () => {
