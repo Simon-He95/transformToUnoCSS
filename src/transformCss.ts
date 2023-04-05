@@ -581,6 +581,11 @@ async function getConflictClass(
           : transferCss
         // 如果存在相同的prefix, 进行合并
         if (prefix && result.includes(prefix)) {
+          if (isNot(prefix)) {
+            const newPrefix = prefix.replace(/[\[\]\(\)]/g, all => `\\${all}`)
+            const reg = new RegExp(`${newPrefix}([\\w\\:\\-;\\[\\]\\/\\+%]+)`)
+            return result.replace(reg, all => `${all}:${transferCss}`)
+          }
           const reg = new RegExp(`${prefix}="([\\w\\:\\-\\s;\\[\\]\\/\\+%]+)"`)
           return result.replace(reg, (all, v) =>
             all.replace(v, `${v} ${transferCss}`),
