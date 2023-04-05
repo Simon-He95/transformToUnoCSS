@@ -488,11 +488,12 @@ async function getConflictClass(
   let transform = (code: string) => code
   for await (const item of allChange) {
     const { before, name, source, attr, after, prefix, media } = item
-    const data = `${prefix ? `${prefix}|` : ''}${before}`
-      .split(';')
-      .filter(Boolean)
-      .map(i => i.split(':'))
-
+    const pre = prefix ? `${prefix}|` : ''
+    const beforeArr = before.split(';').filter(Boolean)
+    const data = beforeArr.map((item) => {
+      const [key, value] = item.split(':')
+      return [`${pre}${key}`, value]
+    })
     data.forEach((item) => {
       const [key, value] = item
       if (!map[key]) {
@@ -546,14 +547,21 @@ async function getConflictClass(
         if (match)
           transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
 
-        return `${result}${
-          prefix
-            ? `${prefix}="${transferCss.replace(
-                /="\[(.*)\]"/g,
-                (_, v) => `-${v}`,
-              )}"`
-            : transferCss
-        } `
+        const _transferCss = prefix
+          ? `${prefix}="${transferCss.replace(
+              /="\[(.*)\]"/g,
+              (_, v) => `-${v}`,
+            )}"`
+          : transferCss
+        // 如果存在相同的prefix, 进行合并
+        if (prefix && result.includes(prefix)) {
+          const reg = new RegExp(`${prefix}="([\\w\\:\\-\\s;\\[\\]\\/\\+%]+)"`)
+          return result.replace(reg, (all, v) =>
+            all.replace(v, `${v} ${transferCss}`),
+          )
+        }
+
+        return `${result}${_transferCss} `
       }, '')
       .trim(),
     transform,

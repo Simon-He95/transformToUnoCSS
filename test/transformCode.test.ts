@@ -275,7 +275,7 @@ describe('single demo classTail', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
       <template>
-        <div focus-within=\\"bg-red\\" w-100% class=\\"container\\">
+        <div focus-within=\\"bg-red w-100%\\" class=\\"container\\">
           <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
             nihao
           </div>
