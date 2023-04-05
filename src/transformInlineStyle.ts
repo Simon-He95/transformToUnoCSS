@@ -1,15 +1,11 @@
 import { transformStyleToUnocss } from './transformStyleToUnocss'
 
-const styleReg
-  = /<([\w\-]+).*(:)?style="([#\w\:\-\s;\[\]\/\+%]+)"[\w=\-\_'"\s]*\/?>/g
+const styleReg = /<([\w\-_]+)[^>]*[^:]style="([^"]+)"[^>]*>/g
 
 const removeStyleReg = / style="([#\w\:\-\s;\[\]\/\+%]+)"/
 export function transformInlineStyle(code: string, isJsx?: boolean): string {
   // todo: 如果存在未能被转换的style应该返回并保持部分的style
-  code.replace(styleReg, (target, tag, comma, inlineStyle) => {
-    if (comma)
-      return code
-
+  code.replace(styleReg, (target, tag, inlineStyle) => {
     const [after, noMap] = transformStyleToUnocss(inlineStyle)
 
     // transform inline-style
