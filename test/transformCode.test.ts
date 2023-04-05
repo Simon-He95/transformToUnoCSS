@@ -323,7 +323,7 @@ describe('single demo Media', async () => {
 
 describe('single demo styleWeight', async () => {
   const demo = await fsp.readFile('./test/demo/styleWeight.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+  const filepath = path.resolve(process.cwd(), './test/demo/styleWeight.vue')
   it('styleWeight.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
@@ -343,7 +343,7 @@ describe('single demo styleWeight', async () => {
 
 describe('single test', async () => {
   const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+  const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
   it('test.vue', async () => {
     expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
       "<template>

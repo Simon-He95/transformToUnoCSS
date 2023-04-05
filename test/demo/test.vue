@@ -1,5 +1,5 @@
 <template>
-  <button text-red w="[100%]" ">button</button>
+  <button text-red w="[100%]">button</button>
 </template>
 
 <style scoped>
