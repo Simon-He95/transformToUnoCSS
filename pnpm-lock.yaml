@@ -35,7 +35,7 @@ importers:
       sass: ^1.59.2
       simple-git-hooks: ^2.8.1
       stylus: ^0.59.0
-      transform-to-unocss: workspace:^0.0.55
+      transform-to-unocss: ^0.0.55
       tsup: ^6.5.0
       tsx: ^3.12.1
       typescript: ^4.7.4
