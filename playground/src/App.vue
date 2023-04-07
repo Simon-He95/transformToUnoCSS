@@ -82,7 +82,11 @@ onMounted(() => {
     language: 'html',
   })
   monaco.editor.create(editorResult.value!, {
-    value: pre,
+    value: `<template>
+  <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff m-auto hover="bg-#67c23a">button</button>
+</template>
+<style scoped></style>
+`,
     language: 'html',
     fontFamily: 'Arial',
     fontSize: 20,
