@@ -13,7 +13,9 @@ import { isDark, toggleDark } from '~/composables'
 const { t, locale } = useI18n()
 
 const input = ref('')
-let pre: any = null
+let pre: any
+  = '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
+
 const transform = computed(() => toUnocss(input.value))
 let editorComponent: any = null
 const editor = ref(null)
@@ -79,6 +81,14 @@ onMounted(() => {
     fontSize: 20,
     language: 'html',
   })
+  monaco.editor.create(editorResult.value!, {
+    value: pre,
+    language: 'html',
+    fontFamily: 'Arial',
+    fontSize: 20,
+    readOnly: true,
+    acceptSuggestionOnEnter: 'smart',
+  })
 })
 
 useAnimationFrame(async () => {
@@ -86,12 +96,11 @@ useAnimationFrame(async () => {
   if (!editorResult.value)
     return
   let code
-
   if ((!pre && newInput) || pre !== newInput) {
     pre = newInput
 
     try {
-      code = await fetch('/.netlify/functions/server', {
+      code = await fetch('https://localhost/.netlify/functions/server', {
         method: 'POST',
         body: newInput,
       }).then(res => res.text())
