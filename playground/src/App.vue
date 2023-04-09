@@ -20,6 +20,7 @@ const transform = computed(() => toUnocss(input.value))
 let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
+
 const display = ref('')
 const styleReg = /<style.*>(.*)<\/style>/s
 const classReg = /(.*){/g
@@ -93,6 +94,7 @@ onMounted(() => {
     readOnly: true,
     acceptSuggestionOnEnter: 'smart',
   })
+  display.value = codeToHtml(pre)
 })
 
 useAnimationFrame(async () => {
@@ -122,7 +124,6 @@ useAnimationFrame(async () => {
       readOnly: true,
       acceptSuggestionOnEnter: 'smart',
     })
-
     display.value = codeToHtml(newInput)
   }
 }, 200)
