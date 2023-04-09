@@ -213,10 +213,8 @@ const changelanguage = () => {
     >
     <div v-if="transform" flex="~ gap-4" h-20 items-center>
       <h2>{{ t('result') }}</h2>
-
       <div flex gap-2 items-center>
         {{ transform }}
-
         <div
           :class="[
             isCopy
@@ -240,29 +238,39 @@ const changelanguage = () => {
   </div>
   <div flex>
     <div w="50%">
-      <h1 pl2 class="textshadow" :data-text="t('inputs')" indent-10>
+      <h1
+        pl2
+        class="textshadow"
+        relative
+        z-2
+        :data-text="t('inputs')"
+        indent-10
+      >
         {{ t('inputs') }}
       </h1>
       <div ref="editor" h-100 />
     </div>
     <div w="50%">
-      <h1 pl2 class="textshadow" :data-text="t('outputs')" indent-10>
+      <h1
+        pl2
+        class="textshadow"
+        relative
+        z-2
+        :data-text="t('outputs')"
+        indent-10
+      >
         {{ t('outputs') }}
       </h1>
       <div ref="editorResult" h-100 />
     </div>
   </div>
-  <h1 pl2 class="textshadow" :data-text="t('render')" indent-10>
+  <h1 pl2 class="textshadow" relative z-2 :data-text="t('render')" indent-10>
     {{ t('render') }}
   </h1>
   <div pb20 data-v-display v-html="display" />
 </template>
 
 <style scoped>
-.textshadow {
-  position: relative;
-  z-index: 2;
-}
 .textshadow::after {
   bottom: 0;
   color: #000;
@@ -277,6 +285,7 @@ const changelanguage = () => {
   transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
   z-index: 1;
 }
+
 .dark .textshadow::after {
   color: #fff;
 }
