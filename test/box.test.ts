@@ -34,4 +34,12 @@ describe('box-shadow', () => {
       ),
     ).toBe('shadow="[10px_20px_10px_10px_rgba(255,255,255,0.1)]!"')
   })
+
+  it('box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), 1px 1px 5px rgba(0, 0, 0, 0.2);', () => {
+    expect(
+      toUnocss(
+        'box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), 1px 1px 5px rgba(0, 0, 0, 0.2);',
+      ),
+    ).toBe('shadow="[1px_1px_2px_rgba(0,0,0,0.2),1px_1px_5px_rgba(0,0,0,0.2)]"')
+  })
 })
