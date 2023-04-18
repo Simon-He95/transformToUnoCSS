@@ -50,4 +50,16 @@ describe('transform', () => {
   it('transform: skewX(2deg);', () => {
     expect(toUnocss('transform: skewX(2deg);')).toBe('skew-x="2"')
   })
+
+  it('transform: skew(50deg)', () => {
+    expect(toUnocss('transform: skew(50deg);')).toBe('skew="50"')
+  })
+
+  it('transform: scale(0.6)', () => {
+    expect(toUnocss('transform: scale(0.6);')).toBe('scale-60')
+  })
+  it('transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);', () => {
+    expect(toUnocss('transform: translate(-26px, 16px) skew(50deg) scaleY(0.6)')).toBe('translate="-26px 16px" skew="50" scale-y-60')
+  })
+
 })

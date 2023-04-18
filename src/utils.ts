@@ -141,3 +141,10 @@ export interface Options {
   include?: FilterPattern
   exclude?: FilterPattern
 }
+
+export function joinEmpty(str: string) {
+  return str
+    .replace(/\(\s*/g, '(')
+    .replace(/\s*\)/g, ')')
+    .replace(/\s*,\s*/g, ',')
+}
