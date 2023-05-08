@@ -24,6 +24,11 @@ const tailReg = /:([\w-\(\)]+)/ // :after
 const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 
 const emptyClass = /[\w>\.\#\-\+>\:\[\]\="'\s\(\)]+\s*{}\n/g
+interface Position {
+  column: number
+  line: number
+  offset: number
+}
 interface AllChange {
   before: string
   after: string
@@ -33,6 +38,8 @@ interface AllChange {
   prefix: string
   attr: string[]
   media: string
+  start: Position
+  end: Position
 }
 
 export async function transformCss(
@@ -94,7 +101,7 @@ export async function transformCss(
         }
 
         const {
-          loc: { source },
+          loc: { source, start, end },
           tag,
           props,
         } = r
@@ -119,6 +126,8 @@ export async function transformCss(
           attr,
           prefix,
           media,
+          start,
+          end,
         })
       })
       // 拿出class
@@ -242,9 +251,13 @@ function findDeepChild(
       continue
     const curs = cur.split('>')
     if (targets) {
+      result.length = 0
       targets.forEach((t: any) =>
         findDeepChild(list.slice(i), t, undefined, result),
       )
+      const hasOrigin = result.findIndex(item => item === targets[0])
+      if (hasOrigin !== -1)
+        result.splice(hasOrigin, 1)
       continue
     }
     const combineMatch = cur.match(combineReg)
@@ -270,7 +283,13 @@ function findDeepChild(
 function sort(data: any[]) {
   const result: any[] = []
   data.forEach((item) => {
-    if (!result.some(k => k.loc.source === item.loc.source))
+    if (
+      !result.some(
+        k =>
+          k.loc.start.offset === item.loc.start.offset
+          && k.loc.end.offset === item.loc.end.offset,
+      )
+    )
       result.push(item)
   })
   return result
@@ -387,11 +406,15 @@ async function resolveConflictClass(
 ) {
   const changes = findSameSource(allChange)
   let result = code
-
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
-
-    const { tag, prefix, media, source } = value[0]
+    const {
+      tag,
+      prefix,
+      media,
+      source,
+      start: { offset },
+    } = value[0]
     // eslint-disable-next-line prefer-const
     let [after, transform] = await getConflictClass(value)
     if (!after)
@@ -427,6 +450,7 @@ async function resolveConflictClass(
         )
         .replace(/="([\w\-\,.\(\)\+\_\s#]+)"/g, '-$1')
       : after
+    const start = result.slice(offset)
 
     if (isJsx) {
       const newReg = new RegExp(
@@ -436,8 +460,8 @@ async function resolveConflictClass(
 
       if (matcher) {
         result = result.replace(
-          target,
-          target.replace(
+          start,
+          start.replace(
             `class="${matcher[1]}"`,
             `class="${matcher[1]} ${returnValue}"`,
           ),
@@ -446,15 +470,15 @@ async function resolveConflictClass(
       }
 
       result = result.replace(
-        target,
-        target.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
+        start,
+        start.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
       )
       continue
     }
 
     result = result.replace(
-      target,
-      target.replace(`<${tag}`, `<${tag} ${returnValue}`),
+      start,
+      start.replace(`<${tag}`, `<${tag} ${returnValue}`),
     )
   }
 
@@ -494,10 +518,11 @@ function calculateWeight(c: string) {
 function findSameSource(allChange: AllChange[]) {
   const result: any = {}
   allChange.forEach((item) => {
-    const { source } = item
-    if (!result[source])
-      result[source] = []
-    result[source].push(item)
+    const { source, start, end } = item
+    const key = `${source}:${start.offset}:${end.offset}`
+    if (!result[key])
+      result[key] = []
+    result[key].push(item)
   })
   return result
 }

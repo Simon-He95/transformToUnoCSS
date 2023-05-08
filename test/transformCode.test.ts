@@ -313,6 +313,25 @@ describe('single demo Media', async () => {
   })
 })
 
+describe('classSpace.vue', async () => {
+  const demo = await fsp.readFile('./test/demo/classSpace.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/classSpace.vue')
+  it('classSpace.vue', async () => {
+    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+      "<script setup lang=\\"ts\\"></script>
+      <template>
+        <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
+          <div bg-red! w-100% class=\\"yellow\\">
+            hi
+          </div>
+        </div>
+      </template>
+      <style scoped></style>
+      "
+    `)
+  })
+})
+
 describe('single demo styleWeight', async () => {
   const demo = await fsp.readFile('./test/demo/styleWeight.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/styleWeight.vue')
