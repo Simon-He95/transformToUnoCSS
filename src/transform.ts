@@ -22,9 +22,13 @@ export function transform(key: string, val: string) {
         return undefined
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, namePrefix, nameSuffix, value] = matcher
-
       if (nameSuffix) {
         if (namePrefix === 'scale') {
+          if (value.includes(',')) {
+            return `${namePrefix}-${nameSuffix.toLowerCase()}="${value
+              .split(',')
+              .join(' ')}${important}"`
+          }
           return `${namePrefix}-${nameSuffix.toLowerCase()}-${getHundred(
             value,
           )}${important}`
@@ -34,8 +38,12 @@ export function transform(key: string, val: string) {
         )}${important}"`
       }
       else {
-        if (namePrefix === 'scale')
+        if (namePrefix === 'scale') {
+          if (value.includes(','))
+            return `${namePrefix}="${value.split(',').join(' ')}${important}"`
           return `${namePrefix}-${getHundred(value)}${important}`
+        }
+
         return `${namePrefix}="${transformVal(value).replace(
           /,/g,
           ' ',

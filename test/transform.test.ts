@@ -58,6 +58,11 @@ describe('transform', () => {
   it('transform: scale(0.6)', () => {
     expect(toUnocss('transform: scale(0.6);')).toBe('scale-60')
   })
+
+  it('transform: scale(0.8, 0.9)', () => {
+    expect(toUnocss('transform: scale(0.8, 0.9)')).toBe('scale="0.8 0.9"')
+  })
+
   it('transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);', () => {
     expect(toUnocss('transform: translate(-26px, 16px) skew(50deg) scaleY(0.6)')).toBe('translate="-26px 16px" skew="50" scale-y-60')
   })

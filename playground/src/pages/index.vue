@@ -1,22 +1,19 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div style="background: red; width: 100%; line-height: 20px">
-    <div class="container">
-      <div />
+  <div bg="red" w="[100%]" lh-20px>
+    <div
+      flex
+      flex-1
+      h-100px
+      bg-red
+      class="container"
+      style="transform: scale(0.8, 0.9)"
+    >
+      <div flex-1 h-100px bg-red />
       <div />
     </div>
   </div>
 </template>
 
-<style scoped>
-.container {
-  width: 100%;
-  display: flex;
-}
-.container > div {
-  flex: 1;
-  height: 100px;
-  background-color: red;
-}
-</style>
+<style scoped></style>
