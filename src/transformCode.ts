@@ -10,7 +10,7 @@ export async function transfromCode(
   type?: SuffixType,
 ) {
   // 删除代码中的注释部分
-  code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
+  // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
   if (type === 'tsx')
     return transformJsx(code, filepath)
   if (type === 'html')

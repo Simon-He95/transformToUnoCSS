@@ -304,6 +304,10 @@ export function astFindTag(
   result: any = [],
   siblings: any = [],
 ) {
+  // type: 3 是注释
+  if (ast.type === 3)
+    return result
+
   const tagMatch = tag.match(tagReg)
 
   const selector = tagMatch

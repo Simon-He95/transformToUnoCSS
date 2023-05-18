@@ -3,9 +3,24 @@ import { transformStyleToUnocss } from './transformStyleToUnocss'
 const styleReg = /<([\w\-_]+)[^>]*[^:]style="([^"]+)"[^>]*>/g
 
 const removeStyleReg = / style="([#\w\:\-\s;\[\]\/\+%]+)"/
+const templateReg = /^<template>(.*)<\/template>$/ms
+const commentReg = /<!--.*-->/gs
 export function transformInlineStyle(code: string, isJsx?: boolean): string {
-  // todo: 如果存在未能被转换的style应该返回并保持部分的style
-  code.replace(styleReg, (target, tag, inlineStyle) => {
+  // code中提取template
+  const match = code.match(templateReg)
+  if (!match)
+    return code
+  let templateMatch = match[1]
+  const commentMap: Record<string, string> = {}
+  let count = 0
+  const commentPrefix = '__commentMap__'
+  templateMatch = templateMatch.replace(commentReg, (comment: string) => {
+    count++
+    commentMap[count] = comment
+    return `${commentPrefix}${count}`
+  })
+
+  templateMatch.replace(styleReg, (target, tag, inlineStyle) => {
     const [after, noMap] = transformStyleToUnocss(inlineStyle)
 
     // transform inline-style
@@ -15,7 +30,7 @@ export function transformInlineStyle(code: string, isJsx?: boolean): string {
       const matcher = target.match(newReg)
 
       if (matcher) {
-        return (code = code.replace(
+        return (templateMatch = templateMatch.replace(
           target,
           target
             .replace(removeStyleReg, '')
@@ -28,7 +43,7 @@ export function transformInlineStyle(code: string, isJsx?: boolean): string {
         ))
       }
 
-      return (code = code.replace(
+      return (templateMatch = templateMatch.replace(
         target,
         target
           .replace(removeStyleReg, '')
@@ -41,7 +56,7 @@ export function transformInlineStyle(code: string, isJsx?: boolean): string {
       ))
     }
 
-    return (code = code.replace(
+    return (templateMatch = templateMatch.replace(
       target,
       target
         .replace(removeStyleReg, '')
@@ -54,5 +69,12 @@ export function transformInlineStyle(code: string, isJsx?: boolean): string {
     ))
   })
 
-  return code
+  // 还原注释
+  Object.keys(commentMap).forEach((key) => {
+    const commentKey = `${commentPrefix}${key}`
+    const value = commentMap[key]
+    templateMatch = templateMatch.replace(commentKey, value)
+  })
+
+  return code.replace(templateReg, `<template>${templateMatch}</template>`)
 }

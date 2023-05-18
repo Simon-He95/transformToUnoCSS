@@ -19,7 +19,6 @@ export async function transformVue(
   if (errors.length)
     return code
   // transform inline-style
-
   code = transformInlineStyle(code, isJsx)
 
   if (!template || !styles.length)
