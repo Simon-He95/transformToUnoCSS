@@ -147,7 +147,7 @@ const isCopy = ref(false)
 const copyStyle = () => {
   if (copy(transform.value)) {
     isCopy.value = true
-    window.parent.postMessage({ eventType: 'copy', text: transform.value })
+    window.parent.postMessage({ eventType: 'copy', text: transform.value }, '*')
   }
 
   setTimeout(() => {
@@ -246,6 +246,7 @@ const changelanguage = () => {
         class="textshadow"
         relative
         z-2
+        text-pink:80
         :data-text="t('inputs')"
         indent-10
       >
@@ -258,6 +259,7 @@ const changelanguage = () => {
         pl2
         class="textshadow"
         relative
+        text-pink:80
         z-2
         :data-text="t('outputs')"
         indent-10
@@ -267,7 +269,15 @@ const changelanguage = () => {
       <div ref="editorResult" h-100 />
     </div>
   </div>
-  <h1 pl2 class="textshadow" relative z-2 :data-text="t('render')" indent-10>
+  <h1
+    pl2
+    class="textshadow"
+    text-pink:80
+    relative
+    z-2
+    indent-10
+    :data-text="t('render')"
+  >
     {{ t('render') }}
   </h1>
   <div pb20 data-v-display v-html="display" />
@@ -276,7 +286,6 @@ const changelanguage = () => {
 <style scoped>
 .textshadow::after {
   bottom: 0;
-  color: #000;
   content: attr(data-text);
   -webkit-filter: blur(2px);
   filter: blur(2px);
@@ -287,9 +296,5 @@ const changelanguage = () => {
   -webkit-transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
   transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
   z-index: 1;
-}
-
-.dark .textshadow::after {
-  color: #fff;
 }
 </style>
