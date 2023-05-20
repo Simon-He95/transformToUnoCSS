@@ -145,8 +145,10 @@ function codeToHtml(code: string) {
 
 const isCopy = ref(false)
 const copyStyle = () => {
-  if (copy(transform.value))
+  if (copy(transform.value)) {
     isCopy.value = true
+    window.parent.postMessage({ eventType: 'copy', text: transform.value })
+  }
 
   setTimeout(() => {
     isCopy.value = false
