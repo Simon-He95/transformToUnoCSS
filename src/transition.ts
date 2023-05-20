@@ -1,4 +1,4 @@
-import { getLastName, transformImportant, trim } from './utils'
+import { getVal, transformImportant, trim } from './utils'
 const times = ['transition-delay', 'transition-duration']
 
 export function transition(key: string, val: string) {
@@ -30,11 +30,13 @@ function transformTransition(v: string) {
     .map((item) => {
       if (/^[0-9]/.test(item)) {
         if (hasDuration)
-          return `delay-${item}`
+          return `delay${getVal(item, undefined, true)}`
         hasDuration = true
-        return `duration-${item}`
+        return `duration${getVal(item, undefined, true)}`
       }
-      return getLastName(item)
+      if (item === 'background-color')
+        return 'colors'
+      return item
     })
     .join(' ')
 }

@@ -37,9 +37,12 @@ export function isRgb(s: string) {
   return s.startsWith('rgb')
 }
 
-export function getVal(val: string, transform?: Function) {
-  if (isCalc(val) || isUrl(val) || isHex(val) || isRgb(val) || isPercent(val))
-    return `="[${trim(val, 'all').replace(/['"]/g, '')}]"`
+export function getVal(val: string, transform?: Function, inClass?: boolean) {
+  if (isCalc(val) || isUrl(val) || isHex(val) || isRgb(val) || isPercent(val)) {
+    return inClass
+      ? `-[${trim(val, 'all').replace(/['"]/g, '')}]`
+      : `="[${trim(val, 'all').replace(/['"]/g, '')}]"`
+  }
   return `-${transform ? transform(val) : val}`
 }
 
