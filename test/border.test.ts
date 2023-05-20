@@ -64,4 +64,16 @@ describe('border', () => {
       'border-l="[#333]"',
     )
   })
+
+  it('border-inline-start-width: 0px;', () => {
+    expect(toUnocss('border-inline-start-width: 0px;')).toBe(
+      'border-s-0px',
+    )
+  })
+
+  it('border-inline-end-width: 0px;', () => {
+    expect(toUnocss('border-inline-end-width: 0px;')).toBe(
+      'border-e-0px',
+    )
+  })
 })

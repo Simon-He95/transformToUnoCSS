@@ -43,3 +43,16 @@ describe('padding-bottom', () => {
     expect(toUnocss('padding-bottom:50px')).toBe('pb-50px')
   })
 })
+
+
+describe('padding-inline-start: 0px;', () => {
+  it('padding-inline-start: 0px;', () => {
+    expect(toUnocss('padding-inline-start: 0px;')).toBe('ps-0px')
+  })
+})
+
+describe('padding-inline-end: 0px;', () => {
+  it('padding-inline-end: 0px;', () => {
+    expect(toUnocss('padding-inline-end: 0px;')).toBe('pe-0px')
+  })
+})

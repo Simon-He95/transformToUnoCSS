@@ -4,10 +4,14 @@ const map: any = {
   'margin-right': 'mr',
   'margin-top': 'mt',
   'margin-bottom': 'mb',
+  'margin-inline-start': 'ms',
+  'margin-inline-end': 'me',
   'padding-left': 'pl',
   'padding-right': 'pr',
   'padding-top': 'pt',
   'padding-bottom': 'pb',
+  'padding-inline-start': 'ps',
+  'padding-inline-end': 'pe',
 }
 export function transformMargin(key: string, val: string) {
   const [value, important] = transformImportant(val)

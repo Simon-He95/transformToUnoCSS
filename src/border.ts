@@ -29,6 +29,10 @@ export function border(key: string, val: string) {
 
   if (borderSize.some(b => key.startsWith(b)))
     return `border-${key.split('-')[1][0]}${getVal(value)}`
+  if (key === 'border-inline-end-width')
+    return `border-e${getVal(value)}`
+  if (key === 'border-inline-start-width')
+    return `border-s${getVal(value)}`
   if (key.startsWith('border-image'))
     return ''
   if (/rgb/.test(value)) {

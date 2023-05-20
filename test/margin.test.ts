@@ -54,3 +54,15 @@ describe('margin-bottom', () => {
     )
   })
 })
+
+describe('margin-inline', () => {
+  it('margin-inline-start: 0px;', () => {
+    expect(toUnocss('margin-inline-start: 0px;')).toBe('ms-0px')
+  })
+
+  it('margin-inline-end: 0px;', () => {
+    expect(toUnocss('margin-inline-end: 0px;')).toBe(
+      'me-0px',
+    )
+  })
+})

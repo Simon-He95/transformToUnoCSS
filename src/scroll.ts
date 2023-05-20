@@ -9,7 +9,11 @@ export function scroll(key: string, val: string) {
     return `scroll-${value}${important}`
   // margin padding
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, prefix, suffix] = key.match(/scroll-(margin|padding)-?([\w]+)?/)!
+  const [_, prefix, suffix, way] = key.match(
+    /scroll-(margin|padding)-?([\w]+)?-?([\w]+)?/,
+  )!
+  if (suffix === 'inline' && way)
+    return `scroll-${prefix[0]}${way[0]}-${value}${important}`
   if (suffix)
     return `scroll-${prefix[0]}${suffix[0]}-${value}${important}`
   return `scroll-${prefix[0]}-${value}${important}`

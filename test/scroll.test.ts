@@ -37,4 +37,12 @@ describe('scroll', () => {
   it('scroll-snap-type: none;', () => {
     expect(toUnocss('scroll-snap-type: none;')).toBe('snap-none')
   })
+
+  it('scroll-padding-inline-start: 1px;', () => {
+    expect(toUnocss('scroll-padding-inline-start: 1px;')).toBe('scroll-ps-1px')
+  })
+
+  it('scroll-padding-inline-end: 1px;', () => {
+    expect(toUnocss('scroll-padding-inline-end: 1px;')).toBe('scroll-pe-1px')
+  })
 })
