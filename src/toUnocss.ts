@@ -44,6 +44,7 @@ import { animation } from './animation'
 import { content } from './content'
 import { empty } from './empty'
 import { writing } from './writing'
+import { inset } from './inset'
 
 const typeMap: any = {
   animation,
@@ -110,6 +111,7 @@ const typeMap: any = {
   pointer: float,
   resize,
   scroll,
+  inset,
   touch: list,
   user,
   will,
