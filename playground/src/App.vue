@@ -163,10 +163,10 @@ const changelanguage = () => {
 </script>
 
 <template>
-  <div absolute flex="~ gap-2" z-2 left-2 top-2>
+  <div absolute flex="~ gap-2" z-2 left-2 top-5>
     <div
       hover="rotate-y-180deg "
-      transition-all-800
+      transition-transform-800
       cursor-pointer
       @click="changelanguage"
     >
