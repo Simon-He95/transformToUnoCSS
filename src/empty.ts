@@ -1,3 +1,5 @@
+import { transformImportant } from './utils'
+
 const emptyMap: Record<string, string> = {
   show: 'visible',
   hide: 'hidden',
