@@ -1,3 +1,5 @@
 export function content(key: string, val: string) {
-  return `content="[${val}]"`
+  const [value, important] = transformImportant(val)
+
+  return `content="[${value}]${important}"`
 }
