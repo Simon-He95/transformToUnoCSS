@@ -12,7 +12,10 @@
     "url": "git+https://github.com/Simon-He95/transformToUnocss.git"
   },
   "bugs": "https://github.com/Simon-He95/transformToUnocss/issues",
-  "keywords": [],
+  "keywords": [
+    "transform-to-unocss",
+    "unocss"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
