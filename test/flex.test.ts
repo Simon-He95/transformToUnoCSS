@@ -23,7 +23,7 @@ describe('flex', () => {
   })
 
   it('flex-grow: 1;', () => {
-    expect(toUnocss('flex: 1;')).toBe('flex="[1]"')
+    expect(toUnocss('flex: 1;')).toBe('flex-1')
   })
 
   it('flex-shrink: 1;', () => {

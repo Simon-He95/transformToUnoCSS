@@ -11,12 +11,12 @@ describe('border', () => {
 
   it('radius', () => {
     expect(toUnocss('border-radius: 0.25rem;')).toBe(
-      'border-rd="[0.25rem]"',
+      'border-rd-0.25rem',
     )
   })
 
   it('border-width', () => {
-    expect(toUnocss('border-width: 2px;')).toBe('border="[2px]"')
+    expect(toUnocss('border-width: 2px;')).toBe('border-2px')
   })
 
   it('radius-calc', () => {
@@ -32,12 +32,12 @@ describe('border', () => {
   })
 
   it('style', () => {
-    expect(toUnocss('border-style: inset;')).toBe('border="[inset]"')
+    expect(toUnocss('border-style: inset;')).toBe('border-inset')
   })
 
   it('collapse', () => {
     expect(toUnocss('border-collapse: collapse;')).toBe(
-      'border="[collapse]"',
+      'border-collapse',
     )
   })
 
