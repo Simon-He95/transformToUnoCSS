@@ -51,4 +51,12 @@ describe('transition', () => {
       ),
     ).toBe('ease="[cubic-bezier(0.4,0,1,1)]"')
   })
+
+  it('transition: margin-left .28s;', () => {
+    expect(
+      toUnocss(
+        'transition: margin-left .28s;',
+      ),
+    ).toBe('transition="margin-left duration-.28s"')
+  })
 })

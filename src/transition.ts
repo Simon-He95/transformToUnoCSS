@@ -28,7 +28,7 @@ function transformTransition(v: string) {
   return v
     .split(' ')
     .map((item) => {
-      if (/^[0-9]/.test(item)) {
+      if (/^[0-9]/.test(item) || /^\.[0-9]/.test(item)) {
         if (hasDuration)
           return `delay${getVal(item, undefined, true)}`
         hasDuration = true
