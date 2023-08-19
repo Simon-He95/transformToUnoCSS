@@ -39,7 +39,7 @@ const unplugin = createUnplugin((options: Options = {}): any => {
         if (!suffix)
           return code
 
-        return await transfromCode(code, id, suffix)
+        return await transfromCode(code, { filepath: id, type: suffix })
       },
     },
   ]

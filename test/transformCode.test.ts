@@ -16,8 +16,8 @@ describe('transformCode', () => {
 
         return `\n\n-----    ${demo}     -------\n\n${await transfromCode(
           await fsp.readFile(url, 'utf-8'),
-          filepath,
-          suffix,
+          {filepath,
+          type:suffix,}
         )}`
       }),
     )
@@ -233,7 +233,7 @@ describe('single demo classWeight', async () => {
   const demo = await fsp.readFile('./test/demo/classWeight.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classWeight.vue')
   it('classWeight.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
       <template>
         <div bg-yellow w-100% class=\\"red\\">
@@ -251,7 +251,7 @@ describe('single demo classCombine', async () => {
   const demo = await fsp.readFile('./test/demo/classCombine.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classCombine.vue')
   it('classCombine.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
       <template>
         <div bg=\\"red\\" w=\\"[100%]\\" lh-20px>
@@ -270,7 +270,7 @@ describe('single demo classTail', async () => {
   const demo = await fsp.readFile('./test/demo/classTail.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
   it('classTail.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
       <template>
         <div focus-within=\\"bg-red w-100%\\" class=\\"container\\">
@@ -292,7 +292,7 @@ describe('single demo Media', async () => {
   const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/media.vue')
   it('Media.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
 
       <template>
@@ -317,7 +317,7 @@ describe('classSpace.vue', async () => {
   const demo = await fsp.readFile('./test/demo/classSpace.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classSpace.vue')
   it('classSpace.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
       <template>
         <div bg=\\"red\\" w=\\"[100%]\\" lh-20px class=\\"red\\">
@@ -336,7 +336,7 @@ describe('single demo styleWeight', async () => {
   const demo = await fsp.readFile('./test/demo/styleWeight.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/styleWeight.vue')
   it('styleWeight.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<script setup lang=\\"ts\\"></script>
       <template>
         <div bg-red bg=\\"pink\\" style=\\"hi:123\\" class=\\"red\\">
@@ -352,11 +352,11 @@ describe('single demo styleWeight', async () => {
   })
 })
 
-describe('single test', async () => {
+describe.only('single test', async () => {
   const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
   it('single.vue', async () => {
-    expect(await transfromCode(demo, filepath, 'vue')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue',isRem:true})).toMatchInlineSnapshot(`
       "<template>
         <button h-32px hover=\\"bg-#67c23a\\" text-red w=\\"[100%]\\">button</button>
       </template>
@@ -373,7 +373,7 @@ describe('single demo vue.tsx', async () => {
   it('vue.tsx', async () => {
     const filepath = path.resolve(process.cwd(), _path)
 
-    expect(await transfromCode(demo, filepath, 'tsx')).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'tsx'})).toMatchInlineSnapshot(`
       "import { defineComponent, ref } from 'vue'
       import './index.css'
 

@@ -18,6 +18,7 @@ const valMap: any = {
 export async function transformMedia(
   code: string,
   isJsx?: boolean,
+  isRem?: boolean,
 ): Promise<[string, (r: string) => string]> {
   const transferBackMap: any = []
   let result = code
@@ -40,7 +41,14 @@ export async function transformMedia(
     }
 
     if (pre.trim()) {
-      const transfer = await transformCss(inner, result, `max-${value}`, isJsx)
+      const transfer = await transformCss(
+        inner,
+        result,
+        `max-${value}`,
+        isJsx,
+        undefined,
+        isRem,
+      )
 
       if (transfer !== result) {
         result = transfer.replace(emptyMediaReg, '')
@@ -58,7 +66,7 @@ export async function transformMedia(
       mapValue = `${getLastName(key)}-${val === 'no-preference' ? 'safe' : val}`
 
     const transfer = (
-      await transformCss(inner, result, mapValue, isJsx)
+      await transformCss(inner, result, mapValue, isJsx, undefined, isRem)
     ).replace(emptyMediaReg, '')
     result = transfer.replace(all, tempFlag)
     transferBackMap.push((r: string) => r.replace(tempFlag, all))

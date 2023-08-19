@@ -2,7 +2,7 @@ import { prettierCode } from './prettierCode'
 import { transformVue } from './transformVue'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 
-export async function transformSvelte(code: string) {
+export async function transformSvelte(code: string, isRem?: boolean) {
   const match = code.match(
     /(<script.*<\/script>)?(.*(?=<style>))(<style>.*<\/style>)?/s,
   )
@@ -13,7 +13,7 @@ export async function transformSvelte(code: string) {
   const [_all, _js, template, css] = match
   const _css = css ? css.replace(/<style>(.*)<\/style>/s, '$1') : ''
   const _template = wrapperVueTemplate(template, _css)
-  const vue = await transformVue(_template, true)
+  const vue = await transformVue(_template, { isJsx: true, isRem })
 
   vue.replace(
     /<template>(.*)<\/template>[\n\s]*<style scoped>(.*)<\/style>/s,

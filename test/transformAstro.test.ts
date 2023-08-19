@@ -8,7 +8,7 @@ describe('accent', () => {
     const html = await fsp.readFile('./test/demo/astro.astro', 'utf-8')
     const filepath = path.resolve(process.cwd(), './test/demo/astro.astro')
 
-    expect(await transformAstro(html, filepath)).toMatchInlineSnapshot(
+    expect(await transformAstro(html)).toMatchInlineSnapshot(
     `
       "---
       export const prerender = true;

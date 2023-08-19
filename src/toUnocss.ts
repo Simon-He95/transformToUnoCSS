@@ -122,12 +122,20 @@ const typeMap: any = {
 }
 const splitReg = /([\w-]+)\s*:\s*([.\w\(\)-\s%+'",#\/!]+)/
 
-export function toUnocss(css: String) {
+export function toUnocss(css: String, isRem = false) {
   const match = css.match(splitReg)
   if (!match)
     return
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, key, val] = match
   const first = getFirstName(key)
-  return typeMap[first]?.(key, val)
+  const result = typeMap[first]?.(key, val)
+  if (result && isRem) {
+    return result.replace(
+      /-([0-9\.]+)px/,
+      (_: string, v: string) => `-${+v / 4}`,
+    )
+  }
+
+  return result
 }

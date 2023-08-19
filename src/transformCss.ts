@@ -42,13 +42,16 @@ interface AllChange {
   end: Position
 }
 
+let isRem: boolean | undefined
 export async function transformCss(
   style: string,
   code: string,
   media = '',
   isJsx?: boolean,
   filepath?: string,
+  _isRem?: boolean,
 ): Promise<string> {
+  isRem = _isRem
   const allChanges: AllChange[] = []
   code = (await importCss(code, style, filepath, isJsx)) as string
   let stack = parse(code).descriptor.template?.ast
@@ -59,7 +62,7 @@ export async function transformCss(
 
       const originClassName = name
       const before = trim(value.replace(/\n\s*/g, ''))
-      const transfer = transformStyleToUnocss(before)[0]
+      const transfer = transformStyleToUnocss(before, isRem)[0]
       const tailMatcher = name.match(tailReg)
 
       const prefix = tailMatcher
@@ -176,7 +179,7 @@ async function importCss(
 
     const vue = wrapperVueTemplate(code, css)
 
-    const transfer = await transformVue(vue, isJsx)
+    const transfer = await transformVue(vue, { isJsx, isRem })
 
     if (diffTemplateStyle(transfer, vue)) {
       code = originCode
@@ -592,7 +595,10 @@ async function getConflictClass(
       .reduce((result, key) => {
         const keys = key.split('|')
         const prefix = keys.length > 1 ? keys[0] : ''
-        let transferCss = transformStyleToUnocss(`${key}:${map[key][1]}`)[0]
+        let transferCss = transformStyleToUnocss(
+          `${key}:${map[key][1]}`,
+          isRem,
+        )[0]
         const match = transferCss.match(/(.*)="\[(.*)\]"/)
         if (match)
           transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
