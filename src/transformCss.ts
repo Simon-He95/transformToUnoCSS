@@ -1,6 +1,7 @@
 import fsp from 'fs/promises'
 import path from 'path'
 import { parse } from 'vue/compiler-sfc'
+import { transformStyleToUnocss } from 'transform-to-unocss-core'
 import {
   diffTemplateStyle,
   flag,
@@ -13,7 +14,6 @@ import {
   trim,
 } from './utils'
 import { tail } from './tail'
-import { transformStyleToUnocss } from './transformStyleToUnocss'
 import { transformVue } from './transformVue'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 import { compilerCss } from './compilerCss'

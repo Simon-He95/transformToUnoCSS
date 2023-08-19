@@ -1,5 +1,4 @@
 import { createGenerator } from '@unocss/core'
-import type { FilterPattern } from '@rollup/pluginutils'
 import presetUno from '@unocss/preset-uno'
 
 export type CssType = 'less' | 'scss' | 'css' | 'stylus'
@@ -8,42 +7,10 @@ export const flag = '.__unocss_transfer__'
 export function isNot(s: string) {
   return /\[&:not\(/.test(s)
 }
-export function isCalc(s: string) {
-  return s.startsWith('calc(')
-}
-
-export function getFirstName(s: string) {
-  return s.split('-')[0]
-}
 
 export function getLastName(s: string) {
   const all = s.split('-')
   return all[all.length - 1]
-}
-
-export function isUrl(s: string) {
-  return s.startsWith('url(')
-}
-
-export function isPercent(s: string) {
-  return s.endsWith('%')
-}
-
-export function isHex(hex: string) {
-  return /^#[0-9A-Fa-f]{2,}$/.test(hex)
-}
-
-export function isRgb(s: string) {
-  return s.startsWith('rgb')
-}
-
-export function getVal(val: string, transform?: Function, inClass?: boolean) {
-  if (isCalc(val) || isUrl(val) || isHex(val) || isRgb(val) || isPercent(val)) {
-    return inClass
-      ? `-[${trim(val, 'all').replace(/['"]/g, '')}]`
-      : `="[${trim(val, 'all').replace(/['"]/g, '')}]"`
-  }
-  return `-${transform ? transform(val) : val}`
 }
 
 export function getHundred(n: string | number) {
@@ -138,11 +105,6 @@ export function getCssType(filename: string) {
   const ext = filename.split('.').pop()!
   const result = ext === 'styl' ? 'stylus' : ext
   return result as CssType
-}
-
-export interface Options {
-  include?: FilterPattern
-  exclude?: FilterPattern
 }
 
 export function joinEmpty(str: string) {

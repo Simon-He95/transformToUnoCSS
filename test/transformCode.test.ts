@@ -356,7 +356,7 @@ describe.only('single test', async () => {
   const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
   it('single.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue',isRem:true})).toMatchInlineSnapshot(`
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
       "<template>
         <button h-32px hover=\\"bg-#67c23a\\" text-red w=\\"[100%]\\">button</button>
       </template>

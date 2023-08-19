@@ -6,8 +6,9 @@ import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import { copy, useAnimationFrame, useFocus } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
 import { useI18n } from 'vue-i18n'
+import { toUnocss } from 'transform-to-unocss-core'
 import { transformVue } from '../../src/transformVue'
-import { toUnocss } from '../../src/toUnocss'
+
 import { isDark, toggleDark } from '~/composables'
 
 const { t, locale } = useI18n()
@@ -16,7 +17,6 @@ const input = ref('')
 let pre: any
   = '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
 
-const transform = computed(() => toUnocss(input.value))
 let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
@@ -24,6 +24,8 @@ const editorResult = ref<HTMLElement>()
 const display = ref('')
 const styleReg = /<style.*>(.*)<\/style>/s
 const classReg = /(.*){/g
+const isChecked = ref(false)
+const transform = computed(() => toUnocss(input.value, isChecked.value))
 
 const editorInput = ref(`<template>
   <button>button</button>
@@ -97,7 +99,7 @@ onMounted(() => {
   display.value = codeToHtml(pre)
 })
 
-useAnimationFrame(async () => {
+const stop = useAnimationFrame(async () => {
   const newInput = editorComponent!.getValue()
   if (!editorResult.value)
     return
@@ -112,7 +114,9 @@ useAnimationFrame(async () => {
       }).then(res => res.text())
     }
     catch (error) {
-      code = await transformVue(newInput)
+      code = await transformVue(newInput, {
+        isRem: isChecked.value,
+      })
     }
 
     editorResult.value!.innerHTML = ''
@@ -160,6 +164,10 @@ const changelanguage = () => {
     locale.value = 'zh'
   else locale.value = 'en'
 }
+
+onUnmounted(() => {
+  stop?.()
+})
 </script>
 
 <template>
@@ -201,7 +209,7 @@ const changelanguage = () => {
     class="typing"
     data-text="Css To Unocss"
   />
-  <div h="100%" flex justify-center items-center flex-col p="y10">
+  <div h="100%" flex justify-center items-center flex-col p="y10" w-full>
     <input
       v-model="input"
       class="!outline-none"
@@ -214,8 +222,13 @@ const changelanguage = () => {
       hover:border-pink
       border-1
     >
-    <div v-if="transform" flex="~ gap-4" h-20 items-center>
-      <h2>{{ t('result') }}</h2>
+    <div flex items-center my3>
+      <input v-model="isChecked" type="checkbox" w4 h4 mr1> isRem
+    </div>
+    <div v-if="transform" flex="~ gap-4" items-center>
+      <div font-bold text="18px">
+        {{ t('result') }}
+      </div>
       <div flex gap-2 items-center>
         {{ transform }}
         <div

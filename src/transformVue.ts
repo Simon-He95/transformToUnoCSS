@@ -12,7 +12,7 @@ interface Options {
   isRem?: boolean
 }
 
-export async function transformVue(code: string, options: Options) {
+export async function transformVue(code: string, options?: Options) {
   const { isJsx, filepath, isRem } = options || {}
   const {
     descriptor: { template, styles },

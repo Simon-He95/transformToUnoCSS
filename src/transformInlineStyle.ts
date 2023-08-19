@@ -1,4 +1,4 @@
-import { transformStyleToUnocss } from './transformStyleToUnocss'
+import { transformStyleToUnocss } from 'transform-to-unocss-core'
 
 const styleReg = /<([\w\-_]+)[^>]*[^:]style="([^"]+)"[^>]*>/g
 
