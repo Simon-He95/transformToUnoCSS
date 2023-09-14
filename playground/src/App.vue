@@ -70,6 +70,15 @@ monaco.editor.defineTheme('myTheme', {
 monaco.editor.setTheme('myTheme')
 
 onMounted(() => {
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
+      const selection = document.getSelection()
+      if (!selection || !selection.toString())
+        return
+      const text = selection.toString()
+      window.parent.postMessage({ eventType: 'copy', text }, '*')
+    }
+  })
   useFocus('input') // 自动聚焦input
 
   self.MonacoEnvironment = {
@@ -167,6 +176,15 @@ const changelanguage = () => {
 
 onUnmounted(() => {
   stop?.()
+  document.removeEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
+      const selection = document.getSelection()
+      if (!selection || !selection.toString())
+        return
+      const text = selection.toString()
+      window.parent.postMessage({ eventType: 'copy', text }, '*')
+    }
+  })
 })
 </script>
 
