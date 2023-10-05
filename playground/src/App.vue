@@ -25,7 +25,14 @@ const display = ref('')
 const styleReg = /<style.*>(.*)<\/style>/s
 const classReg = /(.*){/g
 const isChecked = ref(false)
-const transform = computed(() => toUnocss(input.value, isChecked.value))
+const transform = computed(() => {
+  try {
+    return toUnocss(input.value, isChecked.value)
+  }
+  catch (err) {
+    return ''
+  }
+})
 
 const editorInput = ref(`<template>
   <button>button</button>
