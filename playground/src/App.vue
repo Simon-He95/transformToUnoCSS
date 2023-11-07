@@ -221,7 +221,7 @@ onUnmounted(() => {
     color="pink"
   />
   <VividTyping
-    content="Css To Unocss"
+    content="Css To UnoCss"
     animate-bounce-alt
     animate-delay-1500
     animate-count-infinite
