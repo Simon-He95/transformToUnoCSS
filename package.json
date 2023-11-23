@@ -91,16 +91,12 @@
     "simple-git-hooks": "^2.8.1",
     "stylus": "^0.59.0",
     "transform-to-unocss": "^0.0.55",
-    "transform-to-unocss-core": "^0.0.9",
+    "transform-to-unocss-core": "^0.0.12",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typescript": "^4.7.4",
     "unplugin": "^1.3.1",
     "vitest": "^0.15.1"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged --concurrent false",
-    "commit-msg": "pnpm exec tsx scripts/verifyCommit.ts $1"
   },
   "lint-staged": {
     "*": [
