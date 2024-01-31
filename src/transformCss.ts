@@ -461,7 +461,7 @@ async function resolveConflictClass(
 
     if (isJsx) {
       const newReg = new RegExp(
-        `<${tag}.*class="([\\w\\:\\-\\s;\\[\\]\\/\\+%]+)"[=\\w\\-\\_'"\\s:]*\/?>`,
+        `<${tag}.*\\sclass=["']([^"']+)["'][^\\/>]*\/?>`,
       )
       const matcher = target.match(newReg)
 

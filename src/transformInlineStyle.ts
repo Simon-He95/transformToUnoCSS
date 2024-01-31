@@ -1,8 +1,8 @@
-import { transformStyleToUnocss } from 'transform-to-unocss-core'
+import { toUnocssClass, transformStyleToUnocss } from 'transform-to-unocss-core'
 
 const styleReg = /<([\w\-_]+)[^>]*[^:]style="([^"]+)"[^>]*>/g
 
-const removeStyleReg = / style="([#\w\:\-\s;\[\]\/\+%]+)"/
+const removeStyleReg = / style="([^"]*)"/
 const templateReg = /^<template>(.*)<\/template>$/ms
 const commentReg = /<!--.*-->/gs
 export function transformInlineStyle(
@@ -25,12 +25,13 @@ export function transformInlineStyle(
   })
 
   templateMatch.replace(styleReg, (target, tag, inlineStyle) => {
-    const [after, noMap] = transformStyleToUnocss(inlineStyle, isRem)
-
+    const [after, noMap] = isJsx
+      ? toUnocssClass(inlineStyle, isRem)
+      : transformStyleToUnocss(inlineStyle, isRem)
     // transform inline-style
 
     if (isJsx) {
-      const newReg = new RegExp(`<${tag}.*class="([^"]*)"`)
+      const newReg = new RegExp(`<${tag}.*\\sclass="([^"]*)"`)
       const matcher = target.match(newReg)
 
       if (matcher) {

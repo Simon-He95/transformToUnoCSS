@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const nihao = ref(true)
+</script>
 
 <template>
-  <div class="red">
+  <div class="red" style="height: 100%; transform: scale(1.5);" :class="[nihao?'w-10':'bg-red']">
     nihao
   </div>
   <div>hi</div>

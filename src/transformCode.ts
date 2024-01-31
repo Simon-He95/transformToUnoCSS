@@ -9,10 +9,11 @@ interface Options {
   isRem?: boolean
   filepath?: string
   type?: SuffixType
+  isJsx?: boolean
 }
 
 export async function transfromCode(code: string, options: Options) {
-  const { filepath, isRem, type } = options || {}
+  const { filepath, isRem, type, isJsx = false } = options || {}
   // 删除代码中的注释部分
   // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
   if (type === 'tsx')
@@ -24,5 +25,5 @@ export async function transfromCode(code: string, options: Options) {
   if (type === 'astro')
     return transformAstro(code, isRem)
 
-  return transformVue(code, { isJsx: false, filepath, isRem })
+  return transformVue(code, { isJsx, filepath, isRem })
 }
