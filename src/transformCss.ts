@@ -1,7 +1,7 @@
 import fsp from 'fs/promises'
 import path from 'path'
 import { parse } from 'vue/compiler-sfc'
-import { transformStyleToUnocss } from 'transform-to-unocss-core'
+import { getVal, transformStyleToUnocss } from 'transform-to-unocss-core'
 import {
   diffTemplateStyle,
   flag,
@@ -452,11 +452,13 @@ async function resolveConflictClass(
 
     const returnValue = isJsx
       ? after
-        .replace(/\[(.*)\]/g, (all, v) =>
+        .replace(/\[([^\]]+)\]/g, (all, v) =>
           all.replace(v, joinWithUnderLine(v)),
         )
-        .replace(/="([\w\-\,.\(\)\+\_\s#]+)"/g, '-$1')
+        .replace(/-(rgba?([^\)]+))/g, '-[$1]')
+        .replace(/="([^"]+)"/g, '-$1')
       : after
+
     const start = result.slice(offset)
 
     if (isJsx) {
@@ -601,7 +603,8 @@ async function getConflictClass(
         )[0]
         const match = transferCss.match(/(.*)="\[(.*)\]"/)
         if (match)
-          transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
+          transferCss = `${match[1]}${getVal(match[2])}`
+        // transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
 
         const _transferCss = prefix
           ? isNot(prefix)
