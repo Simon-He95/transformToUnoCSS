@@ -106,8 +106,8 @@ importers:
         specifier: ^0.0.55
         version: 0.0.55
       transform-to-unocss-core:
-        specifier: ^0.0.16
-        version: 0.0.16
+        specifier: ^0.0.17
+        version: 0.0.17
       tsup:
         specifier: ^6.5.0
         version: 6.5.0(postcss@8.4.21)(typescript@4.7.4)
@@ -6657,8 +6657,8 @@ packages:
       punycode: 2.1.1
     dev: true
 
-  /transform-to-unocss-core@0.0.16:
-    resolution: {integrity: sha512-RgQhM562Yhj18p506MDMNoGbQ0nHBRH1NTf0t+jqam/NmUOs23cxGSf76qpAtIcU/JyAmcZra+NJEX15XU6jBw==}
+  /transform-to-unocss-core@0.0.17:
+    resolution: {integrity: sha512-yFFxNe6qaHZCnd+1b8Vw736aiWd/FNMXFZj70L1tykusvfn2OnPk0S05lF7it1YJwKwRQry6FNAoP+wc3iFzWA==}
     hasBin: true
     dev: true
 
