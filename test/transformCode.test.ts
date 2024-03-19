@@ -127,7 +127,7 @@ describe('transformCode', () => {
       const nihao = ref(true)
       </script>
       <template>
-        <div bg-yellow w=\\"[100%]\\" h=\\"[100%]\\" scale-150 class=\\"red\\" :class=\\"[nihao?'w-10':'bg-red']\\">
+        <div bg-yellow w=\\"[100%]\\" h=\\"[100%]\\" scale=\\"150\\" class=\\"red\\" :class=\\"[nihao?'w-10':'bg-red']\\">
           nihao
         </div>
         <div>hi</div>
