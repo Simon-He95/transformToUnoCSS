@@ -103,8 +103,8 @@ importers:
         specifier: ^0.59.0
         version: 0.59.0
       transform-to-unocss:
-        specifier: ^0.0.55
-        version: 0.0.55
+        specifier: workspace:^
+        version: 'link:'
       transform-to-unocss-core:
         specifier: ^0.0.21
         version: 0.0.21
@@ -6660,13 +6660,6 @@ packages:
   /transform-to-unocss-core@0.0.21:
     resolution: {integrity: sha512-CPYWhAqjZVT97f9Fo65NoANGrqmi5TylgPePY48k7GYXc6poAFd7g7+EF73nB3vc2DlrLcsH7cnGTzeV+/BqdQ==}
     hasBin: true
-    dev: true
-
-  /transform-to-unocss@0.0.55:
-    resolution: {integrity: sha512-JyJX2nSGlIS4Q5ctVwZWlpPN+7fHAiJqd2iRRvueJvw9fr9zbfOxxSsZVRhprbo5qzt6O1JPOj/N4id6+2kNHg==}
-    hasBin: true
-    dependencies:
-      fast-glob: 3.2.12
     dev: true
 
   /tree-kill@1.2.2:

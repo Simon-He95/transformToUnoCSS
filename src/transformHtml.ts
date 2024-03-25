@@ -21,15 +21,18 @@ export async function transformHtml(
 async function getLinkCss(code: string, filepath: string) {
   const css = []
   for (const match of code.matchAll(linkCssReg)) {
-    if (!match)
-      continue
-    const url = match[0]
-    const cssUrl = path.resolve(filepath, '../', match[1])
+    try {
+      const url = match[0]
+      const cssUrl = path.resolve(filepath, '../', match[1])
 
-    css.push({
-      url,
-      content: await fsp.readFile(cssUrl, 'utf-8'),
-    })
+      css.push({
+        url,
+        content: await fsp.readFile(cssUrl, 'utf-8'),
+      })
+    }
+    catch (error: any) {
+      throw new Error(error.toString())
+    }
   }
 
   return css
@@ -77,6 +80,9 @@ async function generateNewCode(
       if (diffTemplateStyle(template, transferCode)) {
         // 新增的css全部被转换了,这个link可以被移除了
         code = code.replace(url, '')
+      }
+      else {
+        // todo：比对已经转换的属性，移除无用的属性
       }
       template = transferCode
     }
