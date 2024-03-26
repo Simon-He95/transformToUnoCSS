@@ -150,6 +150,22 @@ describe('transformCode', () => {
       ",
         "
 
+      -----    less.vue     -------
+
+      <template>
+        <a hover=\\"text-#3071a9\\" href=\\"\\">
+          <div text=\\"[#428bca]\\" class=\\"link\\" />
+        </a>
+      </template>
+
+      <style scoped>.widget {
+        color: #fff;
+        background: #428bca;
+      }
+      </style>
+      ",
+        "
+
       -----    media.vue     -------
 
       <script setup lang=\\"ts\\"></script>
@@ -385,7 +401,7 @@ describe('single test', async () => {
   })
 })
 
-describe.only('less test', async () => {
+describe('less test', async () => {
   const demo = await fsp.readFile('./test/demo/less.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
   it('single.vue', async () => {
