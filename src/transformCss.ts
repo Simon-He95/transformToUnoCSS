@@ -22,8 +22,8 @@ const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
 const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
 const tailReg = /:([\w-\(\)]+)/ // :after
 const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
+const emptyClass = /[,\w>\.\#\-\+>\:\[\]\="'\s\(\)]+\s*{}\n/g
 
-const emptyClass = /[\w>\.\#\-\+>\:\[\]\="'\s\(\)]+\s*{}\n/g
 interface Position {
   column: number
   line: number

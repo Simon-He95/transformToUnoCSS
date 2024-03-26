@@ -5,6 +5,8 @@ export async function stylusCompiler(css: string) {
   try {
     result = (await import('stylus')).default.render(css)
   }
-  catch (error) {}
+  catch (error: any) {
+    console.error(error.toString())
+  }
   return result
 }

@@ -6,7 +6,9 @@ export async function sassCompiler(css: string) {
   try {
     result = (await import('sass')).default.compileString(css).css
   }
-  catch (err) {}
+  catch (error: any) {
+    console.error(error.toString())
+  }
   return result
 }
 // const input = `

@@ -385,6 +385,27 @@ describe('single test', async () => {
   })
 })
 
+describe.only('less test', async () => {
+  const demo = await fsp.readFile('./test/demo/less.vue', 'utf-8')
+  const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
+  it('single.vue', async () => {
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchInlineSnapshot(`
+      "<template>
+        <a hover=\\"text-#3071a9\\" href=\\"\\">
+          <div text=\\"[#428bca]\\" class=\\"link\\" />
+        </a>
+      </template>
+
+      <style scoped>.widget {
+        color: #fff;
+        background: #428bca;
+      }
+      </style>
+      "
+    `)
+  })
+})
+
 describe('single demo vue.tsx', async () => {
   const _path = './test/demo/vue.tsx'
   const demo = await fsp.readFile(_path, 'utf-8')

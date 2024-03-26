@@ -18,7 +18,9 @@ export async function lessCompiler(css: string, alias = {}) {
       })
     ).css
   }
-  catch (error) {}
+  catch (error: any) {
+    console.error(error.toString())
+  }
 
   return result
 }

@@ -2,7 +2,7 @@
   <button text-red w="[100%]">button</button>
 </template>
 
-<style scoped>
+<style scoped lang="less">
   button {
     height: 32px;
   }

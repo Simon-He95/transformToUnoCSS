@@ -1,0 +1,23 @@
+<template>
+  <a href="">
+    <div class="link" />
+  </a>
+</template>
+
+<style scoped lang="less">
+// Variables
+@link-color:        #428bca; // sea blue
+@link-color-hover:  darken(@link-color, 10%);
+
+// Usage
+a,.link {
+  color: @link-color;
+}
+a:hover {
+  color: @link-color-hover;
+}
+.widget {
+  color: #fff;
+  background: @link-color;
+}
+</style>
