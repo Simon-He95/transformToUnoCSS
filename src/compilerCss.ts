@@ -11,11 +11,11 @@ export function compilerCss(
 ) {
   switch (lang) {
     case 'styl':
-      return stylusCompiler(css, filepath, globalCss.styl?.additionalData)
+      return stylusCompiler(css, filepath, globalCss?.styl?.additionalData)
     case 'less':
-      return lessCompiler(css, filepath, globalCss.less?.additionalData)
+      return lessCompiler(css, filepath, globalCss?.less?.additionalData)
     case 'scss':
-      return sassCompiler(css, filepath, globalCss.scss?.additionalData)
+      return sassCompiler(css, filepath, globalCss?.scss?.additionalData)
     default:
       return css
   }

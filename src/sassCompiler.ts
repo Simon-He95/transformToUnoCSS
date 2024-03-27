@@ -42,13 +42,3 @@ export async function sassCompiler(
     )
   }
 }
-
-// const input = `
-// h1 {
-//   font-size: 40px;
-//   code {
-//     font-face: Roboto Mono;
-//   }
-// }`
-
-// sassCompiler(input)
