@@ -1,4 +1,5 @@
 import path from 'path'
+import * as Url from 'url'
 
 export async function stylusCompiler(
   css: string,
@@ -9,8 +10,8 @@ export async function stylusCompiler(
     throw new Error('Stylus is not supported in this browser')
   let result = globalCss
     ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
-        _.replace(v, path.resolve(process.cwd(), v)),
-      )}${css}`
+      _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any),
+    )}${css}`
     : css
   try {
     result = (await import('stylus')).default.render(result, {

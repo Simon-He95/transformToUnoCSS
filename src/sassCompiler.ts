@@ -11,7 +11,7 @@ export async function sassCompiler(
     throw new Error('sassCompiler is not supported in this browser')
   let result = globalCss
     ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
-        _.replace(v, path.resolve(process.cwd(), v)),
+        _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any),
       )}${css}`
     : css
   try {
