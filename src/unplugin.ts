@@ -5,10 +5,14 @@ import type { Options } from './type'
 
 const unplugin = createUnplugin((options: Options = {}): any => {
   const filter = createFilter(options.include, options.exclude)
+  let globalCss: any = null
   return [
     {
       name: 'unplugin-transform-to-unocss',
       enforce: 'pre',
+      async configResolved(config: any) {
+        globalCss = config.css?.preprocessorOptions
+      },
       transformInclude(id: string) {
         return filter(id)
       },
@@ -21,7 +25,11 @@ const unplugin = createUnplugin((options: Options = {}): any => {
         if (!suffix)
           return code
 
-        return await transfromCode(code, { filepath: id, type: suffix })
+        return await transfromCode(code, {
+          filepath: id,
+          type: suffix,
+          globalCss,
+        })
       },
     },
   ]

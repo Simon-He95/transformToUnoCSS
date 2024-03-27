@@ -10,20 +10,21 @@ interface Options {
   filepath?: string
   type?: SuffixType
   isJsx?: boolean
+  globalCss?: any
 }
 
 export async function transfromCode(code: string, options: Options) {
-  const { filepath, isRem, type, isJsx = false } = options || {}
+  const { filepath, isRem, type, isJsx = false, globalCss } = options || {}
   // 删除代码中的注释部分
   // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
   if (type === 'tsx')
-    return transformJsx(code, filepath, isRem)
+    return transformJsx(code, filepath, isRem, globalCss)
   if (type === 'html')
     return transformHtml(code, filepath, isRem)
   if (type === 'svelte')
-    return transformSvelte(code, isRem)
+    return transformSvelte(code, isRem, globalCss)
   if (type === 'astro')
-    return transformAstro(code, isRem)
+    return transformAstro(code, isRem, globalCss)
 
-  return transformVue(code, { isJsx, filepath, isRem })
+  return transformVue(code, { isJsx, filepath, isRem, globalCss })
 }

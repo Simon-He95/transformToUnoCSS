@@ -106,8 +106,8 @@ importers:
         specifier: workspace:^
         version: 'link:'
       transform-to-unocss-core:
-        specifier: ^0.0.23
-        version: 0.0.23
+        specifier: ^0.0.24
+        version: 0.0.24
       tsup:
         specifier: ^6.5.0
         version: 6.5.0(postcss@8.4.21)(typescript@4.7.4)
@@ -6657,8 +6657,8 @@ packages:
       punycode: 2.1.1
     dev: true
 
-  /transform-to-unocss-core@0.0.23:
-    resolution: {integrity: sha512-zxmlnwAu5f1n0tK2sSzfUto5LfWx36lx3gYvDXYZ4srju6r3ZOFEgpbyBE2WtumW5R08Xg8jwcOiAbjRF7LFhw==}
+  /transform-to-unocss-core@0.0.24:
+    resolution: {integrity: sha512-eAyH1hPk7lFjL0gYMPLe545K33KNPXnzdSImUdz3NkS8teiU5upzBlr68o0pDQ5JUeIYtszanDDdjGE5Pk6qTg==}
     hasBin: true
     dev: true
 

@@ -8,6 +8,7 @@ export async function transformJsx(
   code: string,
   filepath?: string,
   isRem?: boolean,
+  globalCss?: any,
 ) {
   const ast = babelParse(code, {
     babelrc: false,
@@ -46,7 +47,11 @@ export async function transformJsx(
     ${css}
     </style>`
 
-  let vueTransfer = await transformVue(wrapperVue, { isJsx: true, isRem })
+  let vueTransfer = await transformVue(wrapperVue, {
+    isJsx: true,
+    isRem,
+    globalCss,
+  })
   vueTransfer = vueTransfer.replace(/class/g, 'className')
   if (cssPath) {
     const cssTransfer = vueTransfer.match(/<style scoped>(.*)<\/style>/s)![1]

@@ -10,10 +10,11 @@ interface Options {
   isJsx?: boolean
   filepath?: string
   isRem?: boolean
+  globalCss?: any
 }
 
 export async function transformVue(code: string, options?: Options) {
-  const { isJsx, filepath, isRem } = options || {}
+  const { isJsx, filepath, isRem, globalCss } = options || {}
   const {
     descriptor: { template, styles },
     errors,
@@ -40,7 +41,7 @@ export async function transformVue(code: string, options?: Options) {
     lang = 'css',
   } = styles[0]
 
-  const css = await compilerCss(style, lang as CssType, filepath)
+  const css = await compilerCss(style, lang as CssType, filepath, globalCss)
   if (css) {
     // 能被正确编译解析的css
     code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')

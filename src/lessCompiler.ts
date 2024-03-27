@@ -1,6 +1,9 @@
+import path from 'path'
+
 export async function lessCompiler(
   css: string,
   filepath?: string,
+  globalCss?: string,
   alias?: { [key: string]: string },
 ) {
   if (typeof window !== 'undefined')
@@ -9,12 +12,16 @@ export async function lessCompiler(
     'less-plugin-module-resolver'
   )
 
-  let result = css
+  let result = globalCss
+    ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
+        _.replace(v, path.resolve(process.cwd(), v)),
+      )}${css}`
+    : css
   try {
     result = (
       await (
         await import('less')
-      ).default.render(css, {
+      ).default.render(result, {
         filename: filepath,
         plugins: [
           new LessPluginModuleResolver({

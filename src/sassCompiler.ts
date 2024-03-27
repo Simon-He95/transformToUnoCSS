@@ -1,21 +1,33 @@
-import { pathToFileURL } from 'url'
+import * as Url from 'url'
+import process from 'process'
+import path from 'path'
 
-export async function sassCompiler(css: string, filepath?: string) {
+export async function sassCompiler(
+  css: string,
+  filepath?: string,
+  globalCss?: string,
+) {
   if (typeof window !== 'undefined')
     throw new Error('sassCompiler is not supported in this browser')
-  let result = css
+  let result = globalCss
+    ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
+        _.replace(v, path.resolve(process.cwd(), v)),
+      )}${css}`
+    : css
   try {
     result = (await import('sass')).default.compileString(
-      css,
+      result,
       filepath
         ? {
             importers: [
               {
                 findFileUrl(url) {
                   if (!url.startsWith('~'))
-                    return new URL(url, pathToFileURL(filepath) as URL)
-
-                  return new URL(url.slice(1), pathToFileURL(filepath) as URL)
+                    return new URL(url, Url.pathToFileURL(filepath) as URL)
+                  return new URL(
+                    url.slice(1),
+                    Url.pathToFileURL(filepath) as URL,
+                  )
                 },
               },
             ],
