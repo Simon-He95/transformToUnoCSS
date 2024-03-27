@@ -1,7 +1,7 @@
 import { createGenerator } from '@unocss/core'
 import presetUno from '@unocss/preset-uno'
 
-export type CssType = 'less' | 'scss' | 'css' | 'stylus'
+export type CssType = 'less' | 'scss' | 'css' | 'styl'
 export const flag = '.__unocss_transfer__'
 
 export function isNot(s: string) {

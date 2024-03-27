@@ -7,28 +7,26 @@
   <RouterView></RouterView>
 </template>
 
-<style lang="scss">
-@use './variables.scss';
-$prefix-cls: #{namespace}-app;
+<style lang="styl">
+$prefix-cls = name-app
 
 .size {
-  width: 100%;
-  height: 100%;
+  width: 100%
+  height: 100%
 }
 
 html,
 body {
-  @extend .size;
-  padding: 0 !important;
-  margin: 0;
-  overflow: hidden;
-
+  @extend .size
+  padding: 0 !important
+  margin: 0
+  overflow: hidden
   #app {
-    @extend .size;
+    @extend .size
   }
 }
-
-.#{$prefix-cls}-grey-mode {
+.$prefix-cls-grey-mode {
   filter: grayscale(100%);
 }
+
 </style>

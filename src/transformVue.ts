@@ -40,12 +40,14 @@ export async function transformVue(code: string, options?: Options) {
     lang = 'css',
   } = styles[0]
 
-  const css = await compilerCss(style, lang as CssType)
-  code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
-
-  // 只针对scoped css处理
-  if (scoped)
-    code = await transformCss(css, code, '', isJsx, filepath, isRem)
+  const css = await compilerCss(style, lang as CssType, filepath)
+  if (css) {
+    // 能被正确编译解析的css
+    code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
+    // 只针对scoped css处理
+    if (scoped)
+      code = await transformCss(css, code, '', isJsx, filepath, isRem)
+  }
 
   // 还原@media 未匹配到的class
   code = transformBack(code)
