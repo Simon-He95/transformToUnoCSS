@@ -19,13 +19,10 @@ export async function transformVue(code: string, options?: Options) {
     descriptor: { template, styles },
     errors,
   } = parse(code)
-
-  if (errors.length)
+  if (errors.length || !template || !styles.length)
     return code
   // transform inline-style
   code = transformInlineStyle(code, isJsx, isRem)
-  if (!template || !styles.length)
-    return code
   // transform @media 注：transformBack是将@media中内容用一个占位符替换等到transformCss处理完将结果还原回去
   const [transferMediaCode, transformBack] = await transformMedia(
     code,
