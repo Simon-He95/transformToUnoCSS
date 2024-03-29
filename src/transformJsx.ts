@@ -39,21 +39,18 @@ export async function transformJsx(
       },
     })
     const jsxCode = code.slice(container.start, container.end)
+    const isJsx = jsxCode.includes('className')
 
-    const wrapperVue = `<template>${jsxCode.replace(
-      /className/g,
-      'class',
-    )}</template>
+    const wrapperVue = `<template>${jsxCode}</template>
       <style scoped>
       ${css}
       </style>`
-
-    let vueTransfer = await transformVue(wrapperVue, {
-      isJsx: true,
+    const vueTransfer = await transformVue(wrapperVue, {
+      isJsx,
       isRem,
       globalCss,
     })
-    vueTransfer = vueTransfer.replace(/class/g, 'className')
+    // vueTransfer = vueTransfer.replace(/class/g, 'className')
     if (cssPath) {
       const cssTransfer = vueTransfer.match(/<style scoped>(.*)<\/style>/s)![1]
       fs.promises.writeFile(

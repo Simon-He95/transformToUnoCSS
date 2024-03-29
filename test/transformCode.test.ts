@@ -215,7 +215,7 @@ describe('single demo vue.tsx', async () => {
           const increment = () => count.value++
           return () => (
             <div>
-              <h1 className=\\"red bg-red\\" style=\\"hi:123\\">{props.title}</h1>
+              <h1 bg-red style=\\"hi:123\\" class=\\"red\\">{props.title}</h1>
               <p>{props.content}</p>
               <div onClick={increment}>
                 count: {count.value}
