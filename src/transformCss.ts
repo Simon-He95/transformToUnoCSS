@@ -1,7 +1,7 @@
 import fsp from 'fs/promises'
 import path from 'path'
 import { parse } from 'vue/compiler-sfc'
-import { getVal, transformStyleToUnocss } from 'transform-to-unocss-core'
+import { transformStyleToUnocss } from 'transform-to-unocss-core'
 import {
   diffTemplateStyle,
   flag,
@@ -62,7 +62,7 @@ export async function transformCss(
 
       const originClassName = name
       const before = trim(value.replace(/\n\s*/g, ''))
-      const transfer = transformStyleToUnocss(before, isRem)[0]
+      const [transfer, noTransfer] = transformStyleToUnocss(before, isRem)
       const tailMatcher = name.match(tailReg)
 
       const prefix = tailMatcher
@@ -74,7 +74,10 @@ export async function transformCss(
 
       const after
         = prefix && transfer
-          ? `${prefix}="${transfer.replace(/="\[(.*)\]"/g, (_, v) => `-${v}`)}"`
+          ? `${prefix}="${transfer.replace(
+              /="\[([^\]]*)\]"/g,
+              (_, v) => `-[${v}]`,
+            )}"`
           : transfer ?? before
       // 未被转换跳过
       if (before === after)
@@ -90,20 +93,69 @@ export async function transformCss(
 
       if (!result.length)
         return
-
+      const updateOffsetMap: any = {}
       result.forEach((r) => {
         const parent = r.parent
         if (prefix.startsWith('group-') && parent) {
           // 给result的parent添加class="group"
           const hasClass = parent.props.find((i: any) => i.name === 'class')
           if (hasClass) {
+            if (hasClass.value.content.includes('group'))
+              return
             // 如果有class
             const index = hasClass.value.loc.start.offset
-            code = `${code.slice(0, index + 1)}group ${code.slice(index + 1)}`
+            const newIndex
+              = hasClass.value.loc.start.offset
+              + getCalculateOffset(updateOffsetMap, index)
+            const updateText = 'group '
+            updateOffsetMap[index] = updateText.length
+            hasClass.value.content = `${hasClass.value.content} ${updateText}`
+            code = `${code.slice(0, newIndex + 1)}${updateText}${code.slice(
+              newIndex + 1,
+            )}`
           }
           else {
             const index = parent.loc.start.offset + parent.tag.length + 1
-            code = `${code.slice(0, index)} class="group" ${code.slice(index)}`
+            const newIndex
+              = hasClass.value.loc.start.offset
+              + getCalculateOffset(updateOffsetMap, index)
+            const updateText = 'class="group" '
+            parent.props.push({
+              type: 6,
+              name: 'class',
+              value: {
+                type: 2,
+                content: 'group',
+                loc: {
+                  start: {
+                    column: 0,
+                    line: 0,
+                    offset: newIndex,
+                  },
+                  end: {
+                    column: 0,
+                    line: 0,
+                    offset: newIndex + updateText.length,
+                  },
+                },
+              },
+              loc: {
+                start: {
+                  column: 0,
+                  line: 0,
+                  offset: newIndex,
+                },
+                end: {
+                  column: 0,
+                  line: 0,
+                  offset: newIndex + updateText.length,
+                },
+              },
+            })
+            updateOffsetMap[index] = updateText.length
+            code = `${code.slice(0, newIndex)} class="group" ${code.slice(
+              newIndex,
+            )}`
           }
         }
 
@@ -123,6 +175,7 @@ export async function transformCss(
 
           return result
         }, [] as string[])
+        stack = parse(code).descriptor!.template!.ast
 
         allChanges.push({
           before,
@@ -139,13 +192,11 @@ export async function transformCss(
       })
       // 拿出class
       const _class = code.match(/<style[^>]+>(.*)<\/style>/s)![1]
-
       // 删除原本class
-      let newClass = _class.replace(value, '')
+      let newClass = _class.replace(value, noTransfer.join(';'))
 
       // 如果class中内容全部被移除删除这个定义的class
       newClass = newClass.replace(emptyClass, '')
-
       code = code.replace(_class, newClass)
 
       // update stack
@@ -617,40 +668,76 @@ async function getConflictClass(
     Object.keys(map)
       .reduce((result, key) => {
         const keys = key.split('|')
-        const prefix = keys.length > 1 ? keys[0] : ''
+        let prefix = keys.length > 1 ? keys[0] : ''
         let transferCss = transformStyleToUnocss(
           `${key}:${map[key][1]}`,
           isRem,
         )[0]
-        const match = transferCss.match(/(.*)="\[(.*)\]"/)
-        if (match)
-          transferCss = `${match[1]}${getVal(match[2])}`
+
+        const match = transferCss.match(/([^\s]*)="\[([^\]]*)\]"/)
+        if (match) {
+          transferCss = `${match.input?.replace(
+            match[0],
+            match[0]
+              .replace(/="\[([^\]]*)\]"/, (_, v) => `-[${v}]`)
+              .replace(/="([^"]*)"/, '-$1'),
+          )}`
+        }
+
         // transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
 
         const _transferCss = prefix
           ? isNot(prefix)
-            ? `class="${prefix}${transferCss.replace(
-                /="\[(.*)\]"/g,
-                (_, v) => `-${v}`,
-              )}"`
-            : `${prefix}="${transferCss.replace(
-                /="\[(.*)\]"/g,
-                (_, v) => `-${v}`,
-              )}"`
+            ? `class="${prefix}${transferCss
+                .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
+                .replace(/="([^"]*)"/, '-$1')}"`
+            : `${prefix}="${transferCss
+                .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
+                .replace(/="([^"]*)"/, '-$1')}"`
           : transferCss
         // 如果存在相同的prefix, 进行合并
-        if (prefix && result.includes(prefix)) {
-          if (isNot(prefix)) {
-            const newPrefix = prefix.replace(/[\[\]\(\)]/g, all => `\\${all}`)
-            const reg = new RegExp(`${newPrefix}([\\w\\:\\-;\\[\\]\\/\\+%]+)`)
-            return result.replace(reg, all => `${all}:${transferCss}`)
-          }
-          const reg = new RegExp(`${prefix}="([\\w\\:\\-\\s;\\[\\]\\/\\+%]+)"`)
-          return result.replace(reg, (all, v) =>
-            all.replace(v, `${v} ${transferCss}`),
-          )
+
+        if (!prefix) {
+          const reg = /^([^\s]*)="[^"]*"$/
+          if (reg.test(transferCss))
+            prefix = transferCss.match(reg)![1]
         }
 
+        if (prefix) {
+          const prefixReg1 = new RegExp(`(?<!\\S)${prefix}(?!\\S)`)
+          if (prefixReg1.test(result)) {
+            return result.replace(prefixReg1, all =>
+              all.replace(prefix, _transferCss),
+            )
+          }
+          const prefixReg2 = new RegExp(`(?<!\\S)${prefix}=`)
+
+          if (prefixReg2.test(result)) {
+            if (isNot(prefix)) {
+              const newPrefix = prefix.replace(
+                /[\[\]\(\)]/g,
+                all => `\\${all}`,
+              )
+              const reg = new RegExp(`${newPrefix}([\\w\\:\\-;\\[\\]\\/\\+%]+)`)
+              return result.replace(reg, all => `${all}:${transferCss}`)
+            }
+            const reg = new RegExp(`${prefix}="([^"]*)"`)
+            return result.replace(reg, (all, v) => {
+              const unique = [
+                ...new Set(
+                  v
+                    .split(' ')
+                    .concat(
+                      _transferCss.slice(prefix.length + 2, -1).split(' '),
+                    ),
+                ),
+              ].join(' ')
+              if (v)
+                return all.replace(v, unique)
+              return `${prefix}="${unique.trim()}"`
+            })
+          }
+        }
         return `${result}${_transferCss} `
       }, '')
       .trim(),
