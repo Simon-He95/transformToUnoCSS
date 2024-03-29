@@ -417,6 +417,7 @@ async function resolveConflictClass(
 ) {
   const changes = findSameSource(allChange)
   let result = code
+  const updateOffset: any = {}
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
     const {
@@ -425,6 +426,7 @@ async function resolveConflictClass(
       media,
       source,
       start: { offset },
+      end: { offset: offsetEnd },
     } = value[0]
     // eslint-disable-next-line prefer-const
     let [after, transform] = await getConflictClass(value)
@@ -443,7 +445,11 @@ async function resolveConflictClass(
           after = after.replace(
             /class="(\[&:not\([\w\s\-\_\.\#]+\)\]:[\w\-\.]+)"\s*/,
             (_, v) => {
-              result = result.replace(match[1], `${match[1]} ${v}`)
+              const updateText = ` ${v}`
+              result = result.replace(match[1], `${match[1]}${updateText}`)
+              updateOffset[offset]
+                = updateOffset[offset] ?? 0 + updateText.length
+
               return ''
             },
           )
@@ -463,7 +469,11 @@ async function resolveConflictClass(
         .replace(/="([^"]+)"/g, '-$1')
       : after
 
-    const start = result.slice(offset)
+    const getUpdateOffset = getCalculateOffset(updateOffset, offset)
+    const start = result.slice(
+      getUpdateOffset + offset,
+      getUpdateOffset + offsetEnd,
+    )
 
     if (isJsx) {
       const newReg = new RegExp(
@@ -472,26 +482,33 @@ async function resolveConflictClass(
       const matcher = target.match(newReg)
 
       if (matcher) {
+        const updateText = ` ${returnValue}`
+        updateOffset[offset] = updateOffset[offset] ?? 0 + updateText.length
+
         result = result.replace(
           start,
           start.replace(
             `class="${matcher[1]}"`,
-            `class="${matcher[1]} ${returnValue}"`,
+            `class="${matcher[1]}${updateText}"`,
           ),
         )
         continue
       }
+      const updateText = ` class="${returnValue}"`
+      updateOffset[offset] = updateOffset[offset] ?? 0 + updateText.length
 
       result = result.replace(
         start,
-        start.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
+        start.replace(`<${tag}`, `<${tag}${updateText}`),
       )
       continue
     }
+    const updateText = ` ${returnValue}`
+    updateOffset[offset] = updateOffset[offset] ?? 0 + updateText.length
 
     result = result.replace(
       start,
-      start.replace(`<${tag}`, `<${tag} ${returnValue}`),
+      start.replace(`<${tag}`, `<${tag}${updateText}`),
     )
   }
 
@@ -639,4 +656,13 @@ async function getConflictClass(
       .trim(),
     transform,
   ]
+}
+
+function getCalculateOffset(offsetMap: any, offset: any) {
+  return Object.keys(offsetMap).reduce((result, key) => {
+    if (+key < offset)
+      result += offsetMap[key]
+
+    return result
+  }, 0)
 }

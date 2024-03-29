@@ -914,8 +914,46 @@ body {
 -----    test.vue     -------
 
 <template>
-  <button h-32px hover=\\"bg-#67c23a\\" text-red w=\\"[100%]\\">button</button>
+  <div>
+    <ul class=\\"list-group list-group-striped\\">
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t=\\"[#e7eaec]\\" border-b-1px border-b-solid border-b=\\"[#e7eaec]\\" class=\\"list-group-item\\">
+        <Icon class=\\"mr-5px\\" icon=\\"ep:user\\" />
+        {{ t('profile.user.username') }}
+        <div float-right! class=\\"pull-right\\">{{ userInfo?.username }}</div>
+      </li>
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t=\\"[#e7eaec]\\" border-b-1px border-b-solid border-b=\\"[#e7eaec]\\" class=\\"list-group-item\\">
+        <Icon class=\\"mr-5px\\" icon=\\"ep:phone\\" />
+        {{ t('profile.user.mobile') }}
+        <div float-right! class=\\"pull-right\\">{{ userInfo?.mobile }}</div>
+      </li>
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t=\\"[#e7eaec]\\" border-b-1px border-b-solid border-b=\\"[#e7eaec]\\" class=\\"list-group-item\\">
+        <Icon class=\\"mr-5px\\" icon=\\"fontisto:email\\" />
+        {{ t('profile.user.email') }}
+        <div float-right! class=\\"pull-right\\">{{ userInfo?.email }}</div>
+      </li>
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t=\\"[#e7eaec]\\" border-b-1px border-b-solid border-b=\\"[#e7eaec]\\" class=\\"list-group-item\\">
+        <Icon class=\\"mr-5px\\" icon=\\"ep:calendar\\" />
+        {{ t('profile.user.createTime') }}
+        <div float-right! class=\\"pull-right\\">{{ formatDate(userInfo.createTime) }}</div>
+      </li>
+    </ul>
+  </div>
 </template>
+<script lang=\\"ts\\" setup>
+import { formatDate } from '@/utils/formatTime'
+import UserAvatar from './UserAvatar.vue'
+import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
+defineOptions({ name: 'ProfileUser' })
+const { t } = useI18n()
+const userInfo = ref({} as ProfileVO)
+const getUserInfo = async () => {
+  const users = await getUserProfile()
+  userInfo.value = users
+}
+onMounted(async () => {
+  await getUserInfo()
+})
+</script>
 <style scoped></style>
 ",
   "
