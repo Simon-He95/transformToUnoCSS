@@ -64,18 +64,23 @@ export function transformUnocssBack(code: string[]) {
       .then((res: any) => {
         const css = res.getLayers()
         code.forEach((item) => {
-          const reg = new RegExp(`${item.replace(/!/g, '\\\\!')}{(.*)}`)
-          const match = css.match(reg)
-          if (!match)
-            return
-          const matcher = match[1]
+          try {
+            const reg = new RegExp(
+              `${item.replace(/([\!\(\)\[\]\*])/g, '\\\\$1')}{(.*)}`,
+            )
+            const match = css.match(reg)
+            if (!match)
+              return
+            const matcher = match[1]
 
-          result.push(
-            matcher
-              .split(';')
-              .filter((i: any) => /^\w+[\w\-]*:/.test(i))[0]
-              .split(':')[0],
-          )
+            result.push(
+              matcher
+                .split(';')
+                .filter((i: any) => /^\w+[\w\-]*:/.test(i))[0]
+                .split(':')[0],
+            )
+          }
+          catch (error) {}
         })
 
         resolve(result)

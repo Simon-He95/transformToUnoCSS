@@ -20,7 +20,7 @@ import { compilerCss } from './compilerCss'
 const combineReg = /([.#\w]+)([.#][\w]+)/ // xx.xx
 
 const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
-const tailReg = /:([\w-\(\)]+)/ // :after
+const tailReg = /:([\w\-]+)/ // :after
 const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 const emptyClass = /[,\w>\.\#\-\+>\:\[\]\="'\s\(\)]+\s*{}\n/g
 
@@ -68,6 +68,9 @@ export async function transformCss(
       const prefix = tailMatcher
         ? (name.endsWith(tailMatcher[0]) ? '' : 'group-') + tail(tailMatcher[1])
         : ''
+      // :deep()
+      if (prefix === 'group-deep')
+        return
 
       const after
         = prefix && transfer
@@ -79,6 +82,7 @@ export async function transformCss(
 
       if (prefix)
         name = name.replace(tailMatcher[0], '')
+
       // 找template > ast
       const names = name.replace(/\s*\+\s*/, '+').split(' ')
 
