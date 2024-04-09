@@ -104,7 +104,7 @@ build({
 - support css in '.html' | '.tsx' | '.vue' | '.astro' | '.svelte' to unocss
 - support sass less stylus convert
 - support vite | rollup | webpack | vue-cli | esbuild
-- vscode extension [To Unocss](https://github.com/Simon-He95/tounocss)
+- vscode extension [To Unocss](https://github.com/Simon-He95/unot)
 
 ## 🚁 More
 
