@@ -9,15 +9,22 @@ on:
     branches:
       - main
 
+  merge_group: {}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
       - name: Set node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.18.2
+          cache: pnpm
 
       - name: Setup
         run: npm i -g @antfu/ni
@@ -28,39 +35,38 @@ jobs:
       - name: Lint
         run: nr lint
 
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Setup
-        run: npm i -g @antfu/ni
-
-      - name: Install
-        run: nci
-
-      - name: Typecheck
-        run: nr typecheck
-
   test:
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node: [14.x, 16.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
+        node_version: [18.18.2, lts/*]
+        include:
+          - os: macos-latest
+            node_version: lts/*
+          - os: windows-latest
+            node_version: lts/*
       fail-fast: false
 
     steps:
+      - name: Set git to use LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - uses: actions/checkout@v3
-      - name: Set node ${{ matrix.node }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node ${{ matrix.node_version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.node_version }}
+          cache: pnpm
+
+      - run: corepack enable
 
       - name: Setup
         run: npm i -g @antfu/ni
@@ -73,3 +79,6 @@ jobs:
 
       - name: Test
         run: nr test
+
+      - name: Typecheck
+        run: nr typecheck
