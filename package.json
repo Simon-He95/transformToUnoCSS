@@ -1,7 +1,7 @@
 {
   "name": "transform-to-unocss",
   "version": "0.0.85",
-  "packageManager": "pnpm@8.0.0",
+  "packageManager": "pnpm@8.15.6",
   "description": "The tool that transform css to unocss",
   "author": "Simon He",
   "license": "MIT",
@@ -84,7 +84,7 @@
     "magic-string": "^0.30.0",
     "monaco-editor": "^0.36.1",
     "picocolors": "^1.0.0",
-    "pnpm": "^8.0.0",
+    "pnpm": "9.0.5",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "sass": "^1.59.2",
