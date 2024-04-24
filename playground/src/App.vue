@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { VividTyping } from 'vivid-typing'
 import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-import { copy, useAnimationFrame, useFocus } from 'lazy-js-utils'
+import { copy, useFocus, useRaf } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
 import { useI18n } from 'vue-i18n'
 import { toUnocss } from 'transform-to-unocss-core'
@@ -115,7 +115,7 @@ onMounted(() => {
   display.value = codeToHtml(pre)
 })
 
-const stop = useAnimationFrame(async () => {
+const stop = useRaf(async () => {
   const newInput = editorComponent!.getValue()
   if (!editorResult.value)
     return

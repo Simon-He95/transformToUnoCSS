@@ -1,10 +1,10 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`classSpace.vue > classSpace.vue 1`] = `
-"<script setup lang=\\"ts\\"></script>
+"<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
-    <div bg-red! w-[100%] class=\\"yellow\\">
+  <div bg-red w="[100%]" lh-20px class="red">
+    <div bg-red! w-[100%] class="yellow">
       hi
     </div>
   </div>
@@ -15,14 +15,14 @@ exports[`classSpace.vue > classSpace.vue 1`] = `
 
 exports[`demo1 vue test > demo1.vue 1`] = `
 "<template>
-  <div class=\\"my-process-designer\\">
-    <div class=\\"my-process-designer__container\\">
-      <div h-760px class=\\"my-process-designer__canvas\\" ref=\\"bpmnCanvas\\"></div>
+  <div class="my-process-designer">
+    <div class="my-process-designer__container">
+      <div h-760px class="my-process-designer__canvas" ref="bpmnCanvas"></div>
     </div>
   </div>
 </template>
 
-<script lang=\\"ts\\" setup>
+<script lang="ts" setup>
 import BpmnViewer from 'bpmn-js/lib/Viewer'
 import DefaultEmptyXML from './plugins/defaultEmpty'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -331,7 +331,7 @@ const elementHover = (element) => {
     return
   }
   if (!elementOverlayIds.value[element.value.id] && element.value.type !== 'bpmn:Process') {
-    let html = \`<div class=\\"element-overlays\\">
+    let html = \`<div class="element-overlays">
             <p>Elemet id: \${element.value.id}</p>
             <p>Elemet type: \${element.value.type}</p>
           </div>\` // 默认值
@@ -396,7 +396,7 @@ const elementHover = (element) => {
     // console.log(html, 'html111111111111111')
     elementOverlayIds.value[element.value.id] = toRaw(overlays.value)?.add(element.value, {
       position: { left: 0, bottom: 0 },
-      html: \`<div class=\\"element-overlays\\">\${html}</div>\`
+      html: \`<div class="element-overlays">\${html}</div>\`
     })
   }
 }
@@ -456,7 +456,7 @@ watch(
 </script>
 
 <style>
-@charset \\"UTF-8\\";
+@charset "UTF-8";
 /** 处理中 */
 .highlight-todo.djs-connection > .djs-visual > path {
   stroke: #1890ff !important;
@@ -473,7 +473,7 @@ watch(
   stroke: #1890ff !important;
   stroke-dasharray: 4px !important;
   fill-opacity: 0.2 !important;
-  marker-end: url(\\"#sequenceflow-end-_E7DFDF-_E7DFDF-803g1kf6zwzmcig1y2ulm5egr\\");
+  marker-end: url("#sequenceflow-end-_E7DFDF-_E7DFDF-803g1kf6zwzmcig1y2ulm5egr");
 }
 :deep(.highlight-todo.djs-shape .djs-visual > :nth-child(1)) {
   fill: #1890ff !important;
@@ -644,32 +644,32 @@ watch(
 exports[`demo2 vue test > demo2.vue 1`] = `
 "/* stylelint-disable order/properties-order */
 <template>
-  <div w-240px inline-flex flex-0 shrink-0   flex-1 relative class=\\"add-node-btn-box\\">
-    <div class=\\"add-node-btn\\">
-      <el-popover placement=\\"right-start\\" v-model=\\"visible\\" width=\\"auto\\">
-        <div class=\\"add-node-popover-body\\">
-          <a class=\\"add-node-popover-item approver\\" @click=\\"addType(1)\\">
-            <div class=\\"item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+  <div w-240px inline-flex flex-0 shrink-0   flex-1 relative class="add-node-btn-box">
+    <div class="add-node-btn">
+      <el-popover placement="right-start" v-model="visible" width="auto">
+        <div class="add-node-popover-body">
+          <a class="add-node-popover-item approver" @click="addType(1)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>审批人</p>
           </a>
-          <a class=\\"add-node-popover-item notifier\\" @click=\\"addType(2)\\">
-            <div class=\\"item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+          <a class="add-node-popover-item notifier" @click="addType(2)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>抄送人</p>
           </a>
-          <a class=\\"add-node-popover-item condition\\" @click=\\"addType(4)\\">
-            <div class=\\"item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+          <a class="add-node-popover-item condition" @click="addType(4)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>条件分支</p>
           </a>
         </div>
         <template #reference>
-          <button class=\\"btn\\" type=\\"button\\">
-            <span class=\\"iconfont\\"></span>
+          <button class="btn" type="button">
+            <span class="iconfont"></span>
           </button>
         </template>
       </el-popover>
@@ -687,32 +687,32 @@ exports[`demo2 vue test > demo2.vue 1`] = `
 exports[`demo3 vue test > demo2.vue 1`] = `
 "/* stylelint-disable order/properties-order */
 <template>
-  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before=\\"content-[''] absolute top-0 left-0 right-0 bottom-0 z- m-auto w-2px h-[100%] bg-[#cacaca]\\" class=\\"add-node-btn-box\\">
-    <div select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1 class=\\"add-node-btn\\">
-      <el-popover placement=\\"right-start\\" v-model=\\"visible\\" width=\\"auto\\">
-        <div flex class=\\"add-node-popover-body\\">
-          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class=\\"group add-node-popover-item approver\\" @click=\\"addType(1)\\">
-            <div group-active=\\"shadow-[none] bg-[#eaeaea]\\" select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" text-[#ff943e] class=\\"group item-wrapper\\">
-              <span text-[#fff] text-16px lh-80px group-hover=\\"text-[#fff]\\" class=\\"iconfont\\"></span>
+  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before="content-[''] absolute top-0 left-0 right-0 bottom-0 z- m-auto w-2px h-[100%] bg-[#cacaca]" class="add-node-btn-box">
+    <div select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1 class="add-node-btn">
+      <el-popover placement="right-start" v-model="visible" width="auto">
+        <div flex class="add-node-popover-body">
+          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class="group add-node-popover-item approver" @click="addType(1)">
+            <div group-active="shadow-[none] bg-[#eaeaea]" select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" text-[#ff943e] class="group item-wrapper">
+              <span text-[#fff] text-16px lh-80px group-hover="text-[#fff]" class="iconfont"></span>
             </div>
             <p>审批人</p>
           </a>
-          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class=\\"group add-node-popover-item notifier\\" @click=\\"addType(2)\\">
-            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" text-[#ff943e] class=\\"group item-wrapper\\">
-              <span text-[#fff] text-16px lh-80px group-hover=\\"text-[#fff]\\" class=\\"iconfont\\"></span>
+          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class="group add-node-popover-item notifier" @click="addType(2)">
+            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" text-[#ff943e] class="group item-wrapper">
+              <span text-[#fff] text-16px lh-80px group-hover="text-[#fff]" class="iconfont"></span>
             </div>
             <p>抄送人</p>
           </a>
-          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class=\\"group add-node-popover-item condition\\" @click=\\"addType(4)\\">
-            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" text-[#ff943e] class=\\"group item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class="group add-node-popover-item condition" @click="addType(4)">
+            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" text-[#ff943e] class="group item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>条件分支</p>
           </a>
         </div>
         <template #reference>
-          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" hover=\\"scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]\\" active=\\"bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]\\" class=\\"btn\\" type=\\"button\\">
-            <span class=\\"iconfont\\"></span>
+          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" hover="scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]" active="bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]" class="btn" type="button">
+            <span class="iconfont"></span>
           </button>
         </template>
       </el-popover>
@@ -793,13 +793,13 @@ const addType = (type) => {
 
 exports[`less vue test > single.vue 1`] = `
 "<template>
-	<div mx-auto my-0 border-1px border-solid border-[#f00] flex justify-center flex-col items-center class=\\"box\\">
+	<div mx-auto my-0 border-1px border-solid border-[#f00] flex justify-center flex-col items-center class="box">
 		<UsePinia />
 		<br />
-		<router-link to=\\"/login\\">点击跳转至login</router-link>
+		<router-link to="/login">点击跳转至login</router-link>
 	</div>
 </template>
-<script lang=\\"ts\\">
+<script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
 	name: 'index',
@@ -820,7 +820,7 @@ export default defineComponent({
 `;
 
 exports[`sass vue test > sass.vue 1`] = `
-"<script setup lang=\\"ts\\">
+"<script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 </script>
@@ -850,10 +850,10 @@ body {
 `;
 
 exports[`single demo Media > Media.vue 1`] = `
-"<script setup lang=\\"ts\\"></script>
+"<script setup lang="ts"></script>
 
 <template>
-  <div max-2xl:bg-red sm:bg-red class=\\"red\\">
+  <div max-2xl:bg-red sm:bg-red class="red">
     nihao
   </div>
 </template>
@@ -869,10 +869,10 @@ exports[`single demo Media > Media.vue 1`] = `
 `;
 
 exports[`single demo classCombine > classCombine.vue 1`] = `
-"<script setup lang=\\"ts\\"></script>
+"<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px>
-    <div bg-red w-[100%] class=\\"red yellow\\">
+  <div bg-red w="[100%]" lh-20px>
+    <div bg-red w-[100%] class="red yellow">
       hi
     </div>
   </div>
@@ -882,13 +882,13 @@ exports[`single demo classCombine > classCombine.vue 1`] = `
 `;
 
 exports[`single demo classTail > classTail.vue 1`] = `
-"<script setup lang=\\"ts\\"></script>
+"<script setup lang="ts"></script>
 <template>
-  <div focus-within=\\"bg-red w-[100%]\\" class=\\"container\\">
-    <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+  <div focus-within="bg-red w-[100%]" class="container">
+    <div bg-red w="[100%]" lh-20px class="red">
       nihao
     </div>
-    <div class=\\"yellow\\">
+    <div class="yellow">
       hi
     </div>
   </div>
@@ -898,11 +898,11 @@ exports[`single demo classTail > classTail.vue 1`] = `
 `;
 
 exports[`single demo classWeight > classWeight.vue 1`] = `
-"<script setup lang=\\"ts\\">
+"<script setup lang="ts">
 const nihao = ref(true)
 </script>
 <template>
-  <div class=\\"red h-[100%] scale-150 bg-yellow w-[100%]\\" :class=\\"[nihao?'w-10':'bg-red']\\">
+  <div class="red h-[100%] scale-150 bg-yellow w-[100%]" :class="[nihao?'w-10':'bg-red']">
     nihao
   </div>
   <div>hi</div>
@@ -912,12 +912,12 @@ const nihao = ref(true)
 `;
 
 exports[`single demo styleMaxWidth.tsx > vue.tsx 1`] = `
-"<script setup lang=\\"ts\\"></script>
+"<script setup lang="ts"></script>
 <template>
-  <div class=\\"red\\">
+  <div class="red">
     nihao
   </div>
-  <div max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)] class=\\"yellow\\">
+  <div max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)] class="yellow">
     hi
   </div>
 </template>
@@ -926,12 +926,12 @@ exports[`single demo styleMaxWidth.tsx > vue.tsx 1`] = `
 `;
 
 exports[`single demo styleWeight > styleWeight.vue 1`] = `
-"<script setup lang=\\"ts\\"></script>
+"<script setup lang="ts"></script>
 <template>
-  <div bg-pink style=\\"hi:123\\" class=\\"red\\">
+  <div bg-pink style="hi:123" class="red">
     nihao
   </div>
-  <div bg-yellow class=\\"yellow\\" >
+  <div bg-yellow class="yellow" >
     hi
   </div>
 </template>
@@ -960,7 +960,7 @@ export const component = defineComponent({
     const increment = () => count.value++
     return () => (
       <div>
-        <h1 bg-red style=\\"hi:123\\" class=\\"red\\">{props.title}</h1>
+        <h1 bg-red style="hi:123" class="red">{props.title}</h1>
         <p>{props.content}</p>
         <div onClick={increment}>
           count: {count.value}
@@ -975,31 +975,31 @@ export const component = defineComponent({
 exports[`single test > single.vue 1`] = `
 "<template>
   <div>
-    <ul class=\\"list-group list-group-striped\\">
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"ep:user\\" />
+    <ul class="list-group list-group-striped">
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="ep:user" />
         {{ t('profile.user.username') }}
-        <div float-right! class=\\"pull-right\\">{{ userInfo?.username }}</div>
+        <div float-right! class="pull-right">{{ userInfo?.username }}</div>
       </li>
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"ep:phone\\" />
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="ep:phone" />
         {{ t('profile.user.mobile') }}
-        <div float-right! class=\\"pull-right\\">{{ userInfo?.mobile }}</div>
+        <div float-right! class="pull-right">{{ userInfo?.mobile }}</div>
       </li>
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"fontisto:email\\" />
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="fontisto:email" />
         {{ t('profile.user.email') }}
-        <div float-right! class=\\"pull-right\\">{{ userInfo?.email }}</div>
+        <div float-right! class="pull-right">{{ userInfo?.email }}</div>
       </li>
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"ep:calendar\\" />
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="ep:calendar" />
         {{ t('profile.user.createTime') }}
-        <div float-right! class=\\"pull-right\\">{{ formatDate(userInfo.createTime) }}</div>
+        <div float-right! class="pull-right">{{ formatDate(userInfo.createTime) }}</div>
       </li>
     </ul>
   </div>
 </template>
-<script lang=\\"ts\\" setup>
+<script lang="ts" setup>
 import { formatDate } from '@/utils/formatTime'
 import UserAvatar from './UserAvatar.vue'
 import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
@@ -1019,7 +1019,7 @@ onMounted(async () => {
 `;
 
 exports[`stylus vue test > stylus.vue 1`] = `
-"<script setup lang=\\"ts\\">
+"<script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 </script>
@@ -1053,12 +1053,12 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classAdd.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+  <div bg-red w="[100%]" lh-20px class="red">
     nihao
   </div>
-  <div bg-yellow! w-[100%] h-[100%] class=\\"yellow\\">
+  <div bg-yellow! w-[100%] h-[100%] class="yellow">
     hi
   </div>
 </template>
@@ -1068,13 +1068,13 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classAttribute.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 
 <template>
-  <div w-[100%] h-[100%] class=\\"red\\" name=\\"hi\\" haha>
+  <div w-[100%] h-[100%] class="red" name="hi" haha>
     nihao
   </div>
-  <div h-[100%] class=\\"yellow\\">
+  <div h-[100%] class="yellow">
     hi
   </div>
 </template>
@@ -1089,10 +1089,10 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classChild.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
-    <div bg-red w-[100%] class=\\"yellow\\">
+  <div bg-red w="[100%]" lh-20px class="red">
+    <div bg-red w-[100%] class="yellow">
       hi
     </div>
   </div>
@@ -1103,10 +1103,10 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classCombine.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px>
-    <div bg-red w-[100%] class=\\"red yellow\\">
+  <div bg-red w="[100%]" lh-20px>
+    <div bg-red w-[100%] class="red yellow">
       hi
     </div>
   </div>
@@ -1117,10 +1117,10 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classSpace.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
-    <div bg-red! w-[100%] class=\\"yellow\\">
+  <div bg-red w="[100%]" lh-20px class="red">
+    <div bg-red! w-[100%] class="yellow">
       hi
     </div>
   </div>
@@ -1131,13 +1131,13 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classTail.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div focus-within=\\"bg-red w-[100%]\\" class=\\"container\\">
-    <div bg-red w=\\"[100%]\\" lh-20px class=\\"red\\">
+  <div focus-within="bg-red w-[100%]" class="container">
+    <div bg-red w="[100%]" lh-20px class="red">
       nihao
     </div>
-    <div class=\\"yellow\\">
+    <div class="yellow">
       hi
     </div>
   </div>
@@ -1148,11 +1148,11 @@ exports[`transformCode > transformCode: all 1`] = `
 
 -----    classWeight.vue     -------
 
-<script setup lang=\\"ts\\">
+<script setup lang="ts">
 const nihao = ref(true)
 </script>
 <template>
-  <div bg-yellow w-[100%] h=\\"[100%]\\" scale=\\"150\\" class=\\"red\\" :class=\\"[nihao?'w-10':'bg-red']\\">
+  <div bg-yellow w-[100%] h="[100%]" scale="150" class="red" :class="[nihao?'w-10':'bg-red']">
     nihao
   </div>
   <div>hi</div>
@@ -1164,14 +1164,14 @@ const nihao = ref(true)
 -----    demo1.vue     -------
 
 <template>
-  <div class=\\"my-process-designer\\">
-    <div class=\\"my-process-designer__container\\">
-      <div h-760px class=\\"my-process-designer__canvas\\" ref=\\"bpmnCanvas\\"></div>
+  <div class="my-process-designer">
+    <div class="my-process-designer__container">
+      <div h-760px class="my-process-designer__canvas" ref="bpmnCanvas"></div>
     </div>
   </div>
 </template>
 
-<script lang=\\"ts\\" setup>
+<script lang="ts" setup>
 import BpmnViewer from 'bpmn-js/lib/Viewer'
 import DefaultEmptyXML from './plugins/defaultEmpty'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -1480,7 +1480,7 @@ const elementHover = (element) => {
     return
   }
   if (!elementOverlayIds.value[element.value.id] && element.value.type !== 'bpmn:Process') {
-    let html = \`<div class=\\"element-overlays\\">
+    let html = \`<div class="element-overlays">
             <p>Elemet id: \${element.value.id}</p>
             <p>Elemet type: \${element.value.type}</p>
           </div>\` // 默认值
@@ -1545,7 +1545,7 @@ const elementHover = (element) => {
     // console.log(html, 'html111111111111111')
     elementOverlayIds.value[element.value.id] = toRaw(overlays.value)?.add(element.value, {
       position: { left: 0, bottom: 0 },
-      html: \`<div class=\\"element-overlays\\">\${html}</div>\`
+      html: \`<div class="element-overlays">\${html}</div>\`
     })
   }
 }
@@ -1605,7 +1605,7 @@ watch(
 </script>
 
 <style>
-@charset \\"UTF-8\\";
+@charset "UTF-8";
 /** 处理中 */
 .highlight-todo.djs-connection > .djs-visual > path {
   stroke: #1890ff !important;
@@ -1622,7 +1622,7 @@ watch(
   stroke: #1890ff !important;
   stroke-dasharray: 4px !important;
   fill-opacity: 0.2 !important;
-  marker-end: url(\\"#sequenceflow-end-_E7DFDF-_E7DFDF-803g1kf6zwzmcig1y2ulm5egr\\");
+  marker-end: url("#sequenceflow-end-_E7DFDF-_E7DFDF-803g1kf6zwzmcig1y2ulm5egr");
 }
 :deep(.highlight-todo.djs-shape .djs-visual > :nth-child(1)) {
   fill: #1890ff !important;
@@ -1794,32 +1794,32 @@ watch(
 
 /* stylelint-disable order/properties-order */
 <template>
-  <div w-240px inline-flex flex-0 shrink-0   flex-1 relative class=\\"add-node-btn-box\\">
-    <div class=\\"add-node-btn\\">
-      <el-popover placement=\\"right-start\\" v-model=\\"visible\\" width=\\"auto\\">
-        <div class=\\"add-node-popover-body\\">
-          <a class=\\"add-node-popover-item approver\\" @click=\\"addType(1)\\">
-            <div class=\\"item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+  <div w-240px inline-flex flex-0 shrink-0   flex-1 relative class="add-node-btn-box">
+    <div class="add-node-btn">
+      <el-popover placement="right-start" v-model="visible" width="auto">
+        <div class="add-node-popover-body">
+          <a class="add-node-popover-item approver" @click="addType(1)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>审批人</p>
           </a>
-          <a class=\\"add-node-popover-item notifier\\" @click=\\"addType(2)\\">
-            <div class=\\"item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+          <a class="add-node-popover-item notifier" @click="addType(2)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>抄送人</p>
           </a>
-          <a class=\\"add-node-popover-item condition\\" @click=\\"addType(4)\\">
-            <div class=\\"item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+          <a class="add-node-popover-item condition" @click="addType(4)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>条件分支</p>
           </a>
         </div>
         <template #reference>
-          <button class=\\"btn\\" type=\\"button\\">
-            <span class=\\"iconfont\\"></span>
+          <button class="btn" type="button">
+            <span class="iconfont"></span>
           </button>
         </template>
       </el-popover>
@@ -1838,32 +1838,32 @@ watch(
 
 /* stylelint-disable order/properties-order */
 <template>
-  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before=\\"content-[''] absolute top-0 left-0 right-0 bottom-0 z- m-auto w-2px h-[100%] bg-[#cacaca]\\" class=\\"add-node-btn-box\\">
-    <div select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1 class=\\"add-node-btn\\">
-      <el-popover placement=\\"right-start\\" v-model=\\"visible\\" width=\\"auto\\">
-        <div flex class=\\"add-node-popover-body\\">
-          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class=\\"group add-node-popover-item approver\\" @click=\\"addType(1)\\">
-            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" text-[#ff943e] group-hover=\\"bg-[#3296fa] shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]\\" class=\\"group item-wrapper\\">
-              <span text-[#fff] text-16px lh-80px class=\\"iconfont\\"></span>
+  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before="content-[''] absolute top-0 left-0 right-0 bottom-0 z- m-auto w-2px h-[100%] bg-[#cacaca]" class="add-node-btn-box">
+    <div select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1 class="add-node-btn">
+      <el-popover placement="right-start" v-model="visible" width="auto">
+        <div flex class="add-node-popover-body">
+          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class="group add-node-popover-item approver" @click="addType(1)">
+            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" text-[#ff943e] group-hover="bg-[#3296fa] shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]" class="group item-wrapper">
+              <span text-[#fff] text-16px lh-80px class="iconfont"></span>
             </div>
             <p>审批人</p>
           </a>
-          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class=\\"group add-node-popover-item notifier\\" @click=\\"addType(2)\\">
-            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" text-[#ff943e] group-hover=\\"bg-[#3296fa] shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]\\" class=\\"group item-wrapper\\">
-              <span text-[#fff] text-16px lh-80px class=\\"iconfont\\"></span>
+          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class="group add-node-popover-item notifier" @click="addType(2)">
+            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" text-[#ff943e] group-hover="bg-[#3296fa] shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]" class="group item-wrapper">
+              <span text-[#fff] text-16px lh-80px class="iconfont"></span>
             </div>
             <p>抄送人</p>
           </a>
-          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class=\\"group add-node-popover-item condition\\" @click=\\"addType(4)\\">
-            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" text-[#ff943e] group-hover=\\"bg-[#3296fa] shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]\\" class=\\"group item-wrapper\\">
-              <span class=\\"iconfont\\"></span>
+          <a mr-10px cursor-pointer text-center flex-1 text-[#191f25]! class="group add-node-popover-item condition" @click="addType(4)">
+            <div select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" text-[#ff943e] group-hover="bg-[#3296fa] shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]" class="group item-wrapper">
+              <span class="iconfont"></span>
             </div>
             <p>条件分支</p>
           </a>
         </div>
         <template #reference>
-          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition=\\"all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)\\" hover=\\"scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]\\" active=\\"bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]\\" class=\\"btn\\" type=\\"button\\">
-            <span text-[#fff] text-16px class=\\"iconfont\\"></span>
+          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" hover="scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]" active="bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]" class="btn" type="button">
+            <span text-[#fff] text-16px class="iconfont"></span>
           </button>
         </template>
       </el-popover>
@@ -1944,10 +1944,10 @@ const addType = (type) => {
 
 -----    hover.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div bg-red w=\\"[100%]\\" lh-20px>
-    <div hover=\\"text-yellow\\" class=\\"red\\">
+  <div bg-red w="[100%]" lh-20px>
+    <div hover="text-yellow" class="red">
       hi
     </div>
   </div>
@@ -1959,13 +1959,13 @@ const addType = (type) => {
 -----    less.vue     -------
 
 <template>
-	<div mx-auto my-0 border-1px border-solid border-[#f00] flex justify-center flex-col items-center class=\\"box\\">
+	<div mx-auto my-0 border-1px border-solid border-[#f00] flex justify-center flex-col items-center class="box">
 		<UsePinia />
 		<br />
-		<router-link to=\\"/login\\">点击跳转至login</router-link>
+		<router-link to="/login">点击跳转至login</router-link>
 	</div>
 </template>
-<script lang=\\"ts\\">
+<script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
 	name: 'index',
@@ -1987,10 +1987,10 @@ export default defineComponent({
 
 -----    media.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 
 <template>
-  <div max-2xl:bg-red sm:bg-red class=\\"red\\">
+  <div max-2xl:bg-red sm:bg-red class="red">
     nihao
   </div>
 </template>
@@ -2007,7 +2007,7 @@ export default defineComponent({
 
 -----    sass.vue     -------
 
-<script setup lang=\\"ts\\">
+<script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 </script>
@@ -2038,12 +2038,12 @@ body {
 
 -----    styleMaxWidth.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div class=\\"red\\">
+  <div class="red">
     nihao
   </div>
-  <div max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)] class=\\"yellow\\">
+  <div max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)] class="yellow">
     hi
   </div>
 </template>
@@ -2053,12 +2053,12 @@ body {
 
 -----    styleWeight.vue     -------
 
-<script setup lang=\\"ts\\"></script>
+<script setup lang="ts"></script>
 <template>
-  <div bg-pink style=\\"hi:123\\" class=\\"red\\">
+  <div bg-pink style="hi:123" class="red">
     nihao
   </div>
-  <div bg-yellow class=\\"yellow\\" >
+  <div bg-yellow class="yellow" >
     hi
   </div>
 </template>
@@ -2068,7 +2068,7 @@ body {
 
 -----    stylus.vue     -------
 
-<script setup lang=\\"ts\\">
+<script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 </script>
@@ -2100,31 +2100,31 @@ body {
 
 <template>
   <div>
-    <ul class=\\"list-group list-group-striped\\">
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"ep:user\\" />
+    <ul class="list-group list-group-striped">
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="ep:user" />
         {{ t('profile.user.username') }}
-        <div float-right! class=\\"pull-right\\">{{ userInfo?.username }}</div>
+        <div float-right! class="pull-right">{{ userInfo?.username }}</div>
       </li>
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"ep:phone\\" />
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="ep:phone" />
         {{ t('profile.user.mobile') }}
-        <div float-right! class=\\"pull-right\\">{{ userInfo?.mobile }}</div>
+        <div float-right! class="pull-right">{{ userInfo?.mobile }}</div>
       </li>
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"fontisto:email\\" />
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="fontisto:email" />
         {{ t('profile.user.email') }}
-        <div float-right! class=\\"pull-right\\">{{ userInfo?.email }}</div>
+        <div float-right! class="pull-right">{{ userInfo?.email }}</div>
       </li>
-      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class=\\"list-group-item\\">
-        <Icon class=\\"mr-5px\\" icon=\\"ep:calendar\\" />
+      <li px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec] class="list-group-item">
+        <Icon class="mr-5px" icon="ep:calendar" />
         {{ t('profile.user.createTime') }}
-        <div float-right! class=\\"pull-right\\">{{ formatDate(userInfo.createTime) }}</div>
+        <div float-right! class="pull-right">{{ formatDate(userInfo.createTime) }}</div>
       </li>
     </ul>
   </div>
 </template>
-<script lang=\\"ts\\" setup>
+<script lang="ts" setup>
 import { formatDate } from '@/utils/formatTime'
 import UserAvatar from './UserAvatar.vue'
 import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
@@ -2165,7 +2165,7 @@ export const component = defineComponent({
     const increment = () => count.value++
     return () => (
       <div>
-        <h1 bg-red style=\\"hi:123\\" class=\\"red\\">{props.title}</h1>
+        <h1 bg-red style="hi:123" class="red">{props.title}</h1>
         <p>{props.content}</p>
         <div onClick={increment}>
           count: {count.value}

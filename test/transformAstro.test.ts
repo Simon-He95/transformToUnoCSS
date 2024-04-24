@@ -15,7 +15,7 @@ describe('accent', () => {
       ---
         
       	<main>
-      		<h1 class=\\"red text-20px\\">hi </h1>
+      		<h1 class="red text-20px">hi </h1>
       	</main>
       "
     `)
