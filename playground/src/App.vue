@@ -7,8 +7,10 @@ import { copy, useFocus, useRaf } from 'lazy-js-utils'
 import gitForkVue from '@simon_he/git-fork-vue'
 import { useI18n } from 'vue-i18n'
 import { toUnocss } from 'transform-to-unocss-core'
+import { AutoComplete } from 'ant-design-vue'
 import { transformVue } from '../../src/transformVue'
 
+import { cssSuggestions } from './utils'
 import { isDark, toggleDark } from '~/composables'
 
 const { t, locale } = useI18n()
@@ -20,7 +22,8 @@ let pre: any
 let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
-
+monaco.languages.css.suggest = true
+monaco.languages.css.completionItems = true
 const display = ref('')
 const styleReg = /<style.*>(.*)<\/style>/s
 const classReg = /(.*){/g
@@ -76,6 +79,47 @@ monaco.editor.defineTheme('myTheme', {
 })
 monaco.editor.setTheme('myTheme')
 
+const cssCompletionProvider = {
+  triggerCharacters: ['.', ':', '-'],
+  provideCompletionItems: (model, position) => {
+    const word = model.getWordUntilPosition(position)
+    const range = {
+      startLineNumber: position.lineNumber,
+      endLineNumber: position.lineNumber,
+      startColumn: word.startColumn,
+      endColumn: word.endColumn,
+    }
+
+    return {
+      suggestions: cssSuggestions.map(prop => ({
+        label: prop,
+        kind: monaco.languages.CompletionItemKind.Property,
+        insertText: prop,
+        range,
+      })),
+    }
+  },
+}
+monaco.languages.registerCompletionItemProvider('html', {
+  provideCompletionItems(model, position) {
+    const textUntilPosition = model.getValueInRange({
+      startLineNumber: 1,
+      startColumn: 1,
+      endLineNumber: position.lineNumber,
+      endColumn: position.column,
+    })
+    const isInStyleSection
+      = /<style\b/.test(textUntilPosition)
+      || /style\s*=\s*"/.test(textUntilPosition)
+      || /style\s*=\s*'/.test(textUntilPosition)
+
+    if (!isInStyleSection)
+      return { suggestions: [] }
+
+    return cssCompletionProvider.provideCompletionItems(model, position)
+  },
+})
+
 onMounted(() => {
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
@@ -87,7 +131,6 @@ onMounted(() => {
     }
   })
   useFocus('input') // 自动聚焦input
-
   self.MonacoEnvironment = {
     getWorker() {
       return new HtmlWorker()
@@ -116,7 +159,9 @@ onMounted(() => {
 })
 
 const stop = useRaf(async () => {
-  const newInput = editorComponent!.getValue()
+  const newInput = editorComponent?.getValue()
+  if (!newInput)
+    return
   if (!editorResult.value)
     return
   let code
@@ -161,6 +206,17 @@ function codeToHtml(code: string) {
     )
     .replace('<template>', '')
     .replace('<\/template>', '')
+}
+const options = ref(cssSuggestions.map(i => ({ value: i })))
+const onSearch = (searchText: string) => {
+  options.value = !searchText
+    ? cssSuggestions.map(i => ({ value: i }))
+    : cssSuggestions
+      .map(i => ({ value: i }))
+      .filter(i => i.value.includes(searchText))
+      .sort(
+        (a, b) => a.value.indexOf(searchText) - b.value.indexOf(searchText),
+      )
 }
 
 const isCopy = ref(false)
@@ -235,18 +291,19 @@ onUnmounted(() => {
     data-text="Css To Unocss"
   />
   <div h="100%" flex justify-center items-center flex-col p="y10" w-full>
-    <input
-      v-model="input"
-      class="!outline-none"
-      w="40%"
-      text-4
+    <!-- <input v-model="input" class="!outline-none" w="40%" text-4 :placeholder="t('placeholder')" type="text"
+      autocomplete="off" p="x6 y4" hover:border-pink border-1> -->
+    <AutoComplete
+      v-model:value="input"
+      w="60%"
+      :options="options"
+      class="!text-6"
       :placeholder="t('placeholder')"
-      type="text"
-      autocomplete="off"
-      p="x6 y4"
-      hover:border-pink
+      hover="border-pink!"
       border-1
-    >
+      allow-clear
+      @search="onSearch"
+    />
     <div flex items-center my3>
       <input v-model="isChecked" type="checkbox" w4 h4 mr1> isRem
     </div>
@@ -334,5 +391,19 @@ onUnmounted(() => {
   -webkit-transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
   transform: translate(-26px, 16px) skew(50deg) scaleY(0.6);
   z-index: 1;
+}
+</style>
+
+<style>
+.ant-select-selector {
+  height: 50px !important;
+}
+
+.ant-select-selector input {
+  height: 100% !important;
+  font-size: 16px;
+}
+.ant-select-selector .ant-select-selection-placeholder {
+  line-height: 50px !important;
 }
 </style>
