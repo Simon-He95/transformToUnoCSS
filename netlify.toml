@@ -1,5 +1,5 @@
 [build.environment]
-  NODE_VERSION = "16"
+  NODE_VERSION = "18"
 [build]
   publish = "./playground/dist"
   command = "npm run play:build"
