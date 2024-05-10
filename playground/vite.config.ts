@@ -8,7 +8,7 @@ import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
-import { viteTransformToUnocss } from '../src/index'
+// import { viteTransformToUnocss } from '../src/index'
 
 export default defineConfig({
   resolve: {
@@ -35,7 +35,7 @@ export default defineConfig({
       dts: true,
     }),
 
-    viteTransformToUnocss(),
+    // viteTransformToUnocss({}),
     // https://github.com/antfu/unocss
     // see unocss.config.ts for config
     Unocss(),
