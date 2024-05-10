@@ -22,8 +22,6 @@ let pre: any
 let editorComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
-monaco.languages.css.suggest = true
-monaco.languages.css.completionItems = true
 const display = ref('')
 const styleReg = /<style.*>(.*)<\/style>/s
 const classReg = /(.*){/g

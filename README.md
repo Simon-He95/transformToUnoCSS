@@ -27,9 +27,9 @@ This library is to convert css to unocss. <a href="https://github.com/unocss/uno
 
 ```ts
 // vite.config.ts
-import { vitePluginTransformToUnocss } from 'transform-to-unocss'
+import { viteTransformToUnocss } from 'transform-to-unocss'
 export default defineConfig({
-  plugins: [vitePluginTransformToUnocss(/* options */)],
+  plugins: [viteTransformToUnocss(/* options */)],
 })
 ```
 
