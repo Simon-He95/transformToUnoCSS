@@ -30,7 +30,7 @@
     "@vue/test-utils": "^2.0.0-rc.18",
     "eslint": "^8.11.0",
     "jsdom": "^19.0.0",
-    "lazy-js-utils": "^0.0.92",
+    "lazy-js-utils": "^0.0.93",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "typescript": "^4.6.2",
     "unocss": "^0.50.3",
