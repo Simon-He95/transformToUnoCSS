@@ -90,7 +90,7 @@
     "simple-git-hooks": "^2.8.1",
     "stylus": "^0.59.0",
     "transform-to-unocss": "workspace:^",
-    "transform-to-unocss-core": "^0.0.30",
+    "transform-to-unocss-core": "^0.0.31",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typescript": "^4.7.4",

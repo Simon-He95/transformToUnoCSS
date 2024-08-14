@@ -117,7 +117,7 @@ monaco.languages.registerCompletionItemProvider('html', {
     return cssCompletionProvider.provideCompletionItems(model, position)
   },
 })
-
+const autoComplete = ref<any>(null)
 onMounted(() => {
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
@@ -247,6 +247,13 @@ onUnmounted(() => {
     }
   })
 })
+
+function onSelect(value: string) {
+  input.value = `${value}: `
+  nextTick(() => {
+    autoComplete.value.focus()
+  })
+}
 </script>
 
 <template>
@@ -292,6 +299,7 @@ onUnmounted(() => {
     <!-- <input v-model="input" class="!outline-none" w="40%" text-4 :placeholder="t('placeholder')" type="text"
       autocomplete="off" p="x6 y4" hover:border-pink border-1> -->
     <AutoComplete
+      ref="autoComplete"
       v-model:value="input"
       w="60%"
       :options="options"
@@ -301,6 +309,7 @@ onUnmounted(() => {
       border-1
       allow-clear
       @search="onSearch"
+      @select="onSelect"
     />
     <div flex items-center my3>
       <input v-model="isChecked" type="checkbox" w4 h4 mr1> isRem
@@ -401,6 +410,7 @@ onUnmounted(() => {
   height: 100% !important;
   font-size: 16px;
 }
+
 .ant-select-selector .ant-select-selection-placeholder {
   line-height: 50px !important;
 }
