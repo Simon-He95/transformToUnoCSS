@@ -1,6 +1,6 @@
-import * as Url from 'url'
-import process from 'process'
-import path from 'path'
+import * as Url from 'node:url'
+import process from 'node:process'
+import path from 'node:path'
 
 export async function sassCompiler(
   css: string,
@@ -11,8 +11,7 @@ export async function sassCompiler(
     throw new Error('sassCompiler is not supported in this browser')
   let result = globalCss
     ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
-        _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any),
-      )}${css}`
+        _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any))}${css}`
     : css
   try {
     result = (await import('sass')).default.compileString(

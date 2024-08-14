@@ -1,11 +1,12 @@
-import path from 'path'
-import fsp from 'fs/promises'
+import path from 'node:path'
+import fsp from 'node:fs/promises'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 import { transformVue } from './transformVue'
 import { prettierCode } from './prettierCode'
 import { diffTemplateStyle } from './utils'
-const linkCssReg = /<link.*href="(.*.css)".*>/g
-const styleReg = /[\s\n]*<style.*>(.*)<\/style>[\s\n]*/s
+
+const linkCssReg = /<link.*href="(.+css)".*>/g
+const styleReg = /\s*<style[^>]*>(.*)<\/style>\s*/s
 
 export async function transformHtml(
   code: string,
@@ -46,14 +47,14 @@ function getStyleCss(code: string) {
 }
 
 function getBody(code: string) {
-  const match = code.match(/<body.*>.*<\/body>/s)
+  const match = code.match(/<body[^>]*>.*<\/body>/s)
   if (!match)
     return ''
   return match[0]
 }
 
 async function generateNewCode(
-  css: { url: string; content: string }[],
+  css: { url: string, content: string }[],
   style: string,
   code: string,
   isRem?: boolean,

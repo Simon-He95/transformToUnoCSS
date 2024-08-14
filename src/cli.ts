@@ -1,10 +1,12 @@
-import path from 'path'
-import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
+import process from 'node:process'
 import fg from 'fast-glob'
 import colorize from '@simon_he/colorize'
 import { transfromCode } from './transformCode'
 import type { SuffixType } from './type'
 import { flag } from './utils'
+
 const log = console.log
 
 export async function cli() {

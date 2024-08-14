@@ -1,12 +1,11 @@
 import { transformCss } from './transformCss'
 import { getLastName } from './utils'
 
-const mediaReg
-  = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*{([\s\n\w.\{\}\-:;]*)}/g
+const mediaReg = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{([\s\w.{}\-:;]*)\}/g
 
 const mediaSingleReg
-  = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*{([\s\n\w.\{\}\-:;]*)}/
-const emptyMediaReg = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*{[\s\n]*}/g
+  = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{([\s\w.{}\-:;]*)\}/
+const emptyMediaReg = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{\s*\}/g
 const valMap: any = {
   '640px': 'sm',
   '768px': 'md',

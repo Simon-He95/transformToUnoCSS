@@ -1,5 +1,6 @@
-import path from 'path'
-import * as Url from 'url'
+import path from 'node:path'
+import * as Url from 'node:url'
+import process from 'node:process'
 
 export async function lessCompiler(
   css: string,
@@ -15,8 +16,7 @@ export async function lessCompiler(
 
   let result = globalCss
     ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
-      _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any),
-    )}${css}`
+        _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any))}${css}`
     : css
   try {
     result = (

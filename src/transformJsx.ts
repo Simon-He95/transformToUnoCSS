@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import { parse as babelParse, traverse as babelTraverse } from '@babel/core'
 import vueJsxPlugin from '@vue/babel-plugin-jsx'
 import { transformVue } from './transformVue'

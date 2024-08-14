@@ -1,6 +1,6 @@
 import { parse } from 'vue/compiler-sfc'
 
-const emptyStyle = /<style[\s\w'=]*>([\n\s]*)/
+const emptyStyle = /<style[\s\w'=]*>(\s*)/
 
 export function prettierCode(code: string) {
   const {

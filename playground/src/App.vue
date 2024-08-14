@@ -24,7 +24,7 @@ const editor = ref(null)
 const editorResult = ref<HTMLElement>()
 const display = ref('')
 const styleReg = /<style.*>(.*)<\/style>/s
-const classReg = /(.*){/g
+const classReg = /(.*)\{/g
 const isChecked = ref(false)
 const transform = computed(() => {
   try {
@@ -200,13 +200,12 @@ function codeToHtml(code: string) {
           classReg,
           (_: any, match: any) => `[data-v-display]${match} {`,
         ),
-      ),
-    )
+      ))
     .replace('<template>', '')
     .replace('<\/template>', '')
 }
 const options = ref(cssSuggestions.map(i => ({ value: i })))
-const onSearch = (searchText: string) => {
+function onSearch(searchText: string) {
   options.value = !searchText
     ? cssSuggestions.map(i => ({ value: i }))
     : cssSuggestions
@@ -218,7 +217,7 @@ const onSearch = (searchText: string) => {
 }
 
 const isCopy = ref(false)
-const copyStyle = () => {
+function copyStyle() {
   if (copy(transform.value)) {
     isCopy.value = true
     window.parent.postMessage({ eventType: 'copy', text: transform.value }, '*')
@@ -229,7 +228,7 @@ const copyStyle = () => {
   }, 1000)
 }
 
-const changelanguage = () => {
+function changelanguage() {
   if (locale.value === 'en')
     locale.value = 'zh'
   else locale.value = 'en'

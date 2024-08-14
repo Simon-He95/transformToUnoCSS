@@ -31,7 +31,7 @@ export type TrimType = 'all' | 'pre' | 'around' | 'post'
  * 删除空格
  * @param { string } s 字符串
  * @param { TrimType } type 所有 ｜ 前置 ｜ 前后 ｜ 后置 'all' | 'pre' | 'around' | 'post'
- * @returns
+ * @returns string
  */
 export function trim(s: string, type: TrimType = 'around'): string {
   if (type === 'pre')
@@ -47,7 +47,7 @@ export function trim(s: string, type: TrimType = 'around'): string {
 
 export function transformImportant(v: string) {
   if (v.endsWith('!important'))
-    return [v.replace(/\s*\!important/, '').trim(), '!']
+    return [v.replace(/\s*!important/, '').trim(), '!']
   return [v.trim(), '']
 }
 
@@ -66,7 +66,7 @@ export function transformUnocssBack(code: string[]) {
         code.forEach((item) => {
           try {
             const reg = new RegExp(
-              `${item.replace(/([\!\(\)\[\]\*])/g, '\\\\$1')}{(.*)}`,
+              `${item.replace(/([!()[\]*])/g, '\\\\$1')}{(.*)}`,
             )
             const match = css.match(reg)
             if (!match)
@@ -76,7 +76,7 @@ export function transformUnocssBack(code: string[]) {
             result.push(
               matcher
                 .split(';')
-                .filter((i: any) => /^\w+[\w\-]*:/.test(i))[0]
+                .filter((i: any) => /^\w[\w\-]*:/.test(i))[0]
                 .split(':')[0],
             )
           }
@@ -96,7 +96,7 @@ export function diffTemplateStyle(before: string, after: string) {
 }
 
 export function isEmptyStyle(code: string) {
-  return /<style scoped>[\n\s]*<\/style>/.test(code)
+  return /<style scoped>\s*<\/style>/.test(code)
 }
 
 export function getStyleScoped(code: string) {

@@ -20,7 +20,7 @@ export function transform(key: string, val: string) {
 
       if (!matcher)
         return undefined
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       const [_, namePrefix, nameSuffix, value] = matcher
       if (nameSuffix) {
         if (namePrefix === 'scale') {

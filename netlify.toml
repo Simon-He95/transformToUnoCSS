@@ -1,6 +1,7 @@
-[build.environment]
-  NODE_VERSION = "18"
 [build]
-  publish = "./playground/dist"
-  command = "npm run play:build"
- functions="./playground/functions/server.zip"
+publish = "./playground/dist"
+command = "npm run play:build"
+functions = "./playground/functions/server.zip"
+
+[build.environment]
+NODE_VERSION = "18"

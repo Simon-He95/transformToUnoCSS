@@ -40,7 +40,7 @@ export default defineConfig({
 
 ```ts
 // rollup.config.js
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { rollupTransformToUnocss } from 'transform-to-unocss'
 export default {
   plugins: [rollupTransformToUnocss(/* options */)],
