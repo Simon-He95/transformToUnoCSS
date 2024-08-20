@@ -15,10 +15,7 @@
       window.Buffer = {}
       window.process = { env: {} }
       ;(function () {
-        const prefersDark =
-          window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches
-        const setting = localStorage.getItem('color-schema') || 'auto'
+        const prefersDark = 'light'
         if (setting === 'dark' || (prefersDark && setting !== 'light'))
           document.documentElement.classList.toggle('dark', true)
       })()

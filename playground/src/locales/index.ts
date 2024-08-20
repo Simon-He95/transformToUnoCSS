@@ -34,7 +34,7 @@ const messages = {
       href="https://github.com/Simon-He95/transformToUnocss"
       target="_blank"
     ><b>transform-to-unocss</b></a>查看现在支持的属性，进行体验。
-    <div>已有vite插件和cli版本~</div>`,
+    <div>已有 vite 插件和 cli 版本~</div>`,
     inputs: '输入:',
     outputs: '输出:',
     render: '渲染:',
