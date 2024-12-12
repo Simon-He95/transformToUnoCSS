@@ -1,9 +1,9 @@
+import type { SuffixType } from './type'
 import { transformAstro } from './transformAstro'
 import { transformHtml } from './transformHtml'
 import { transformJsx } from './transformJsx'
 import { transformSvelte } from './transformSvelte'
 import { transformVue } from './transformVue'
-import type { SuffixType } from './type'
 
 interface Options {
   isRem?: boolean

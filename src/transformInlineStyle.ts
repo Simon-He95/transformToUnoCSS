@@ -1,6 +1,6 @@
 import { toUnocssClass, transformStyleToUnocss } from 'transform-to-unocss-core'
 
-const styleReg = /<([\w\-]+)[^>]*[^:]style="([^"]+)"[^>]*>/g
+const styleReg = /<([\w\-]+)[^/>]*[^:]style="([^"]+)"[^>]*>/g
 
 const removeStyleReg = / style="([^"]*)"/
 const templateReg = /^<template>(.*)<\/template>$/ms

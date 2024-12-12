@@ -1,10 +1,10 @@
-import path from 'node:path'
-import fs from 'node:fs'
-import process from 'node:process'
-import fg from 'fast-glob'
-import colorize from '@simon_he/colorize'
-import { transfromCode } from './transformCode'
 import type { SuffixType } from './type'
+import fs from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
+import colorize from '@simon_he/colorize'
+import fg from 'fast-glob'
+import { transfromCode } from './transformCode'
 import { flag } from './utils'
 
 const log = console.log

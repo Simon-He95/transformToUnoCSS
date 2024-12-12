@@ -1,7 +1,10 @@
 import fsp from 'node:fs/promises'
 import path from 'node:path'
-import { parse } from 'vue/compiler-sfc'
 import { transformStyleToUnocss } from 'transform-to-unocss-core'
+import { parse } from 'vue/compiler-sfc'
+import { compilerCss } from './compilerCss'
+import { tail } from './tail'
+import { transformVue } from './transformVue'
 import {
   diffTemplateStyle,
   flag,
@@ -13,10 +16,7 @@ import {
   transformUnocssBack,
   trim,
 } from './utils'
-import { tail } from './tail'
-import { transformVue } from './transformVue'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
-import { compilerCss } from './compilerCss'
 
 const combineReg = /([.#\w]+)([.#]\w+)/ // xx.xx
 
@@ -76,10 +76,10 @@ export async function transformCss(
       const after
         = prefix && transfer
           ? `${prefix}="${transfer.replace(
-              /="\[([^\]]*)\]"/g,
-              (_, v) => `-[${v}]`,
-            )}"`
-          : transfer ?? before
+            /="\[([^\]]*)\]"/g,
+            (_, v) => `-[${v}]`,
+          )}"`
+          : (transfer ?? before)
       // 未被转换跳过
       if (before === after)
         return
@@ -516,10 +516,10 @@ async function resolveConflictClass(
 
     const returnValue = isJsx
       ? after
-        .replace(/\[([^\]]+)\]/g, (all, v) =>
-          all.replace(v, joinWithUnderLine(v)))
-        .replace(/-(rgba?([^)]+))/g, '-[$1]')
-        .replace(/="([^"]+)"/g, '-$1')
+          .replace(/\[([^\]]+)\]/g, (all, v) =>
+            all.replace(v, joinWithUnderLine(v)))
+          .replace(/-(rgba?([^)]+))/g, '-[$1]')
+          .replace(/="([^"]+)"/g, '-$1')
       : after
 
     const getUpdateOffset = getCalculateOffset(updateOffset, offset)
@@ -691,11 +691,11 @@ async function getConflictClass(
         const _transferCss = prefix
           ? isNot(prefix)
             ? `class="${prefix}${transferCss
-                .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
-                .replace(/="([^"]*)"/, '-$1')}"`
+              .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
+              .replace(/="([^"]*)"/, '-$1')}"`
             : `${prefix}="${transferCss
-                .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
-                .replace(/="([^"]*)"/, '-$1')}"`
+              .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
+              .replace(/="([^"]*)"/, '-$1')}"`
           : transferCss
         // 如果存在相同的prefix, 进行合并
 

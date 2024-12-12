@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { VividTyping } from 'vivid-typing'
+import gitForkVue from '@simon_he/git-fork-vue'
+import { AutoComplete } from 'ant-design-vue'
+import { copy, useFocus, useRaf } from 'lazy-js-utils'
 import * as monaco from 'monaco-editor'
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-import { copy, useFocus, useRaf } from 'lazy-js-utils'
-import gitForkVue from '@simon_he/git-fork-vue'
-import { useI18n } from 'vue-i18n'
 import { toUnocss } from 'transform-to-unocss-core'
-import { AutoComplete } from 'ant-design-vue'
+import { VividTyping } from 'vivid-typing'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { isDark, toggleDark } from '~/composables'
 import { transformVue } from '../../src/transformVue'
 
 import { cssSuggestions } from './utils'
-import { isDark, toggleDark } from '~/composables'
+import 'vivid-typing/dist/index.css'
 
 const { t, locale } = useI18n()
 
@@ -209,11 +210,11 @@ function onSearch(searchText: string) {
   options.value = !searchText
     ? cssSuggestions.map(i => ({ value: i }))
     : cssSuggestions
-      .map(i => ({ value: i }))
-      .filter(i => i.value.includes(searchText))
-      .sort(
-        (a, b) => a.value.indexOf(searchText) - b.value.indexOf(searchText),
-      )
+        .map(i => ({ value: i }))
+        .filter(i => i.value.includes(searchText))
+        .sort(
+          (a, b) => a.value.indexOf(searchText) - b.value.indexOf(searchText),
+        )
 }
 
 const isCopy = ref(false)
