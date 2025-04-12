@@ -109,8 +109,8 @@ monaco.languages.registerCompletionItemProvider('html', {
     })
     const isInStyleSection
       = /<style\b/.test(textUntilPosition)
-      || /style\s*=\s*"/.test(textUntilPosition)
-      || /style\s*=\s*'/.test(textUntilPosition)
+        || /style\s*=\s*"/.test(textUntilPosition)
+        || /style\s*=\s*'/.test(textUntilPosition)
 
     if (!isInStyleSection)
       return { suggestions: [] }
@@ -130,6 +130,7 @@ onMounted(() => {
     }
   })
   useFocus('input') // 自动聚焦input
+  // eslint-disable-next-line no-restricted-globals
   self.MonacoEnvironment = {
     getWorker() {
       return new HtmlWorker()

@@ -1,7 +1,8 @@
 import fsp from 'node:fs/promises'
 import path from 'node:path'
+// import { parse } from '@vue/compiler-sfc'
+import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
 import { transformStyleToUnocss } from 'transform-to-unocss-core'
-import { parse } from 'vue/compiler-sfc'
 import { compilerCss } from './compilerCss'
 import { tail } from './tail'
 import { transformVue } from './transformVue'
@@ -107,7 +108,7 @@ export async function transformCss(
             const index = hasClass.value.loc.start.offset
             const newIndex
               = hasClass.value.loc.start.offset
-              + getCalculateOffset(updateOffsetMap, index)
+                + getCalculateOffset(updateOffsetMap, index)
             const updateText = 'group '
             updateOffsetMap[index] = updateText.length
             hasClass.value.content = `${hasClass.value.content} ${updateText}`
@@ -119,7 +120,7 @@ export async function transformCss(
             const index = parent.loc.start.offset + parent.tag.length + 1
             const newIndex
               = hasClass.value.loc.start.offset
-              + getCalculateOffset(updateOffsetMap, index)
+                + getCalculateOffset(updateOffsetMap, index)
             const updateText = 'class="group" '
             parent.props.push({
               type: 6,
@@ -168,7 +169,7 @@ export async function transformCss(
 
         const attr = props.reduce((result: string[], cur: any) => {
           let item
-          // eslint-disable-next-line no-cond-assign
+
           if (cur.name === 'class' && (item = cur.value?.content))
             result.push(item)
           else if (!cur.value)
@@ -411,18 +412,18 @@ export function astFindTag(
             prop.name === combineSelector
             && prop.value.content?.includes(combine.slice(1)),
         ))
-      && (add === undefined
-        || siblings.some(
-          (sib: any) =>
-            sib !== ast
-            && sib.props
-            && sib.props.length
-            && sib.props.some(
-              (prop: any) =>
-                prop.name === addSelector
-                && prop.value.content?.includes(add.slice(1)),
-            ),
-        ))
+        && (add === undefined
+          || siblings.some(
+            (sib: any) =>
+              sib !== ast
+              && sib.props
+              && sib.props.length
+              && sib.props.some(
+                (prop: any) =>
+                  prop.name === addSelector
+                  && prop.value.content?.includes(add.slice(1)),
+              ),
+          ))
     ) {
       result.push(ast)
     }
@@ -437,18 +438,18 @@ export function astFindTag(
             prop.name === combineSelector
             && (tagMatch || prop.value.content?.includes(combine.slice(1))),
         )))
-    && (add === undefined
-      || siblings.some(
-        (sib: any) =>
-          sib !== ast
-          && sib.props
-          && sib.props.length
-          && sib.props.some(
-            (prop: any) =>
-              prop.name === addSelector
-              && prop.value.content?.includes(add.slice(1)),
-          ),
-      ))
+        && (add === undefined
+          || siblings.some(
+            (sib: any) =>
+              sib !== ast
+              && sib.props
+              && sib.props.length
+              && sib.props.some(
+                (prop: any) =>
+                  prop.name === addSelector
+                  && prop.value.content?.includes(add.slice(1)),
+              ),
+          ))
   ) {
     result.push(ast)
   }

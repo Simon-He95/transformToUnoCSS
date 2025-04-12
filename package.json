@@ -1,5 +1,6 @@
 {
   "name": "transform-to-unocss",
+  "type": "module",
   "version": "0.0.91",
   "packageManager": "pnpm@10.8.0",
   "description": "The tool that transform css to unocss",
@@ -20,12 +21,12 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
@@ -36,7 +37,7 @@
     }
   },
   "bin": {
-    "tounocss": "./cli.mjs"
+    "tounocss": "./cli.js"
   },
   "files": [
     "dist"
@@ -56,13 +57,9 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@vue/compiler-sfc": "3.3.4"
-  },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.16.0",
+    "@antfu/eslint-config": "^4.12.0",
     "@babel/core": "7.21.0",
-    "@babel/eslint-parser": "7.19.1",
     "@babel/plugin-syntax-import-meta": "7.10.4",
     "@babel/plugin-transform-typescript": "7.21.0",
     "@rollup/pluginutils": "^5.1.4",
@@ -73,6 +70,7 @@
     "@types/stylus": "^0.48.43",
     "@unocss/preset-uno": "^0.50.8",
     "@vue/babel-plugin-jsx": "^1.4.0",
+    "@vue/compiler-sfc": "3.5.13",
     "bumpp": "^8.2.1",
     "eslint": "^9.24.0",
     "esno": "^0.16.3",
@@ -94,7 +92,7 @@
     "tsx": "^3.14.0",
     "typescript": "^5.8.3",
     "unplugin": "^1.16.1",
-    "vitest": "^2.1.9"
+    "vitest": "^3.1.1"
   },
   "lint-staged": {
     "*": [
