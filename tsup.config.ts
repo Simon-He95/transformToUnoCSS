@@ -5,7 +5,15 @@ export default defineConfig({
   target: 'node14',
   format: ['cjs', 'esm'],
   clean: true,
-  external: ['vite', 'webpack', 'rollup', 'esbuild', 'fast-glob', 'unocss'],
+  external: [
+    'vite',
+    'webpack',
+    'rollup',
+    'esbuild',
+    'fast-glob',
+    'unocss',
+    '@vue/compiler-sfc',
+  ],
   dts: {
     resolve: true,
     // build types for `src/index.ts` only

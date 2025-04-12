@@ -1,5 +1,4 @@
-// import { parse } from 'vue/compiler-sfc'
-import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
+import { parse } from 'vue/compiler-sfc'
 
 const emptyStyle = /<style[\s\w'=]*>(\s*)/
 
