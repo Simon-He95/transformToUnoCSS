@@ -29,7 +29,7 @@
     "@vueuse/core": "^9.13.0",
     "eslint": "^8.57.1",
     "jsdom": "^19.0.0",
-    "lazy-js-utils": "^0.0.93",
+    "lazy-js-utils": "^0.1.40",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "typescript": "^4.9.5",
     "unocss": "^0.50.8",

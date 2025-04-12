@@ -16,7 +16,7 @@
       window.process = { env: {} }
       ;(function () {
         const prefersDark = 'light'
-        if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        if (window.setting === 'dark' || (prefersDark && window.setting !== 'light'))
           document.documentElement.classList.toggle('dark', true)
       })()
     </script>

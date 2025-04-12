@@ -3,8 +3,8 @@ import { createFilter } from '@rollup/pluginutils'
 import { createUnplugin } from 'unplugin'
 import { transfromCode } from './transformCode'
 
-const unplugin = createUnplugin((options: Options = {}): any => {
-  const filter = createFilter(options.include, options.exclude)
+const unplugin = createUnplugin((options?: Options): any => {
+  const filter = createFilter(options?.include, options?.exclude)
   let globalCss: any = null
   return [
     {
