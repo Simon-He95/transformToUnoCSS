@@ -687,7 +687,7 @@ exports[`demo2 vue test > demo2.vue 1`] = `
 exports[`demo3 vue test > demo2.vue 1`] = `
 "/* stylelint-disable order/properties-order */
 <template>
-  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before="content-[''] absolute top-0 left-0 right-0 bottom-0 z- m-auto w-2px h-[100%] bg-[#cacaca]" class="add-node-btn-box">
+  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before="content-[''] absolute top-0 left-0 right-0 bottom-0 -z-1 m-auto w-2px h-[100%] bg-[#cacaca]" class="add-node-btn-box">
     <div select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1 class="add-node-btn">
       <el-popover placement="right-start" v-model="visible" width="auto">
         <div flex class="add-node-popover-body">
@@ -711,7 +711,7 @@ exports[`demo3 vue test > demo2.vue 1`] = `
           </a>
         </div>
         <template #reference>
-          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" hover="scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]" active="bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]" class="btn" type="button">
+          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" hover="scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]" active="transform-none bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]" class="btn" type="button">
             <span class="iconfont"></span>
           </button>
         </template>
@@ -787,7 +787,7 @@ const addType = (type) => {
 }
 </script>
 <style scoped>
-.add-node-btn-box {-webkit-box-flex: 1}.add-node-btn-box .add-node-btn {-webkit-box-pack: center;-webkit-box-flex: 1}.add-node-btn-box .add-node-btn .btn:active {transform: none}</style>
+.add-node-btn-box {-webkit-box-flex: 1}.add-node-btn-box .add-node-btn {-webkit-box-pack: center;-webkit-box-flex: 1}</style>
 "
 `;
 
@@ -1838,7 +1838,7 @@ watch(
 
 /* stylelint-disable order/properties-order */
 <template>
-  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before="content-[''] absolute top-0 left-0 right-0 bottom-0 z- m-auto w-2px h-[100%] bg-[#cacaca]" class="add-node-btn-box">
+  <div w-240px inline-flex flex-0 shrink-0  flex-1 relative before="content-[''] absolute top-0 left-0 right-0 bottom-0 -z-1 m-auto w-2px h-[100%] bg-[#cacaca]" class="add-node-btn-box">
     <div select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1 class="add-node-btn">
       <el-popover placement="right-start" v-model="visible" width="auto">
         <div flex class="add-node-popover-body">
@@ -1862,7 +1862,7 @@ watch(
           </a>
         </div>
         <template #reference>
-          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" hover="scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]" active="bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]" class="btn" type="button">
+          <button outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] w-30px h-30px bg-[#3296fa] border-rd-[50%] relative border-none lh-30px transition="all duration-0.3s cubic-bezier(0.645,0.045,0.355,1)" hover="scale-130 shadow-[0_13px_27px_0_rgba(0,0,0,0.1)]" active="transform-none bg-[#1e83e9] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)]" class="btn" type="button">
             <span text-[#fff] text-16px class="iconfont"></span>
           </button>
         </template>
@@ -1938,7 +1938,7 @@ const addType = (type) => {
 }
 </script>
 <style scoped>
-.add-node-btn-box {-webkit-box-flex: 1}.add-node-btn-box .add-node-btn {-webkit-box-pack: center;-webkit-box-flex: 1}.add-node-btn-box .add-node-btn .btn:active {transform: none}</style>
+.add-node-btn-box {-webkit-box-flex: 1}.add-node-btn-box .add-node-btn {-webkit-box-pack: center;-webkit-box-flex: 1}</style>
 ",
   "
 
