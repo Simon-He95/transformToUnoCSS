@@ -96,8 +96,8 @@ importers:
         specifier: workspace:^
         version: 'link:'
       transform-to-unocss-core:
-        specifier: ^0.0.33
-        version: 0.0.33
+        specifier: ^0.0.34
+        version: 0.0.34
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.5.3)(typescript@5.8.3)
@@ -4633,8 +4633,8 @@ packages:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
     engines: {node: '>=12'}
 
-  transform-to-unocss-core@0.0.33:
-    resolution: {integrity: sha512-rPCO2HmMKt9ZoO7OEZHylkMPypF8l7zg8JeEX20iInXmya6OC5NceLJIkm6q4QnbsRFqsnHJXim29m0a5/tDqQ==}
+  transform-to-unocss-core@0.0.34:
+    resolution: {integrity: sha512-W4C/QsTiCIINznGN4GgI+eCkye+TGemiUzW+s6X0nxFUNlG1E1KkdSbm17HuDFeXUv9ghfUZ+yP450TR4LvY7g==}
     hasBin: true
 
   tree-kill@1.2.2:
@@ -10157,7 +10157,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  transform-to-unocss-core@0.0.33: {}
+  transform-to-unocss-core@0.0.34: {}
 
   tree-kill@1.2.2: {}
 
