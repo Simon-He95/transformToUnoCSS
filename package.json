@@ -37,7 +37,7 @@
     }
   },
   "bin": {
-    "tounocss": "./cli.js"
+    "tounocss": "./cli.mjs"
   },
   "files": [
     "dist"
