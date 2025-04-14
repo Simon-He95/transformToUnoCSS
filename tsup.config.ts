@@ -2,9 +2,9 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
   name: 'tsup',
+  target: 'node14',
   format: ['cjs', 'esm'],
   clean: true,
-  platform: 'node', // Specify the platform to handle import.meta correctly
   external: [
     'vite',
     'webpack',

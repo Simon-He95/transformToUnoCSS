@@ -44,3 +44,6 @@ export const viteTransformToUnocss = unplugin.vite
 export const rollupTransformToUnocss = unplugin.rollup
 export const webpackTransformToUnocss = unplugin.webpack
 export const esbuildTransformToUnocss = unplugin.esbuild
+export const rspackTransformToUnocss = unplugin.rspack
+export const farmTransformToUnocss = unplugin.farm
+export const rolldownTransformToUnocss = unplugin.rolldown

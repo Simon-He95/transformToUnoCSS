@@ -20,7 +20,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@iconify-json/carbon": "^1.2.8",
-    "@iconify/json": "^2.2.326",
+    "@iconify/json": "^2.2.327",
     "@simon_he/git-fork-vue": "^0.0.11",
     "@types/node": "^18.19.86",
     "@unocss/reset": "^0.47.6",

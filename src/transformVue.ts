@@ -1,10 +1,10 @@
 import type { CssType } from './utils'
-import { parse } from 'vue/compiler-sfc'
 import { compilerCss } from './compilerCss'
 import { prettierCode } from './prettierCode'
 import { transformCss } from './transformCss'
 import { transformInlineStyle } from './transformInlineStyle'
 import { transformMedia } from './transformMedia'
+import { getVueCompilerSfc } from './utils' // 从utils引入公共函数
 
 interface Options {
   isJsx?: boolean
@@ -15,6 +15,7 @@ interface Options {
 
 export async function transformVue(code: string, options?: Options) {
   const { isJsx, filepath, isRem, globalCss } = options || {}
+  const { parse } = await getVueCompilerSfc()
   const {
     descriptor: { template, styles },
     errors,
