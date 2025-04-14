@@ -70,7 +70,6 @@
     "@types/stylus": "^0.48.43",
     "@unocss/preset-uno": "^0.50.8",
     "@vue/babel-plugin-jsx": "^1.4.0",
-    "@vue/compiler-sfc": "3.5.13",
     "bumpp": "^8.2.1",
     "eslint": "^9.24.0",
     "esno": "^0.16.3",

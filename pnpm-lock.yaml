@@ -44,9 +44,6 @@ importers:
       '@vue/babel-plugin-jsx':
         specifier: ^1.4.0
         version: 1.4.0(@babel/core@7.21.0)
-      '@vue/compiler-sfc':
-        specifier: 3.5.13
-        version: 3.5.13
       bumpp:
         specifier: ^8.2.1
         version: 8.2.1
