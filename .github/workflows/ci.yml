@@ -9,8 +9,6 @@ on:
     branches:
       - main
 
-  merge_group: {}
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -19,14 +17,11 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Set node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.18.2
-          cache: pnpm
+          node-version: lts/*
 
       - name: Setup
         run: npm i -g @antfu/ni
@@ -37,40 +32,47 @@ jobs:
       - name: Lint
         run: nr lint
 
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Setup
+        run: npm i -g @antfu/ni
+
+      - name: Install
+        run: nci
+
+      - name: Typecheck
+        run: nr typecheck
+
   test:
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node_version: [18.18.2, lts/*]
-        include:
-          - os: macos-latest
-            node_version: lts/*
-          - os: windows-latest
-            node_version: lts/*
+        node: [lts/*]
+        os: [ubuntu-latest, windows-latest, macos-latest]
       fail-fast: false
 
     steps:
-      - name: Set git to use LF
-        run: |
-          git config --global core.autocrlf false
-          git config --global core.eol lf
-
       - uses: actions/checkout@v4
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
-      - name: Set node ${{ matrix.node_version }}
+      - name: Set node ${{ matrix.node }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node_version }}
-          cache: pnpm
-
-      - run: corepack enable
+          node-version: ${{ matrix.node }}
 
       - name: Setup
         run: npm i -g @antfu/ni
@@ -83,6 +85,3 @@ jobs:
 
       - name: Test
         run: nr test
-
-      - name: Typecheck
-        run: nr typecheck

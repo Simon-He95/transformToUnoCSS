@@ -614,6 +614,7 @@ function findSameSource(allChange: AllChange[]) {
   return result
 }
 
+const skipTransformFlag = Symbol('skipTransformFlag')
 async function getConflictClass(
   allChange: AllChange[],
 ): Promise<[string, (code: string) => string]> {
@@ -635,7 +636,9 @@ async function getConflictClass(
         map[key] = [calculateWeight(name), value]
       }
       else {
-        const [preWeight] = map[key]
+        const [preWeight] = map[key] as any
+        if (preWeight === skipTransformFlag)
+          return
         const curWeight = calculateWeight(name)
         if (+curWeight > +preWeight)
           map[key] = [+curWeight, value]
@@ -674,12 +677,11 @@ async function getConflictClass(
   // 提前处理 map
   const joinMap = Object.keys(map)
     .map((key) => {
-      const value = map[key][1]
+      const value = map[key][1] as string
       return `${key}:${value}`
     })
     .join(';')
   const { transformedResult, newStyle } = transformStyleToUnocssPre(joinMap)
-  const skipTransformFlag = Symbol('skipTransformFlag')
   if (transformedResult) {
     // map 赋值新 newStyle
     map = newStyle.split(';').reduce(
@@ -704,7 +706,10 @@ async function getConflictClass(
         let transferCss
           = map[key][1] === skipTransformFlag
             ? key
-            : transformStyleToUnocss(`${key}:${map[key][1]}`, isRem)[0]
+            : transformStyleToUnocss(
+              `${key}:${map[key][1] as string}`,
+              isRem,
+            )[0]
 
         const match = transferCss.match(/(\S*)="\[([^\]]*)\]"/)
         if (match) {
