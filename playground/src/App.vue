@@ -21,6 +21,7 @@ let pre: any
   = '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
 
 let editorComponent: any = null
+let outputComponent: any = null
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
 const display = ref('')
@@ -100,6 +101,7 @@ const cssCompletionProvider = {
   },
 }
 monaco.languages.registerCompletionItemProvider('html', {
+  triggerCharacters: ['<', ' ', ':', '"', '\'', '.'],
   provideCompletionItems(model, position) {
     const textUntilPosition = model.getValueInRange({
       startLineNumber: 1,
@@ -107,15 +109,162 @@ monaco.languages.registerCompletionItemProvider('html', {
       endLineNumber: position.lineNumber,
       endColumn: position.column,
     })
+
+    // Check if we're in a style section
     const isInStyleSection
       = /<style\b/.test(textUntilPosition)
-        || /style\s*=\s*"/.test(textUntilPosition)
-        || /style\s*=\s*'/.test(textUntilPosition)
+        && !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
 
-    if (!isInStyleSection)
-      return { suggestions: [] }
+    // Check if we're in a style attribute
+    const isInStyleAttribute = /style\s*=\s*["'][^"']*$/.test(textUntilPosition)
 
-    return cssCompletionProvider.provideCompletionItems(model, position)
+    // For CSS in style tags or style attributes
+    if (isInStyleSection || isInStyleAttribute) {
+      return cssCompletionProvider.provideCompletionItems(model, position)
+    }
+
+    // For HTML elements
+    const word = model.getWordUntilPosition(position)
+    const range = {
+      startLineNumber: position.lineNumber,
+      endLineNumber: position.lineNumber,
+      startColumn: word.startColumn,
+      endColumn: word.endColumn,
+    }
+
+    // Check if we're starting a new tag
+    const isStartingTag = /<\w*$/.test(textUntilPosition)
+
+    // Check if we're in an attribute position
+    const isInTag = /<\w+[^>]*$/.test(textUntilPosition)
+    const isInAttributePosition = isInTag && !isStartingTag
+
+    if (isStartingTag) {
+      // HTML tag suggestions
+      const htmlTags = [
+        'div',
+        'span',
+        'p',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'button',
+        'a',
+        'img',
+        'input',
+        'form',
+        'label',
+        'select',
+        'option',
+        'textarea',
+        'ul',
+        'ol',
+        'li',
+        'table',
+        'tr',
+        'td',
+        'th',
+        'thead',
+        'tbody',
+        'tfoot',
+        'header',
+        'footer',
+        'nav',
+        'main',
+        'section',
+        'article',
+        'aside',
+        'template',
+      ]
+
+      return {
+        suggestions: htmlTags.map(tag => ({
+          label: tag,
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: `${tag}$0></${tag}>`,
+          insertTextRules:
+            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          range,
+        })),
+      }
+    }
+
+    if (isInAttributePosition) {
+      // HTML attribute suggestions
+      const htmlAttributes = [
+        'id',
+        'class',
+        'style',
+        'href',
+        'src',
+        'alt',
+        'title',
+        'width',
+        'height',
+        'type',
+        'value',
+        'placeholder',
+        'name',
+        'disabled',
+        'checked',
+        'selected',
+        'readonly',
+        'required',
+        'autofocus',
+        'autocomplete',
+        'maxlength',
+        'pattern',
+        'target',
+        'rel',
+        'download',
+        'v-if',
+        'v-else',
+        'v-show',
+        'v-for',
+        'v-model',
+        'v-on',
+        'v-bind',
+        'v-text',
+        'v-html',
+        '@click',
+        '@change',
+        '@input',
+        ':class',
+        ':style',
+        'ref',
+      ]
+
+      return {
+        suggestions: htmlAttributes.map((attr) => {
+          const isEvent = attr.startsWith('@') || attr.startsWith('v-on')
+          const isBinding = attr.startsWith(':') || attr.startsWith('v-bind')
+          const requiresValue = ![
+            'disabled',
+            'checked',
+            'selected',
+            'readonly',
+            'required',
+            'autofocus',
+          ].includes(attr)
+
+          const insertText = requiresValue ? `${attr}="$1"$0` : attr
+
+          return {
+            label: attr,
+            kind: monaco.languages.CompletionItemKind.Property,
+            insertText,
+            insertTextRules:
+              monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            range,
+          }
+        }),
+      }
+    }
+
+    return { suggestions: [] }
   },
 })
 const autoComplete = ref<any>(null)
@@ -143,7 +292,7 @@ onMounted(() => {
     fontSize: 20,
     language: 'html',
   })
-  monaco.editor.create(editorResult.value!, {
+  outputComponent = monaco.editor.create(editorResult.value!, {
     value: `<template>
   <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff m-auto hover="bg-#67c23a">button</button>
 </template>
@@ -156,42 +305,92 @@ onMounted(() => {
     acceptSuggestionOnEnter: 'smart',
   })
   display.value = codeToHtml(pre)
+
+  // Initial update of editor dimensions
+  updateEditorDimensions()
+
+  // Add window resize event listener
+  window.addEventListener('resize', updateEditorDimensions)
 })
 
-const stop = useRaf(async () => {
-  const newInput = editorComponent?.getValue()
-  if (!newInput)
-    return
-  if (!editorResult.value)
-    return
-  let code
-  if ((!pre && newInput) || pre !== newInput) {
-    pre = newInput
+const stop = useRaf(
+  async () => {
+    const newInput = editorComponent?.getValue()
+    if (!newInput)
+      return
+    if (!editorResult.value)
+      return
+    let code
+    if ((!pre && newInput) || pre !== newInput) {
+      pre = newInput
 
-    try {
-      code = await fetch('https://localhost/.netlify/functions/server', {
-        method: 'POST',
-        body: newInput,
-      }).then(res => res.text())
-    }
-    catch (error) {
-      code = await transformVue(newInput, {
-        isRem: isChecked.value,
+      try {
+        code = await fetch('https://localhost/.netlify/functions/server', {
+          method: 'POST',
+          body: newInput,
+        }).then(res => res.text())
+      }
+      catch (error) {
+        code = await transformVue(newInput, {
+          isRem: isChecked.value,
+        })
+      }
+
+      // Properly dispose of the old editor before creating a new one
+      if (outputComponent) {
+        outputComponent.dispose()
+      }
+
+      editorResult.value!.innerHTML = ''
+      outputComponent = monaco.editor.create(editorResult.value!, {
+        value: code,
+        language: 'html',
+        fontFamily: 'Arial',
+        fontSize: 20,
+        readOnly: true,
+        acceptSuggestionOnEnter: 'smart',
       })
-    }
 
-    editorResult.value!.innerHTML = ''
-    monaco.editor.create(editorResult.value!, {
-      value: code,
-      language: 'html',
-      fontFamily: 'Arial',
-      fontSize: 20,
-      readOnly: true,
-      acceptSuggestionOnEnter: 'smart',
-    })
-    display.value = codeToHtml(newInput)
+      // Call update dimensions after creating the new editor
+      updateEditorDimensions()
+
+      display.value = codeToHtml(newInput)
+    }
+  },
+  {
+    delta: 200,
+  },
+)
+
+// Handle resize of editor components when window size changes
+function handleEditorResize() {
+  // If editors exist, update their layout
+  if (editorComponent) {
+    editorComponent.layout()
   }
-}, 200)
+  if (outputComponent) {
+    outputComponent.layout()
+  }
+}
+
+// Update editor dimensions based on window size
+function updateEditorDimensions() {
+  const viewportWidth = window.innerWidth
+
+  // Apply appropriate width to editor containers
+  if (editor.value) {
+    editor.value.style.width = '100%'
+    editor.value.style.height = `${Math.max(400, window.innerHeight * 0.4)}px`
+  }
+
+  if (editorResult.value) {
+    editorResult.value.style.width = '100%'
+    editorResult.value.style.height = `${Math.max(400, window.innerHeight * 0.4)}px`
+  }
+
+  // Update layout after dimension changes
+  handleEditorResize()
+}
 
 function codeToHtml(code: string) {
   return code
@@ -238,6 +437,7 @@ function changelanguage() {
 
 onUnmounted(() => {
   stop?.()
+  // Remove event listeners
   document.removeEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
       const selection = document.getSelection()
@@ -247,6 +447,8 @@ onUnmounted(() => {
       window.parent.postMessage({ eventType: 'copy', text }, '*')
     }
   })
+  // Remove window resize event listener
+  window.removeEventListener('resize', updateEditorDimensions)
 })
 
 function onSelect(value: string) {

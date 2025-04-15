@@ -73,12 +73,13 @@ export function transformUnocssBack(code: string[]) {
               return
             const matcher = match[1]
 
-            result.push(
-              matcher
-                .split(';')
-                .filter((i: any) => /^\w[\w\-]*:/.test(i))[0]
-                .split(':')[0],
-            )
+            matcher
+              .split(';')
+              .filter(Boolean)
+              .forEach((item: string) => {
+                const [key, v] = item.split(':')
+                result.push(key.trim())
+              })
           }
           catch (error) {}
         })

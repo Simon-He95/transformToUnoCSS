@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@babel/core':
-        specifier: ^7.21.0
+        specifier: ^7.26.10
         version: 7.26.10
       fast-glob:
         specifier: ^3.3.3
@@ -19,7 +19,7 @@ importers:
         specifier: ^4.12.0
         version: 4.12.0(@typescript-eslint/utils@8.29.1(eslint@8.57.1)(typescript@5.8.3))(@vue/compiler-sfc@3.5.13)(eslint@8.57.1)(typescript@5.8.3)(vitest@3.1.1(@types/debug@4.1.12)(@types/node@18.19.86)(jiti@1.21.7)(jsdom@19.0.0)(less@4.3.0)(sass@1.86.3)(stylus@0.63.0)(tsx@3.14.0)(yaml@2.7.1))
       '@rollup/pluginutils':
-        specifier: ^5.0.2
+        specifier: ^5.1.4
         version: 5.1.4(rollup@4.40.0)
       '@simon_he/colorize':
         specifier: ^0.0.1
@@ -37,16 +37,16 @@ importers:
         specifier: ^0.48.43
         version: 0.48.43
       '@unocss/preset-uno':
-        specifier: ^0.50.4
+        specifier: ^0.50.8
         version: 0.50.8
       '@vue/babel-plugin-jsx':
-        specifier: ^1.1.1
+        specifier: ^1.4.0
         version: 1.4.0(@babel/core@7.26.10)
       bumpp:
         specifier: ^8.2.1
         version: 8.2.1
       eslint:
-        specifier: ^8.18.0
+        specifier: ^8.57.1
         version: 8.57.1
       esno:
         specifier: ^0.16.3
@@ -55,7 +55,7 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       less:
-        specifier: ^4.1.3
+        specifier: ^4.3.0
         version: 4.3.0
       less-plugin-module-resolver:
         specifier: ^1.0.3
@@ -88,10 +88,10 @@ importers:
         specifier: workspace:^
         version: 'link:'
       transform-to-unocss-core:
-        specifier: ^0.0.35
-        version: 0.0.35
+        specifier: ^0.0.37
+        version: 0.0.37
       tsup:
-        specifier: ^6.5.0
+        specifier: ^6.7.0
         version: 6.7.0(postcss@8.5.3)(typescript@5.8.3)
       tsx:
         specifier: ^3.14.0
@@ -100,7 +100,7 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
       unplugin:
-        specifier: ^1.3.1
+        specifier: ^1.16.1
         version: 1.16.1
       vitest:
         specifier: ^3.1.1
@@ -4518,8 +4518,8 @@ packages:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
     engines: {node: '>=12'}
 
-  transform-to-unocss-core@0.0.35:
-    resolution: {integrity: sha512-bNEGiO8LXv7fromAwYZUwIzI45llEok700wTFNWY8MQYdnQXr3p5na9uOas4YXM9bH/p8BHZ0EhXMt0mTIh/0w==}
+  transform-to-unocss-core@0.0.37:
+    resolution: {integrity: sha512-WCvjb61e23sGp1V9+gnYfXFIhiHYZ6ludUHHxa+e3PDrg/To6JS0LeX4g/S2AgpXjXyyU0Z/YUNVUEHV9Svexg==}
     hasBin: true
 
   tree-kill@1.2.2:
@@ -9841,7 +9841,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  transform-to-unocss-core@0.0.35: {}
+  transform-to-unocss-core@0.0.37: {}
 
   tree-kill@1.2.2: {}
 

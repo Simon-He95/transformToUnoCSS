@@ -1,6 +1,9 @@
 import fsp from 'node:fs/promises'
 import path from 'node:path'
-import { transformStyleToUnocss } from 'transform-to-unocss-core'
+import {
+  transformStyleToUnocss,
+  transformStyleToUnocssPre,
+} from 'transform-to-unocss-core'
 import { compilerCss } from './compilerCss'
 import { tail } from './tail'
 import { transformVue } from './transformVue'
@@ -78,7 +81,7 @@ export async function transformCss(
         = prefix && transfer
           ? `${prefix}="${transfer.replace(
             /="\[([^\]]*)\]"/g,
-            (_, v) => `-[${v}]`,
+            (_: string, v: string) => `-[${v}]`,
           )}"`
           : (transfer ?? before)
       // 未被转换跳过
@@ -614,7 +617,7 @@ function findSameSource(allChange: AllChange[]) {
 async function getConflictClass(
   allChange: AllChange[],
 ): Promise<[string, (code: string) => string]> {
-  const map: Record<string, Array<number | string>> = {}
+  let map: Record<string, Array<number | string | symbol>> = {}
   let transform = (code: string) => code
   for await (const item of allChange) {
     const { before, name, source, attr, after, prefix, media } = item
@@ -626,6 +629,8 @@ async function getConflictClass(
     })
     data.forEach((item) => {
       const [key, value] = item
+      if (value === undefined)
+        return
       if (!map[key]) {
         map[key] = [calculateWeight(name), value]
       }
@@ -652,8 +657,7 @@ async function getConflictClass(
         const index = res.findIndex(r => r === i)
         if (index !== -1) {
           const inline = item.attr[index]
-
-          if (inline.endsWith('!') || !after.endsWith('!')) {
+          if (inline?.endsWith('!') || !after?.endsWith('!')) {
             // 需要删除
             return delete map[i]
           }
@@ -667,22 +671,47 @@ async function getConflictClass(
     }
   }
 
+  // 提前处理 map
+  const joinMap = Object.keys(map)
+    .map((key) => {
+      const value = map[key][1]
+      return `${key}:${value}`
+    })
+    .join(';')
+  const { transformedResult, newStyle } = transformStyleToUnocssPre(joinMap)
+  const skipTransformFlag = Symbol('skipTransformFlag')
+  if (transformedResult) {
+    // map 赋值新 newStyle
+    map = newStyle.split(';').reduce(
+      (acc: Record<string, Array<number | string | symbol>>, item: string) => {
+        const [key, value] = item.split(':')
+        if (value !== undefined) {
+          acc[key] = [map[key][0], value]
+        }
+        return acc
+      },
+      // 将 transformedResult 赋值给 map
+      // map[]
+      {},
+    )
+    map[transformedResult] = [1, skipTransformFlag]
+  }
   return [
     Object.keys(map)
       .reduce((result, key) => {
         const keys = key.split('|')
         let prefix = keys.length > 1 ? keys[0] : ''
-        let transferCss = transformStyleToUnocss(
-          `${key}:${map[key][1]}`,
-          isRem,
-        )[0]
+        let transferCss
+          = map[key][1] === skipTransformFlag
+            ? key
+            : transformStyleToUnocss(`${key}:${map[key][1]}`, isRem)[0]
 
         const match = transferCss.match(/(\S*)="\[([^\]]*)\]"/)
         if (match) {
           transferCss = `${match.input?.replace(
             match[0],
             match[0]
-              .replace(/="\[([^\]]*)\]"/, (_, v) => `-[${v}]`)
+              .replace(/="\[([^\]]*)\]"/, (_: string, v: string) => `-[${v}]`)
               .replace(/="([^"]*)"/, '-$1'),
           )}`
         }
@@ -692,10 +721,16 @@ async function getConflictClass(
         const _transferCss = prefix
           ? isNot(prefix)
             ? `class="${prefix}${transferCss
-              .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
+              .replace(
+                /="\[([^\]]*)\]"/g,
+                (_: string, v: string) => `-[${v}]`,
+              )
               .replace(/="([^"]*)"/, '-$1')}"`
             : `${prefix}="${transferCss
-              .replace(/="\[([^\]]*)\]"/g, (_, v) => `-[${v}]`)
+              .replace(
+                /="\[([^\]]*)\]"/g,
+                (_: string, v: string) => `-[${v}]`,
+              )
               .replace(/="([^"]*)"/, '-$1')}"`
           : transferCss
         // 如果存在相同的prefix, 进行合并
