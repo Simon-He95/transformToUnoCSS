@@ -25,5 +25,5 @@ export default simon({
     'regexp/no-legacy-features': 'off',
     'ts/no-empty-object-type': 'off',
   },
-  ignores: ['**/fixtures', 'test'],
+  ignores: ['**/fixtures', 'test', '.github'],
 })
