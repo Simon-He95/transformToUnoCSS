@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.26.10",
+    "@simon_he/clack-prompts": "^0.8.11",
     "fast-glob": "^3.3.3"
   },
   "devDependencies": {

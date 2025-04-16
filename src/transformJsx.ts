@@ -14,7 +14,7 @@ export async function transformJsx(
     const ast = babelParse(code, {
       babelrc: false,
       comments: true,
-      plugins: [[vueJsxPlugin, {}]],
+      plugins: [[vueJsxPlugin]],
     })
 
     let container: any = null

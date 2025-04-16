@@ -14,6 +14,7 @@ export default defineConfig({
     'fast-glob',
     'unocss',
     '@vue/compiler-sfc',
+    '@babel/core',
   ],
   dts: {
     resolve: true,

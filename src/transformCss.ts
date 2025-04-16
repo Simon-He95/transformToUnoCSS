@@ -9,13 +9,13 @@ import { tail } from './tail'
 import { transformVue } from './transformVue'
 import {
   diffTemplateStyle,
-  flag,
   getCssType,
   getStyleScoped,
   getVueCompilerSfc, // 从utils引入公共函数
   isEmptyStyle,
   isNot,
   joinWithUnderLine,
+  TRANSFER_FLAG,
   transformUnocssBack,
   trim,
 } from './utils'
@@ -255,7 +255,7 @@ async function importCss(
     const restStyle = getStyleScoped(transfer)
 
     fsp.writeFile(
-      url.replace(`.${type}`, `${flag}.${type}`),
+      url.replace(`.${type}`, `${TRANSFER_FLAG}.${type}`),
       restStyle,
       'utf-8',
     )

@@ -11,6 +11,9 @@ importers:
       '@babel/core':
         specifier: ^7.26.10
         version: 7.26.10
+      '@simon_he/clack-prompts':
+        specifier: ^0.8.11
+        version: 0.8.11
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -1193,6 +1196,14 @@ packages:
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
+
+  '@simon_he/clack-core@0.3.9':
+    resolution: {integrity: sha512-CzzSBZ2lR6yw5ijP1X6yP5vFeZj7LnSCTeNq99K5oalK7Gjrx4KK2LohNIXEg71R2WWbOPw5m2y6iowpTISuRQ==}
+
+  '@simon_he/clack-prompts@0.8.11':
+    resolution: {integrity: sha512-i4A5RJ19ztOgXxFC1QJDt7nNypUBNkOIXFqQZ/DqX9h1iytNC/iDc2MJXmXGwrrzvhBsUQ5jVJcQrD+sMace2Q==}
+    bundledDependencies:
+      - is-unicode-supported
 
   '@simon_he/colorize@0.0.1':
     resolution: {integrity: sha512-AsMYrX9s9Nw3CfXoPc4mVRc1/NJTR8UNhKS0dscA1rtzs0JEGHoxeOkwpx8kvm8zjUZP9Spup1TYPVBe0iLCFA==}
@@ -2886,6 +2897,10 @@ packages:
 
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
+
+  fuzzy@0.1.3:
+    resolution: {integrity: sha512-/gZffu4ykarLrCiP3Ygsa86UAo1E5vEVlvTrpkKywXSbP9Xhln3oSp9QSV57gEq3JFFpGJ4GZ+5zdEp3FcUh4w==}
+    engines: {node: '>= 0.6.0'}
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -5915,6 +5930,18 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
+  '@simon_he/clack-core@0.3.9':
+    dependencies:
+      fuzzy: 0.1.3
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
+  '@simon_he/clack-prompts@0.8.11':
+    dependencies:
+      '@simon_he/clack-core': 0.3.9
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
   '@simon_he/colorize@0.0.1':
     dependencies:
       picocolors: 1.1.1
@@ -7999,6 +8026,8 @@ snapshots:
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
+
+  fuzzy@0.1.3: {}
 
   gensync@1.0.0-beta.2: {}
 

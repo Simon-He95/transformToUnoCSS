@@ -2,7 +2,7 @@ import { createGenerator } from '@unocss/core'
 import presetUno from '@unocss/preset-uno'
 
 export type CssType = 'less' | 'scss' | 'css' | 'styl'
-export const flag = '.__unocss_transfer__'
+export const TRANSFER_FLAG = '.__unocss_transfer__'
 
 export function isNot(s: string) {
   return /\[&:not\(/.test(s)
@@ -92,7 +92,8 @@ export function transformUnocssBack(code: string[]) {
 export function diffTemplateStyle(before: string, after: string) {
   const s1 = before.match(/<style scoped>.*<\/style>/s)!
   const s2 = after.match(/<style scoped>.*<\/style>/s)!
-
+  if (!s1 || !s2)
+    return false
   return s1[0] === s2[0]
 }
 
