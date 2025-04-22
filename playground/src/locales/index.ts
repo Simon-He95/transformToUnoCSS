@@ -6,7 +6,7 @@ const messages = {
     result: 'Result:',
     match: 'The current value is wrong, or the matching error!',
     demo: 'If you enter a legal value, you can add your example here.',
-    issue: `<h2>The current value is wrong, or the matching error</h2>
+    issue: `<div class="font-800 text-2xl">The current value is wrong, or the matching error</div>
     If you enter a legal value, you can add your example here.
     <a
           href="https://github.com/Simon-He95/transformToUnocss/issues"

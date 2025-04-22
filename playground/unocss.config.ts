@@ -34,6 +34,7 @@ export default defineConfig({
       },
     }),
   ],
+  safelist: ['font-800', 'text-2xl'],
   // transformers: [
   //   transformerDirectives(),
   //   transformerVariantGroup(),

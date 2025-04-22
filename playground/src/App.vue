@@ -15,7 +15,6 @@ import { cssSuggestions } from './utils'
 import 'vivid-typing/dist/index.css'
 
 const { t, locale } = useI18n()
-
 const input = ref('')
 let pre: any
   = '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
@@ -451,7 +450,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateEditorDimensions)
 })
 
-function onSelect(value: string) {
+function onSelect(value: any) {
   input.value = `${value}: `
   nextTick(() => {
     autoComplete.value.focus()
@@ -517,32 +516,34 @@ function onSelect(value: string) {
     <div flex items-center my3>
       <input v-model="isChecked" type="checkbox" w4 h4 mr1> isRem
     </div>
-    <div v-if="transform" flex="~ gap-4" items-center>
-      <div font-bold text="18px">
-        {{ t('result') }}
+    <div min-h-20 flex items-center justify-center>
+      <div v-if="transform" flex="~ gap-4" items-center>
+        <div font-bold text="18px">
+          {{ t('result') }}
+        </div>
+        <div flex gap-2 items-center break-all>
+          {{ transform }}
+          <div
+            :class="[
+              isCopy
+                ? 'i-carbon:checkmark-outline text-green!'
+                : ' i-carbon:copy',
+            ]"
+            cursor-pointer
+            hover="color-orange"
+            @click="copyStyle"
+          />
+        </div>
       </div>
-      <div flex gap-2 items-center>
-        {{ transform }}
-        <div
-          :class="[
-            isCopy
-              ? 'i-carbon:checkmark-outline text-green!'
-              : ' i-carbon:copy',
-          ]"
-          cursor-pointer
-          hover="color-orange"
-          @click="copyStyle"
-        />
-      </div>
-    </div>
-    <template v-else>
-      <template v-if="input">
-        <div h-20 v-html="t('issue')" />
-      </template>
       <template v-else>
-        <div h-20 box-border pt6 v-html="t('find')" />
+        <template v-if="input">
+          <div v-html="t('issue')" />
+        </template>
+        <template v-else>
+          <div box-border pt6 v-html="t('find')" />
+        </template>
       </template>
-    </template>
+    </div>
   </div>
   <div flex>
     <div w="50%">
