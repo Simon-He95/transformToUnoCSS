@@ -70,7 +70,7 @@
     "picocolors": "^1.1.1",
     "sass": "^1.87.0",
     "stylus": "^0.63.0",
-    "transform-to-unocss-core": "^0.0.47",
+    "transform-to-unocss-core": "^0.0.48",
     "unplugin": "^2.3.2"
   },
   "devDependencies": {
@@ -90,7 +90,7 @@
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.12.1",
     "transform-to-unocss": "workspace:^",
-    "tsdown": "^0.9.3",
+    "tsdown": "^0.9.5",
     "tsx": "^3.14.0",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2"
