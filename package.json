@@ -1,7 +1,7 @@
 {
   "name": "transform-to-unocss",
   "type": "module",
-  "version": "0.0.99",
+  "version": "0.0.100",
   "packageManager": "pnpm@10.9.0",
   "description": "The tool that transform css to unocss",
   "author": "Simon He",
