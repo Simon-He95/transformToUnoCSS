@@ -103,8 +103,8 @@ importers:
         specifier: workspace:^
         version: 'link:'
       tsdown:
-        specifier: ^0.9.3
-        version: 0.9.3(typescript@5.8.3)
+        specifier: ^0.9.5
+        version: 0.9.5(typescript@5.8.3)
       tsx:
         specifier: ^3.14.0
         version: 3.14.0
@@ -3152,6 +3152,9 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
+  hookable@5.5.3:
+    resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
+
   hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
 
@@ -4643,8 +4646,8 @@ packages:
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
-  tsdown@0.9.3:
-    resolution: {integrity: sha512-NHO5h39lNh5vFsfjeSBoXIqdq/MdI3Pu1KfgyULpkqiQkjGWXXYK7zuBY2SK7I/39Fqhw9776eHF4e+snxGEMw==}
+  tsdown@0.9.5:
+    resolution: {integrity: sha512-Bx0A0T0obQ43G/hU/gOayb7mq8jEMQtr4w8wOxxJHl/BmhZ4Wdt5OhgO35pS4G9XLb7jgz1IeUmGsK+ujP0d/Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -6017,7 +6020,7 @@ snapshots:
 
   '@rolldown/binding-wasm32-wasi@1.0.0-beta.8-commit.d984417':
     dependencies:
-      '@napi-rs/wasm-runtime': 0.2.8
+      '@napi-rs/wasm-runtime': 0.2.9
     optional: true
 
   '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.8-commit.d984417':
@@ -8311,6 +8314,8 @@ snapshots:
 
   he@1.2.0: {}
 
+  hookable@5.5.3: {}
+
   hosted-git-info@2.8.9: {}
 
   hosted-git-info@7.0.2:
@@ -10064,7 +10069,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsdown@0.9.3(typescript@5.8.3):
+  tsdown@0.9.5(typescript@5.8.3):
     dependencies:
       ansis: 3.17.0
       cac: 6.7.14
@@ -10073,6 +10078,7 @@ snapshots:
       debug: 4.4.0
       diff: 7.0.0
       find-up-simple: 1.0.1
+      hookable: 5.5.3
       rolldown: 1.0.0-beta.8-commit.d984417(typescript@5.8.3)
       rolldown-plugin-dts: 0.8.3(rolldown@1.0.0-beta.8-commit.d984417(typescript@5.8.3))(typescript@5.8.3)
       tinyexec: 1.0.1
