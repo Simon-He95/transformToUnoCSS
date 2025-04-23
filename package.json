@@ -20,7 +20,6 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     }
@@ -71,7 +70,7 @@
     "picocolors": "^1.1.1",
     "sass": "^1.87.0",
     "stylus": "^0.63.0",
-    "transform-to-unocss-core": "^0.0.46",
+    "transform-to-unocss-core": "^0.0.47",
     "unplugin": "^2.3.2"
   },
   "devDependencies": {

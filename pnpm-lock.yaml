@@ -48,8 +48,8 @@ importers:
         specifier: ^0.63.0
         version: 0.63.0
       transform-to-unocss-core:
-        specifier: ^0.0.46
-        version: 0.0.46
+        specifier: ^0.0.47
+        version: 0.0.47
       unplugin:
         specifier: ^2.3.2
         version: 2.3.2
@@ -4630,8 +4630,8 @@ packages:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
     engines: {node: '>=12'}
 
-  transform-to-unocss-core@0.0.46:
-    resolution: {integrity: sha512-78oE61/ufk7rAGdV3psyJXNkNRobIG+Il2pb3o/nzQGyBkO1KcPWGpgKXNNi8rkJriosSJFN+o3HForg2DucfQ==}
+  transform-to-unocss-core@0.0.47:
+    resolution: {integrity: sha512-6x+zhlMx6UK8AhQJLVFt1neZ4vRFB3/ZZak6SWeV31VIX87XydFO4TOonxIiaZGKARpe4TGzkVXzKe/mjw9xuA==}
     hasBin: true
 
   ts-api-utils@2.1.0:
@@ -10051,7 +10051,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  transform-to-unocss-core@0.0.46: {}
+  transform-to-unocss-core@0.0.47: {}
 
   ts-api-utils@2.1.0(typescript@5.8.3):
     dependencies:
