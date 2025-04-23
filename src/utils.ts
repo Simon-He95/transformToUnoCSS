@@ -126,6 +126,6 @@ export function joinEmpty(str: string) {
  * @returns Vue Compiler SFC 中的方法
  */
 export async function getVueCompilerSfc() {
-  const { parse } = await import('vue/compiler-sfc')
+  const { parse } = await import('@vue/compiler-sfc')
   return { parse }
 }
