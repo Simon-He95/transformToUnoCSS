@@ -20,10 +20,11 @@ export async function transformVue(code: string, options?: Options) {
     descriptor: { template, styles },
     errors,
   } = parse(code)
-  if (errors.length || !template || !styles.length)
+  if (errors.length || !template)
     return code
   // transform inline-style
   code = transformInlineStyle(code, isJsx, isRem)
+
   // transform @media 注：transformBack是将@media中内容用一个占位符替换等到transformCss处理完将结果还原回去
   const [transferMediaCode, transformBack] = await transformMedia(
     code,
@@ -32,20 +33,22 @@ export async function transformVue(code: string, options?: Options) {
   )
 
   code = transferMediaCode
-  // transform class
-  const {
-    attrs: { scoped },
-    content: style,
-    lang = 'css',
-  } = styles[0]
+  if (styles.length) {
+    // transform class
+    const {
+      attrs: { scoped },
+      content: style,
+      lang = 'css',
+    } = styles[0]
 
-  const css = await compilerCss(style, lang as CssType, filepath, globalCss)
-  if (css) {
-    // 能被正确编译解析的css
-    code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
-    // 只针对scoped css处理
-    if (scoped)
-      code = await transformCss(css, code, '', isJsx, filepath, isRem)
+    const css = await compilerCss(style, lang as CssType, filepath, globalCss)
+    if (css) {
+      // 能被正确编译解析的css
+      code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
+      // 只针对scoped css处理
+      if (scoped)
+        code = await transformCss(css, code, '', isJsx, filepath, isRem)
+    }
   }
 
   // 还原@media 未匹配到的class
