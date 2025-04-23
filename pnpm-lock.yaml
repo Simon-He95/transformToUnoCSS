@@ -51,8 +51,8 @@ importers:
         specifier: ^0.0.46
         version: 0.0.46
       unplugin:
-        specifier: ^1.16.1
-        version: 1.16.1
+        specifier: ^2.3.2
+        version: 2.3.2
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^4.12.0
@@ -4819,6 +4819,10 @@ packages:
   unplugin@1.16.1:
     resolution: {integrity: sha512-4/u/j4FrCKdi17jaxuJA0jClGxB1AvU2hw/IuayPc4ay1XGaJs/rbb4v5WKwAjNifjmXK9PIFyuPiaK8azyR9w==}
     engines: {node: '>=14.0.0'}
+
+  unplugin@2.3.2:
+    resolution: {integrity: sha512-3n7YA46rROb3zSj8fFxtxC/PqoyvYQ0llwz9wtUPUutr9ig09C8gGo5CWCwHrUzlqC1LLR43kxp5vEIyH1ac1w==}
+    engines: {node: '>=18.12.0'}
 
   unrs-resolver@1.5.0:
     resolution: {integrity: sha512-6aia3Oy7SEe0MuUGQm2nsyob0L2+g57w178K5SE/3pvSGAIp28BB2O921fKx424Ahc/gQ6v0DXFbhcpyhGZdOA==}
@@ -10291,6 +10295,12 @@ snapshots:
   unplugin@1.16.1:
     dependencies:
       acorn: 8.14.1
+      webpack-virtual-modules: 0.6.2
+
+  unplugin@2.3.2:
+    dependencies:
+      acorn: 8.14.1
+      picomatch: 4.0.2
       webpack-virtual-modules: 0.6.2
 
   unrs-resolver@1.5.0:
