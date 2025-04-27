@@ -15,5 +15,9 @@ export async function prettierCode(code: string) {
   }
 
   const { content } = styles[0]
-  return code.replace(content, content.replace(/\n+/g, '\n'))
+  return code.replace(content, removeEmptyStyle(content.replace(/\n+/g, '\n')))
+}
+
+export function removeEmptyStyle(code: string) {
+  return code.replace(/([\w.#:[\]="'\-\s,>~]+)\{\s*\}/g, '')
 }
