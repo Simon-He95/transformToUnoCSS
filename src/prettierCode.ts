@@ -1,6 +1,6 @@
 import { getVueCompilerSfc } from './utils'
 
-const emptyStyle = /<style[\s\w'=]*>(\s*)/
+const emptyStyle = /<style[\s\w'=]*>(\s+)/
 
 export async function prettierCode(code: string) {
   const { parse } = await getVueCompilerSfc()
