@@ -2,7 +2,7 @@
   "name": "transform-to-unocss",
   "type": "module",
   "version": "0.1.1",
-  "packageManager": "pnpm@10.9.0",
+  "packageManager": "pnpm@10.10.0",
   "description": "The tool that transform css to unocss",
   "author": "Simon He",
   "license": "MIT",
@@ -57,7 +57,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.26.10",
+    "@babel/core": "^7.27.1",
     "@rollup/pluginutils": "^5.1.4",
     "@simon_he/clack-prompts": "^0.8.11",
     "@unocss/core": "^0.50.8",
@@ -78,7 +78,7 @@
     "@simon_he/colorize": "^0.0.1",
     "@types/babel__core": "^7.20.5",
     "@types/less": "^3.0.8",
-    "@types/node": "^18.19.86",
+    "@types/node": "^18.19.87",
     "@types/stylus": "^0.48.43",
     "bumpp": "^8.2.1",
     "eslint": "^8.57.1",
@@ -88,9 +88,9 @@
     "magic-string": "^0.30.17",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
-    "simple-git-hooks": "^2.12.1",
+    "simple-git-hooks": "^2.13.0",
     "transform-to-unocss": "workspace:^",
-    "tsdown": "^0.9.5",
+    "tsdown": "^0.9.9",
     "tsx": "^3.14.0",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2"
