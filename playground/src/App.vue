@@ -16,8 +16,8 @@ import 'vivid-typing/dist/index.css'
 
 const { t, locale } = useI18n()
 const input = ref('')
-let pre: any
-  = '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
+let pre: any =
+  '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
 
 let editorComponent: any = null
 let outputComponent: any = null
@@ -30,8 +30,7 @@ const isChecked = ref(false)
 const transform = computed(() => {
   try {
     return toUnocss(input.value, isChecked.value)
-  }
-  catch (err) {
+  } catch (err) {
     return ''
   }
 })
@@ -90,7 +89,7 @@ const cssCompletionProvider = {
     }
 
     return {
-      suggestions: cssSuggestions.map(prop => ({
+      suggestions: cssSuggestions.map((prop) => ({
         label: prop,
         kind: monaco.languages.CompletionItemKind.Property,
         insertText: prop,
@@ -100,7 +99,7 @@ const cssCompletionProvider = {
   },
 }
 monaco.languages.registerCompletionItemProvider('html', {
-  triggerCharacters: ['<', ' ', ':', '"', '\'', '.'],
+  triggerCharacters: ['<', ' ', ':', '"', "'", '.'],
   provideCompletionItems(model, position) {
     const textUntilPosition = model.getValueInRange({
       startLineNumber: 1,
@@ -110,9 +109,9 @@ monaco.languages.registerCompletionItemProvider('html', {
     })
 
     // Check if we're in a style section
-    const isInStyleSection
-      = /<style\b/.test(textUntilPosition)
-        && !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
+    const isInStyleSection =
+      /<style\b/.test(textUntilPosition) &&
+      !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
 
     // Check if we're in a style attribute
     const isInStyleAttribute = /style\s*=\s*["'][^"']*$/.test(textUntilPosition)
@@ -180,7 +179,7 @@ monaco.languages.registerCompletionItemProvider('html', {
       ]
 
       return {
-        suggestions: htmlTags.map(tag => ({
+        suggestions: htmlTags.map((tag) => ({
           label: tag,
           kind: monaco.languages.CompletionItemKind.Keyword,
           insertText: `${tag}$0></${tag}>`,
@@ -271,8 +270,7 @@ onMounted(() => {
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
       const selection = document.getSelection()
-      if (!selection || !selection.toString())
-        return
+      if (!selection || !selection.toString()) return
       const text = selection.toString()
       window.parent.postMessage({ eventType: 'copy', text }, '*')
     }
@@ -293,7 +291,7 @@ onMounted(() => {
   })
   outputComponent = monaco.editor.create(editorResult.value!, {
     value: `<template>
-  <button h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-#fff bg-#409eff m-auto hover="bg-#67c23a">button</button>
+  <button class="h-32px flex justify-center items-center text-14px cursor-pointer select-none px-15px py-8px border-rd-4px border-none box-border text-[#fff] bg-[#409eff] m-auto hover-bg-[#67c23a]">button</button>
 </template>
 <style scoped></style>
 `,
@@ -315,10 +313,8 @@ onMounted(() => {
 const stop = useRaf(
   async () => {
     const newInput = editorComponent?.getValue()
-    if (!newInput)
-      return
-    if (!editorResult.value)
-      return
+    if (!newInput) return
+    if (!editorResult.value) return
     let code
     if ((!pre && newInput) || pre !== newInput) {
       pre = newInput
@@ -327,9 +323,8 @@ const stop = useRaf(
         code = await fetch('https://localhost/.netlify/functions/server', {
           method: 'POST',
           body: newInput,
-        }).then(res => res.text())
-      }
-      catch (error) {
+        }).then((res) => res.text())
+      } catch (error) {
         code = await transformVue(newInput, {
           isRem: isChecked.value,
         })
@@ -400,17 +395,18 @@ function codeToHtml(code: string) {
           classReg,
           (_: any, match: any) => `[data-v-display]${match} {`,
         ),
-      ))
+      ),
+    )
     .replace('<template>', '')
     .replace('<\/template>', '')
 }
-const options = ref(cssSuggestions.map(i => ({ value: i })))
+const options = ref(cssSuggestions.map((i) => ({ value: i })))
 function onSearch(searchText: string) {
   options.value = !searchText
-    ? cssSuggestions.map(i => ({ value: i }))
+    ? cssSuggestions.map((i) => ({ value: i }))
     : cssSuggestions
-        .map(i => ({ value: i }))
-        .filter(i => i.value.includes(searchText))
+        .map((i) => ({ value: i }))
+        .filter((i) => i.value.includes(searchText))
         .sort(
           (a, b) => a.value.indexOf(searchText) - b.value.indexOf(searchText),
         )
@@ -429,8 +425,7 @@ function copyStyle() {
 }
 
 function changelanguage() {
-  if (locale.value === 'en')
-    locale.value = 'zh'
+  if (locale.value === 'en') locale.value = 'zh'
   else locale.value = 'en'
 }
 
@@ -440,8 +435,7 @@ onUnmounted(() => {
   document.removeEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
       const selection = document.getSelection()
-      if (!selection || !selection.toString())
-        return
+      if (!selection || !selection.toString()) return
       const text = selection.toString()
       window.parent.postMessage({ eventType: 'copy', text }, '*')
     }
@@ -514,7 +508,7 @@ function onSelect(value: any) {
       @select="onSelect"
     />
     <div flex items-center my3>
-      <input v-model="isChecked" type="checkbox" w4 h4 mr1> isRem
+      <input v-model="isChecked" type="checkbox" w4 h4 mr1 /> isRem
     </div>
     <div min-h-20 flex items-center justify-center>
       <div v-if="transform" flex="~ gap-4" items-center>

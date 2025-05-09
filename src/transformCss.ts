@@ -21,11 +21,11 @@ import {
 } from './utils'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 
-const combineReg = /([.#\w]+)([.#]\w+)/ // xx.xx
+const combineReg = /([.#\w\-]+)([.#]\w+)/ // xx.xx
 
-const addReg = /([.#\w]+)\s*\+\s*([.#\w]+)/ // xx + xx
+const addReg = /([.#\w\-]+)\s*\+\s*([.#\w]+)/ // xx + xx
 const tailReg = /:([\w\-]+)/ // :after
-const tagReg = /\[([\w-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
+const tagReg = /\[([\w\-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 const emptyClass = /[,\w>.#\-+:[\]="'\s()]+\{\}\n/g
 
 interface Position {
@@ -51,15 +51,17 @@ export async function transformCss(
   style: string,
   code: string,
   media = '',
-  isJsx?: boolean,
+  isJsx = true,
   filepath?: string,
   _isRem?: boolean,
 ): Promise<string> {
   isRem = _isRem
   const allChanges: AllChange[] = []
-  code = (await importCss(code, style, filepath, isJsx)) as string
+  let newCode = (await importCss(code, style, filepath, isJsx)) as string
   const { parse } = await getVueCompilerSfc()
-  let stack = parse(code).descriptor.template?.ast
+  const stack = parse(newCode).descriptor.template?.ast
+  const updateOffsetMap: any = {}
+  const deferRun: any[] = []
   style.replace(
     /(.*)\{([#\\\s\w\-.:;,%()+'"!]*)\}/g,
     (all: any, name: any, value: any = '') => {
@@ -98,8 +100,18 @@ export async function transformCss(
 
       if (!result.length)
         return
-      const updateOffsetMap: any = {}
-      result.forEach((r) => {
+
+      // 拿出class
+      const _class = newCode.match(/<style[^>]+>(.*)<\/style>/s)![1]
+      // 删除原本class
+      let newClass = _class.replace(all, _ =>
+        _.replace(value, noTransfer.join(';')))
+
+      // 如果class中内容全部被移除删除这个定义的class
+      newClass = newClass.replace(emptyClass, '')
+      newCode = newCode.replace(_class, newClass)
+
+      for (const r of result) {
         const parent = r.parent
         if (prefix.startsWith('group-') && parent) {
           // 给result的parent添加class="group"
@@ -115,7 +127,7 @@ export async function transformCss(
             const updateText = 'group '
             updateOffsetMap[index] = updateText.length
             hasClass.value.content = `${hasClass.value.content} ${updateText}`
-            code = `${code.slice(0, newIndex + 1)}${updateText}${code.slice(
+            newCode = `${newCode.slice(0, newIndex + 1)}${updateText}${newCode.slice(
               newIndex + 1,
             )}`
           }
@@ -158,7 +170,7 @@ export async function transformCss(
               },
             })
             updateOffsetMap[index] = updateText.length
-            code = `${code.slice(0, newIndex)} class="group" ${code.slice(
+            newCode = `${newCode.slice(0, newIndex)}${updateText}${newCode.slice(
               newIndex,
             )}`
           }
@@ -180,37 +192,34 @@ export async function transformCss(
 
           return result
         }, [] as string[])
-        stack = parse(code).descriptor!.template!.ast
 
-        allChanges.push({
-          before,
-          after,
-          name: originClassName,
-          source,
-          tag,
-          attr,
-          prefix,
-          media,
-          start,
-          end,
+        // 运行完后执行
+        deferRun.push(() => {
+          const newIndex = getCalculateOffset(updateOffsetMap, start.offset)
+          const newSource = newCode.slice(
+            start.offset + newIndex,
+            end.offset + newIndex,
+          )
+          allChanges.push({
+            before,
+            after,
+            name: originClassName,
+            source: newSource,
+            tag,
+            attr,
+            prefix,
+            media,
+            start,
+            end,
+          })
         })
-      })
-      // 拿出class
-      const _class = code.match(/<style[^>]+>(.*)<\/style>/s)![1]
-      // 删除原本class
-      let newClass = _class.replace(value, noTransfer.join(';'))
+      }
 
-      // 如果class中内容全部被移除删除这个定义的class
-      newClass = newClass.replace(emptyClass, '')
-      code = code.replace(_class, newClass)
-
-      // update stack
-      stack = parse(code).descriptor!.template!.ast
       return all
     },
   )
-
-  return await resolveConflictClass(allChanges, code, isJsx)
+  deferRun.forEach(run => run())
+  return await resolveConflictClass(allChanges, newCode, isJsx, updateOffsetMap)
 }
 
 async function importCss(
@@ -295,50 +304,48 @@ function findChild(
         : astFindTag(stack, curFirst, deps)
     if (list.length === 1) {
       result.push(...targets)
-      return
+      return result
     }
   }
   return result
 }
 
 // 查找下无限级的
-function findDeepChild(
-  list: any[],
-  stack: any,
-  targets: any = undefined,
-  result: any[] = [],
-) {
-  for (let i = 0; i < list.length; i++) {
-    const cur = list[i]
-    if (cur === '>')
-      continue
-    const curs = cur.split('>')
-    if (targets) {
-      result.length = 0
-      targets.forEach((t: any) =>
-        findDeepChild(list.slice(i), t, undefined, result),
-      )
-      const hasOrigin = result.findIndex(item => item === targets[0])
-      if (hasOrigin !== -1)
-        result.splice(hasOrigin, 1)
-      continue
+function findDeepChild(list: any[], stack: any, result: any[] = []) {
+  if (list.length) {
+    let cur = list.shift()
+    while (cur === '>') {
+      cur = list.shift()
     }
+
+    const curs = cur.split('>')
+
     const combineMatch = cur.match(combineReg)
     const addMatch = cur.match(addReg)
 
-    targets
-      = curs.length > 1
-        ? findChild(curs, stack, 1)
-        : combineMatch
-          ? astFindTag(stack, combineMatch[1], Infinity, combineMatch[2])
-          : addMatch
-            ? astFindTag(stack, addMatch[2], Infinity, undefined, addMatch[1])
-            : astFindTag(stack, cur, Infinity)
-
-    if (list.length === 1) {
-      result.push(...targets)
-      return result
+    let found: any[] = []
+    if (curs.length > 1) {
+      found = findChild(curs, stack, 1)
     }
+    else if (combineMatch) {
+      found = astFindTag(stack, combineMatch[1], Infinity, combineMatch[2])
+    }
+    else if (addMatch) {
+      found = astFindTag(stack, addMatch[2], Infinity, undefined, addMatch[1])
+    }
+    else {
+      found = astFindTag(stack, cur, Infinity)
+    }
+
+    // 递归查找下一级
+    if (found.length) {
+      found.forEach((item: any) => {
+        findDeepChild(list, item, result)
+      })
+    }
+  }
+  else {
+    result.push(stack)
   }
   return sort(result)
 }
@@ -471,11 +478,12 @@ export function astFindTag(
 async function resolveConflictClass(
   allChange: AllChange[],
   code: string,
-  isJsx?: boolean,
+  isJsx: boolean = true,
+  updateOffset: Record<number, number>,
 ) {
+  const originCode = code
   const changes = findSameSource(allChange)
   let result = code
-  const updateOffset: any = {}
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
     const {
@@ -491,7 +499,8 @@ async function resolveConflictClass(
     if (!after)
       continue
 
-    result = transform(result)
+    const newResult = transform(result)
+    result = newResult
     const target = transform(source)
     if (media)
       after = `${media}:${after}`
@@ -505,9 +514,6 @@ async function resolveConflictClass(
             (_, v) => {
               const updateText = ` ${v}`
               result = result.replace(match[1], `${match[1]}${updateText}`)
-              updateOffset[offset]
-                = updateOffset[offset] ?? 0 + updateText.length
-
               return ''
             },
           )
@@ -518,54 +524,66 @@ async function resolveConflictClass(
       }
     }
 
-    const returnValue = isJsx
-      ? after
-          .replace(/\[([^\]]+)\]/g, (all, v) =>
-            all.replace(v, joinWithUnderLine(v)))
-          .replace(/-(rgba?([^)]+))/g, '-[$1]')
-          .replace(/="([^"]+)"/g, '-$1')
-      : after
+    const f = after.replace(/\[([^\]]+)\]/g, (all, v) =>
+      all.replace(v, joinWithUnderLine(v)))
+    // 默认全部都输出到class中
+    const returnValue
+      = isJsx || after.replace(/[\w\-]+=("{1})(.*?)\1/g, '').includes('[')
+        ? after
+            .replace(/\[([^\]]+)\]/g, (all, v) =>
+              all.replace(v, joinWithUnderLine(v)))
+            .replace(/-(rgba?([^)]+))/g, '-[$1]')
+            .replace(
+              /([\w\-]+)=(['"]{1})(.*?)\2/g,
+              (all, prefix, _, content) => {
+                // 拆分 content 中的空格，但是要忽略 ( ) [] 中的空格, 然后用 prefix 连接
+                const splitContent = content
+                  .split(/(?<!\[[^\]]*)\s+/)
+                  .filter(Boolean)
+                const newContent = splitContent
+                  .map(item => `${prefix}-${item}`)
+                  .join(` `)
 
+                return newContent
+              },
+            )
+        : after
+
+    // (["]{1})(.*?)\1
     const getUpdateOffset = getCalculateOffset(updateOffset, offset)
-    const start = result.slice(
-      getUpdateOffset + offset,
-      getUpdateOffset + offsetEnd,
+    const start = originCode.slice(
+      offset + getUpdateOffset,
+      offsetEnd + getUpdateOffset,
     )
 
-    if (isJsx) {
+    if (isJsx || after.replace(/[\w\-]+=("{1})(.*?)\1/g, '').includes('[')) {
       const newReg = new RegExp(
         `<${tag}.*\\sclass=["']([^"']+)["'][^\\/>]*\/?>`,
       )
       const matcher = target.match(newReg)
 
       if (matcher) {
-        const updateText = ` ${returnValue}`
-        updateOffset[offset] = updateOffset[offset] ?? 0 + updateText.length
-
+        // updateText
         result = result.replace(
           start,
           start.replace(
             `class="${matcher[1]}"`,
-            `class="${matcher[1]}${updateText}"`,
+            `class="${matcher[1]} ${returnValue}"`,
           ),
         )
         continue
       }
-      const updateText = ` class="${returnValue}"`
-      updateOffset[offset] = updateOffset[offset] ?? 0 + updateText.length
 
       result = result.replace(
         start,
-        start.replace(`<${tag}`, `<${tag}${updateText}`),
+        start.replace(`<${tag}`, `<${tag} class="${returnValue}"`),
       )
       continue
     }
-    const updateText = ` ${returnValue}`
-    updateOffset[offset] = updateOffset[offset] ?? 0 + updateText.length
 
     result = result.replace(
       start,
-      start.replace(`<${tag}`, `<${tag}${updateText}`),
+      start.replace(`<${tag}`, `<${tag} ${returnValue}`),
     )
   }
 
@@ -640,7 +658,7 @@ async function getConflictClass(
         if (preWeight === skipTransformFlag)
           return
         const curWeight = calculateWeight(name)
-        if (+curWeight > +preWeight)
+        if (+curWeight >= +preWeight)
           map[key] = [+curWeight, value]
       }
     })
@@ -760,8 +778,8 @@ async function getConflictClass(
               const reg = new RegExp(`${newPrefix}([\\w\\:\\-;\\[\\]\\/\\+%]+)`)
               return result.replace(reg, all => `${all}:${transferCss}`)
             }
-            const reg = new RegExp(`${prefix}="([^"]*)"`)
-            return result.replace(reg, (all, v) => {
+            const reg = new RegExp(`${prefix}=(["]{1})(.*?)\\1`)
+            return result.replace(reg, (all, _, v) => {
               const unique = [
                 ...new Set(
                   v
@@ -786,7 +804,7 @@ async function getConflictClass(
 
 function getCalculateOffset(offsetMap: any, offset: any) {
   return Object.keys(offsetMap).reduce((result, key) => {
-    if (+key < offset)
+    if (+key <= offset)
       result += offsetMap[key]
 
     return result

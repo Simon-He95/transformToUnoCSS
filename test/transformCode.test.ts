@@ -160,3 +160,12 @@ describe('demo3 vue test', async () => {
     expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
   })
 })
+
+describe('nth vue test', async () => {
+  const _path = './test/demo/nth.vue'
+  const demo = await fsp.readFile(_path, 'utf-8')
+  it('nth.vue', async () => {
+    const filepath = path.resolve(process.cwd(), _path)
+    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+  })
+})

@@ -14,7 +14,7 @@ interface Options {
 }
 
 export async function transfromCode(code: string, options: Options) {
-  const { filepath, isRem, type, isJsx = false, globalCss } = options || {}
+  const { filepath, isRem, type, isJsx = true, globalCss } = options || {}
   // 删除代码中的注释部分
   // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
   if (type === 'tsx')

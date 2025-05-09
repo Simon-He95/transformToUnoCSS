@@ -1,4 +1,3 @@
-/* stylelint-disable order/properties-order */
 <template>
   <div class="add-node-btn-box">
     <div class="add-node-btn">
@@ -32,8 +31,7 @@
     </div>
   </div>
 </template>
-<script setup>
-</script>
+<script setup></script>
 <style scoped lang="scss">
 .add-node-btn-box {
   width: 240px;
