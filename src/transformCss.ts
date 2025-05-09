@@ -21,10 +21,10 @@ import {
 } from './utils'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 
-const combineReg = /([.#\w\-]+)([.#]\w+)/ // xx.xx
+const combineReg = /([.#]?[\w\-]+)((?:[.#]\w+)+)/ // xx.xx
 
 const addReg = /([.#\w\-]+)\s*\+\s*([.#\w]+)/ // xx + xx
-const tailReg = /:([\w\-]+)/ // :after
+const tailReg = /:?:(.+)/ // :after
 const tagReg = /\[([\w\-]*)[='" ]*([\w-]*)['" ]*\]/ // [class="xxx"]
 const emptyClass = /[,\w>.#\-+:[\]="'\s()]+\{\}\n/g
 
@@ -366,6 +366,33 @@ function sort(data: any[]) {
   return result
 }
 
+function matchCombine(
+  props: any[],
+  combineClass: string[],
+  combineId: string[],
+) {
+  const classPassed = combineClass.length
+    ? props.some(
+        (prop: any) =>
+          prop.name === 'class'
+          && combineClass.every((c) => {
+            const className = prop.value.content?.split(' ').filter(Boolean)
+            return className?.some((item: string) => item.includes(c))
+          }),
+      )
+    : true
+  const idPassed = combineId.length
+    ? props.some(
+        (prop: any) =>
+          prop.name === 'id'
+          && combineId.every((i) => {
+            const idName = prop.value.content?.split(' ').filter(Boolean)
+            return idName?.some((item: string) => item.includes(i))
+          }),
+      )
+    : true
+  return classPassed && idPassed
+}
 export function astFindTag(
   ast: any,
   tag = '',
@@ -390,6 +417,26 @@ export function astFindTag(
       : tag.startsWith('#')
         ? 'id'
         : ''
+  // combine 可能包含多个 .xxx#xxx.### , 需要一个个一个的去匹配
+  const combineClass: string[] = []
+  const combineId: string[] = []
+  if (combine) {
+    combine
+      .split('.')
+      .filter(Boolean)
+      .forEach((item) => {
+        if (item.includes('#')) {
+          const classNames = item.replace(/#([^.#]+)/g, (_, id) => {
+            combineId.push(id)
+            return ''
+          })
+          combineClass.push(...classNames.split('.').filter(Boolean))
+        }
+        else {
+          combineClass.push(item)
+        }
+      })
+  }
   const combineSelector = combine
     ? combine.startsWith('.')
       ? 'class'
@@ -417,11 +464,9 @@ export function astFindTag(
               .includes(tagMatch && tagMatch[2] ? tagMatch[2] : tag.slice(1))),
       )
       && (combine === undefined
-        || ast.props.some(
-          (prop: any) =>
-            prop.name === combineSelector
-            && prop.value.content?.includes(combine.slice(1)),
-        ))
+        || (ast.props
+          && ast.props.length
+          && matchCombine(ast.props, combineClass, combineId)))
         && (add === undefined
           || siblings.some(
             (sib: any) =>
@@ -443,23 +488,19 @@ export function astFindTag(
     && (combine === undefined
       || (ast.props
         && ast.props.length
-        && ast.props.some(
-          (prop: any) =>
-            prop.name === combineSelector
-            && (tagMatch || prop.value.content?.includes(combine.slice(1))),
-        )))
-        && (add === undefined
-          || siblings.some(
-            (sib: any) =>
-              sib !== ast
-              && sib.props
-              && sib.props.length
-              && sib.props.some(
-                (prop: any) =>
-                  prop.name === addSelector
-                  && prop.value.content?.includes(add.slice(1)),
-              ),
-          ))
+        && matchCombine(ast.props, combineClass, combineId)))
+      && (add === undefined
+        || siblings.some(
+          (sib: any) =>
+            sib !== ast
+            && sib.props
+            && sib.props.length
+            && sib.props.some(
+              (prop: any) =>
+                prop.name === addSelector
+                && prop.value.content?.includes(add.slice(1)),
+            ),
+        ))
   ) {
     result.push(ast)
   }
@@ -524,8 +565,6 @@ async function resolveConflictClass(
       }
     }
 
-    const f = after.replace(/\[([^\]]+)\]/g, (all, v) =>
-      all.replace(v, joinWithUnderLine(v)))
     // 默认全部都输出到class中
     const returnValue
       = isJsx || after.replace(/[\w\-]+=("{1})(.*?)\1/g, '').includes('[')
@@ -534,17 +573,14 @@ async function resolveConflictClass(
               all.replace(v, joinWithUnderLine(v)))
             .replace(/-(rgba?([^)]+))/g, '-[$1]')
             .replace(
-              /([\w\-]+)=(['"]{1})(.*?)\2/g,
-              (all, prefix, _, content) => {
+              /([\w\-]+(?:-\[[^\]]*\])?)=(['"]{1})(.*?)\2/g,
+              (_all, prefix, _, content) => {
                 // 拆分 content 中的空格，但是要忽略 ( ) [] 中的空格, 然后用 prefix 连接
-                const splitContent = content
+                const splitContent: string[] = content
                   .split(/(?<!\[[^\]]*)\s+/)
                   .filter(Boolean)
-                const newContent = splitContent
-                  .map(item => `${prefix}-${item}`)
-                  .join(` `)
 
-                return newContent
+                return splitContent.map(item => `${prefix}-${item}`).join(` `)
               },
             )
         : after

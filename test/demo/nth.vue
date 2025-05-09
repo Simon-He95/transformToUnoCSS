@@ -1,8 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div style="background: red; width: 100%; line-height: 20px">
-    <div class="red">
+  <div id="test" style="background: red; width: 100%; line-height: 20px">
+    <div class="red yellow green">
       n1
     </div>
     <div class="red">
@@ -12,7 +12,7 @@
 </template>
 
 <style scoped>
-.red:nth-child(2) {
+#test div.red.yellow.green:nth-last-child(1) {
   color: yellow;
 }
 </style>

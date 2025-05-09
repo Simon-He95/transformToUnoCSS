@@ -687,7 +687,7 @@ exports[`demo3 vue test > demo2.vue 1`] = `
   <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative before-content-[''] before-absolute before-top-0 before-left-0 before-right-0 before-bottom-0 before--z-1 before-m-auto before-w-2px before-h-[100%] before-bg-[#cacaca]">
     <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
       <div class="add-node-popover-body flex">
-        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]!" @click="addType(1)">
+        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! hover .item-wrapper-bg-[#3296fa] item-wrapper-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] hover .iconfont-text-[#fff] active .item-wrapper-shadow-[none] item-wrapper-bg-[#eaeaea] active .iconfont-text-inherit" @click="addType(1)">
           <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
             <span class="iconfont text-35px lh-80px"></span>
           </div>
@@ -764,10 +764,9 @@ export default defineComponent({
 
 exports[`nth vue test > nth.vue 1`] = `
 "<script setup lang="ts"></script>
-
 <template>
-  <div class="bg-red w-[100%] lh-20px">
-    <div class="red">
+  <div class="bg-red w-[100%] lh-20px" id="test">
+    <div class="red yellow green nth-last-[1]-text-yellow">
       n1
     </div>
     <div class="red">
@@ -775,12 +774,7 @@ exports[`nth vue test > nth.vue 1`] = `
     </div>
   </div>
 </template>
-
-<style scoped>
-.red:nth-child(2) {
-  color: yellow;
-}
-</style>
+<style scoped></style>
 "
 `;
 
@@ -1803,9 +1797,9 @@ watch(
   <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative before-content-[''] before-absolute before-top-0 before-left-0 before-right-0 before-bottom-0 before--z-1 before-m-auto before-w-2px before-h-[100%] before-bg-[#cacaca]">
     <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
       <div class="add-node-popover-body flex">
-        <a class="group add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]!" @click="addType(1)">
-          <div class="group item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e] group-hover-bg-[#3296fa] group-hover-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)]">
-            <span class="iconfont text-35px lh-80px group-hover-text-[#fff]"></span>
+        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! hover .item-wrapper-bg-[#3296fa] item-wrapper-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] hover .iconfont-text-[#fff] active .item-wrapper-shadow-[none] item-wrapper-bg-[#eaeaea] active .iconfont-text-inherit" @click="addType(1)">
+          <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
+            <span class="iconfont text-35px lh-80px"></span>
           </div>
           <p>审批人</p>
         </a>
@@ -1916,10 +1910,9 @@ export default defineComponent({
 -----    nth.vue     -------
 
 <script setup lang="ts"></script>
-
 <template>
-  <div class="bg-red w-[100%] lh-20px">
-    <div class="red">
+  <div class="bg-red w-[100%] lh-20px" id="test">
+    <div class="red yellow green nth-last-[1]-text-yellow">
       n1
     </div>
     <div class="red">
@@ -1927,12 +1920,7 @@ export default defineComponent({
     </div>
   </div>
 </template>
-
-<style scoped>
-.red:nth-child(2) {
-  color: yellow;
-}
-</style>
+<style scoped></style>
 ",
   "
 
