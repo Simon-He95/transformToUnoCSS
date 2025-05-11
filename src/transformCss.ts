@@ -177,7 +177,7 @@ export async function transformCss(
         }
 
         const {
-          loc: { source, start, end },
+          loc: { start, end },
           tag,
           props,
         } = r

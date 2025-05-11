@@ -2015,6 +2015,45 @@ body {
 ",
   "
 
+-----    test-vue.vue     -------
+
+<script setup lang="ts">
+// 这里可以添加你的逻辑
+</script>
+<template>
+  <div class="portal-container min-h-100vh flex flex-col font-[Arial,_sans-serif] bg-[#f5f6fa]">
+    <header class="portal-header bg-[#2d8cf0] text-[#fff] px-32px py-24px flex flex-col items-start">
+      <h1>门户首页</h1>
+      <nav class="mt-12px">
+        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">首页</a>
+        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">功能一</a>
+        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">功能二</a>
+        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">关于</a>
+      </nav>
+    </header>
+    <main class="portal-main flex-1 px-32px py-40px">
+      <section class="welcome-section mb-32px">
+        <h2>欢迎来到门户页面</h2>
+        <p>这里是你的 Vue 门户页面示例。</p>
+      </section>
+      <section class="features-section">
+        <h3>功能介绍</h3>
+        <ul class="pl-20px">
+          <li>功能一描述</li>
+          <li>功能二描述</li>
+          <li>更多功能...</li>
+        </ul>
+      </section>
+    </main>
+    <footer class="portal-footer bg-[#222] text-[#fff] text-center px-0 py-16px text-14px">
+      &copy; 2025 门户页面示例
+    </footer>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
 -----    test.vue     -------
 
 <template>
