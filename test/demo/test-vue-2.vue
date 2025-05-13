@@ -31,7 +31,7 @@ p {
   font-weight: bold;
 }
 
-li:last-child:hover {
+p+ ul li:last-child:hover {
   border: 2px solid orange;
 }
 </style>
