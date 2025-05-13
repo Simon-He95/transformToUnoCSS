@@ -325,9 +325,15 @@ const stop = useRaf(
           body: newInput,
         }).then((res) => res.text())
       } catch (error) {
-        code = await transformVue(newInput, {
-          isRem: isChecked.value,
-        })
+        try {
+          code = await transformVue(newInput, {
+            isRem: isChecked.value,
+          })
+        } catch (e) {
+          // Handle error 弹窗暴露错误消息
+          alert('Error: ' + e)
+          return
+        }
       }
 
       // Properly dispose of the old editor before creating a new one
@@ -451,7 +457,6 @@ function onSelect(value: any) {
   })
 }
 </script>
-
 <template>
   <div absolute flex="~ gap-2" z-2 left-2 top-5>
     <div
@@ -512,9 +517,7 @@ function onSelect(value: any) {
     </div>
     <div min-h-20 flex items-center justify-center>
       <div v-if="transform" flex="~ gap-4" items-center>
-        <div font-bold text="18px">
-          {{ t('result') }}
-        </div>
+        <div font-bold text="18px">{{ t('result') }}</div>
         <div flex gap-2 items-center break-all>
           {{ transform }}
           <div
@@ -582,7 +585,6 @@ function onSelect(value: any) {
   </h1>
   <div pb20 data-v-display v-html="display" />
 </template>
-
 <style scoped>
 .textshadow::after {
   bottom: 0;
@@ -598,7 +600,6 @@ function onSelect(value: any) {
   z-index: 1;
 }
 </style>
-
 <style>
 .ant-select-selector {
   height: 50px !important;
