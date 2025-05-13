@@ -1,7 +1,4 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`test-vue-1 > test-vue-1.vue 1`] = `
-"<script setup lang="ts">
+<script setup lang="ts">
 // 这里可以添加你的逻辑
 const newsList = [
   { title: '公司新闻1', link: '#' },
@@ -40,5 +37,3 @@ const newsList = [
   </div>
 </template>
 <style scoped></style>
-"
-`;

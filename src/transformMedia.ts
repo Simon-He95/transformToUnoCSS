@@ -1,5 +1,5 @@
+import { getLastName } from 'transform-to-unocss-core'
 import { transformCss } from './transformCss'
-import { getLastName } from './utils'
 
 const mediaReg = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{([\s\w.{}\-:;]*)\}/g
 

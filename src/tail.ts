@@ -1,3 +1,5 @@
+import { joinWithUnderLine } from 'transform-to-unocss-core'
+
 export function tail(css: string) {
   if (/not\(/.test(css))
     return `[&:${css}]:`
@@ -47,5 +49,9 @@ export function tail(css: string) {
   if (['first-child', 'last-child', 'only-child'].includes(css)) {
     return css.split('-')[0]
   }
-  return css
+  const [first, ...rest] = css.split(':')
+  if (rest.length)
+    return `[&:${joinWithUnderLine(first)}]:${rest.join(':')}`
+
+  return `[&:${joinWithUnderLine(first)}]`
 }

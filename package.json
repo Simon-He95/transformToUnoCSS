@@ -86,6 +86,7 @@
     "find-up": "^6.3.0",
     "lint-staged": "^13.3.0",
     "magic-string": "^0.30.17",
+    "node-html-parser": "^7.0.1",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.13.0",

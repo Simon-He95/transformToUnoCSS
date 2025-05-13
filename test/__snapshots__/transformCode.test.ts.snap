@@ -684,10 +684,10 @@ exports[`demo2 vue test > demo2.vue 1`] = `
 
 exports[`demo3 vue test > demo2.vue 1`] = `
 "<template>
-  <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative before-content-[''] before-absolute before-top-0 before-left-0 before-right-0 before-bottom-0 before--z-1 before-m-auto before-w-2px before-h-[100%] before-bg-[#cacaca]">
+  <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative [&:before]-content-[''] [&:before]-absolute [&:before]-top-0 [&:before]-left-0 [&:before]-right-0 [&:before]-bottom-0 [&:before]--z-1 [&:before]-m-auto [&:before]-w-2px [&:before]-h-[100%] [&:before]-bg-[#cacaca]">
     <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
       <div class="add-node-popover-body flex">
-        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! hover .item-wrapper-bg-[#3296fa] item-wrapper-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] hover .iconfont-text-[#fff] active .item-wrapper-shadow-[none] item-wrapper-bg-[#eaeaea] active .iconfont-text-inherit" @click="addType(1)">
+        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! [&:hover_.item-wrapper]-bg-[#3296fa] [&:hover_.item-wrapper]-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] [&:hover_.iconfont]-text-[#fff] [&:active_.item-wrapper]-shadow-[none] [&:active_.item-wrapper]-bg-[#eaeaea] [&:active_.iconfont]-text-inherit" @click="addType(1)">
           <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
             <span class="iconfont text-35px lh-80px"></span>
           </div>
@@ -843,7 +843,7 @@ exports[`single demo classCombine > classCombine.vue 1`] = `
 exports[`single demo classTail > classTail.vue 1`] = `
 "<script setup lang="ts"></script>
 <template>
-  <div class="container focus-within-bg-red focus-within-w-[100%]">
+  <div class="container [&:focus-within]-bg-red [&:focus-within]-w-[100%]">
     <div class="red bg-red w-[100%] lh-20px">
       nihao
     </div>
@@ -1028,21 +1028,15 @@ exports[`transformCode > transformCode: all 1`] = `
 -----    classAttribute.vue     -------
 
 <script setup lang="ts"></script>
-
 <template>
-  <div class="red w-[100%] h-[100%]" name="hi" haha>
+  <div class="red bg-red w-[100%] h-[100%]" name="hi" haha>
     nihao
   </div>
   <div class="yellow h-[100%]">
     hi
   </div>
 </template>
-
-<style scoped>
-.red[haha] {
-  background-color: red;
-}
-</style>
+<style scoped></style>
 ",
   "
 
@@ -1092,7 +1086,7 @@ exports[`transformCode > transformCode: all 1`] = `
 
 <script setup lang="ts"></script>
 <template>
-  <div class="container focus-within-bg-red focus-within-w-[100%]">
+  <div class="container [&:focus-within]-bg-red [&:focus-within]-w-[100%]">
     <div class="red bg-red w-[100%] lh-20px">
       nihao
     </div>
@@ -1794,10 +1788,10 @@ watch(
 -----    demo3.vue     -------
 
 <template>
-  <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative before-content-[''] before-absolute before-top-0 before-left-0 before-right-0 before-bottom-0 before--z-1 before-m-auto before-w-2px before-h-[100%] before-bg-[#cacaca]">
+  <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative [&:before]-content-[''] [&:before]-absolute [&:before]-top-0 [&:before]-left-0 [&:before]-right-0 [&:before]-bottom-0 [&:before]--z-1 [&:before]-m-auto [&:before]-w-2px [&:before]-h-[100%] [&:before]-bg-[#cacaca]">
     <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
       <div class="add-node-popover-body flex">
-        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! hover .item-wrapper-bg-[#3296fa] item-wrapper-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] hover .iconfont-text-[#fff] active .item-wrapper-shadow-[none] item-wrapper-bg-[#eaeaea] active .iconfont-text-inherit" @click="addType(1)">
+        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! [&:hover_.item-wrapper]-bg-[#3296fa] [&:hover_.item-wrapper]-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] [&:hover_.iconfont]-text-[#fff] [&:active_.item-wrapper]-shadow-[none] [&:active_.item-wrapper]-bg-[#eaeaea] [&:active_.iconfont]-text-inherit" @click="addType(1)">
           <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
             <span class="iconfont text-35px lh-80px"></span>
           </div>
@@ -1849,7 +1843,7 @@ watch(
 <script setup lang="ts"></script>
 <template>
   <div class="bg-red w-[100%] lh-20px">
-    <div class="red hover-text-yellow">
+    <div class="red [&:hover]-text-yellow">
       hi
     </div>
   </div>
@@ -2015,40 +2009,77 @@ body {
 ",
   "
 
------    test-vue.vue     -------
+-----    test-vue-1.vue     -------
+
+<script setup lang="ts">
+// 这里可以添加你的逻辑
+const newsList = [
+  { title: '公司新闻1', link: '#' },
+  { title: '公司新闻2', link: '#' },
+  { title: '公司新闻3', link: '#' },
+]
+</script>
+<template>
+  <div class="portal-container font-['Segoe_UI',_Arial,_sans-serif] bg-[#f5f6fa] min-h-100vh flex flex-col">
+    <header class="portal-header bg-[#2d8cf0] text-[#fff] pt-24px pb-16px pl0 pr0 text-center">
+      <h1>门户网站</h1>
+      <nav class="mt-12px">
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">首页</a>
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">新闻</a>
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">关于我们</a>
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">联系我们</a>
+      </nav>
+    </header>
+    <main class="portal-main flex-1 max-w-900px mt-32px mb0 ml-auto mr-auto px-16px py0">
+      <section class="banner bg-[#fff] rounded-8px px-24px py-32px shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-center mb-32px">
+        <h2>欢迎来到我们的门户网站</h2>
+        <p>这里是企业、学校或组织的门户首页。</p>
+      </section>
+      <section class="news bg-[#fff] rounded-8px px-20px py-24px shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+        <h3 class="mb-16px">最新新闻</h3>
+        <ul class="list-none p0 m0">
+          <li class="mb-10px" v-for="item in newsList" :key="item.title">
+            <a class="text-[#2d8cf0] decoration-none transition-text-decoration transition-duration-0.2s hover-decoration-underline" :href="item.link">{{ item.title }}</a>
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer class="portal-footer bg-[#222] text-[#fff] text-center px0 py-16px text-14px mt-40px">
+      &copy; 2025 门户网站. 保留所有权利.
+    </footer>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    test-vue-2.vue     -------
 
 <script setup lang="ts">
 // 这里可以添加你的逻辑
 </script>
 <template>
-  <div class="portal-container min-h-100vh flex flex-col font-[Arial,_sans-serif] bg-[#f5f6fa]">
-    <header class="portal-header bg-[#2d8cf0] text-[#fff] px-32px py-24px flex flex-col items-start">
-      <h1>门户首页</h1>
-      <nav class="mt-12px">
-        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">首页</a>
-        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">功能一</a>
-        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">功能二</a>
-        <a class="text-[#fff] mr-20px decoration-none font-bold hover-decoration-underline" href="#">关于</a>
-      </nav>
-    </header>
-    <main class="portal-main flex-1 px-32px py-40px">
-      <section class="welcome-section mb-32px">
-        <h2>欢迎来到门户页面</h2>
-        <p>这里是你的 Vue 门户页面示例。</p>
-      </section>
-      <section class="features-section">
-        <h3>功能介绍</h3>
-        <ul class="pl-20px">
-          <li>功能一描述</li>
-          <li>功能二描述</li>
-          <li>更多功能...</li>
-        </ul>
-      </section>
-    </main>
-    <footer class="portal-footer bg-[#222] text-[#fff] text-center px-0 py-16px text-14px">
-      &copy; 2025 门户页面示例
-    </footer>
-  </div>
+<p class="font-bold">Track &amp; field champions:</p>
+<ul>
+  <li>Adhemar da Silva</li>
+  <li>Wang Junxia</li>
+  <li>Wilma Rudolph</li>
+  <li>Babe Didrikson-Zaharias</li>
+  <li>Betty Cuthbert</li>
+  <li>Fanny Blankers-Koen</li>
+  <li>Florence Griffith-Joyner</li>
+  <li>Irena Szewinska</li>
+  <li>Jackie Joyner-Kersee</li>
+  <li>Shirley Strickland</li>
+  <li>Carl Lewis</li>
+  <li>Emil Zatopek</li>
+  <li>Haile Gebrselassie</li>
+  <li>Jesse Owens</li>
+  <li>Jim Thorpe</li>
+  <li>Paavo Nurmi</li>
+  <li>Sergei Bubka</li>
+  <li class="[&:last-child]:hover-border-2px [&:last-child]:hover-border-solid [&:last-child]:hover-border-orange">Usain Bolt</li>
+</ul>
 </template>
 <style scoped></style>
 ",

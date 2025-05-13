@@ -4,7 +4,8 @@ import {
   joinWithLine,
   transformImportant,
   trim,
-} from './utils'
+} from 'transform-to-unocss-core'
+import {} from './utils'
 
 export function transform(key: string, val: string) {
   const [v, important] = transformImportant(val)
