@@ -68,10 +68,10 @@
     "less": "^4.3.0",
     "less-plugin-module-resolver": "^1.0.3",
     "picocolors": "^1.1.1",
-    "sass": "^1.87.0",
+    "sass": "^1.88.0",
     "stylus": "^0.63.0",
     "transform-to-unocss-core": "^0.0.60",
-    "unplugin": "^2.3.2"
+    "unplugin": "^2.3.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.0",
