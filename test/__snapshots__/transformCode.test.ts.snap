@@ -876,7 +876,7 @@ exports[`single demo styleMaxWidth.tsx > vue.tsx 1`] = `
   <div class="red">
     nihao
   </div>
-  <div class="yellow max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)]">
+  <div class="yellow max-w-[calc(100%_-_50px)] bg-[rgba(255,62,0,0.1)]">
     hi
   </div>
 </template>
@@ -1956,7 +1956,7 @@ body {
   <div class="red">
     nihao
   </div>
-  <div class="yellow max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)]">
+  <div class="yellow max-w-[calc(100%_-_50px)] bg-[rgba(255,62,0,0.1)]">
     hi
   </div>
 </template>
