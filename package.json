@@ -70,7 +70,7 @@
     "picocolors": "^1.1.1",
     "sass": "^1.88.0",
     "stylus": "^0.63.0",
-    "transform-to-unocss-core": "^0.0.63",
+    "transform-to-unocss-core": "^0.0.64",
     "unplugin": "^2.3.3"
   },
   "devDependencies": {
