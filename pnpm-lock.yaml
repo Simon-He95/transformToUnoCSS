@@ -38,6 +38,9 @@ importers:
       less-plugin-module-resolver:
         specifier: ^1.0.3
         version: 1.0.3
+      node-html-parser:
+        specifier: ^7.0.1
+        version: 7.0.1
       picocolors:
         specifier: ^1.1.1
         version: 1.1.1
@@ -48,8 +51,8 @@ importers:
         specifier: ^0.63.0
         version: 0.63.0
       transform-to-unocss-core:
-        specifier: ^0.0.64
-        version: 0.0.64
+        specifier: ^0.0.65
+        version: 0.0.65
       unplugin:
         specifier: ^2.3.3
         version: 2.3.3
@@ -90,9 +93,6 @@ importers:
       magic-string:
         specifier: ^0.30.17
         version: 0.30.17
-      node-html-parser:
-        specifier: ^7.0.1
-        version: 7.0.1
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -4709,8 +4709,8 @@ packages:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
     engines: {node: '>=12'}
 
-  transform-to-unocss-core@0.0.64:
-    resolution: {integrity: sha512-4Ayww4rVZcNafE/qHf+Xj8aN6NZ8khxBnNYjnelrEEMHiTQUZDXlRWLN6a6k0nrwpzpMpcK4LsXrFR5t7kFDWA==}
+  transform-to-unocss-core@0.0.65:
+    resolution: {integrity: sha512-XaFZIugeF3+m4aYzIcMJQfJFfpCKgis11ja5AaHQtOHgOgqzx/Lze89IEPfiXKm4mjGOVAiOEIE6nJicxPy1ZQ==}
     hasBin: true
 
   ts-api-utils@2.1.0:
@@ -10230,7 +10230,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  transform-to-unocss-core@0.0.64: {}
+  transform-to-unocss-core@0.0.65: {}
 
   ts-api-utils@2.1.0(typescript@5.8.3):
     dependencies:
