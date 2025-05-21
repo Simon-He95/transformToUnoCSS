@@ -688,7 +688,7 @@ exports[`demo3 vue test > demo2.vue 1`] = `
     <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
       <div class="add-node-popover-body flex">
         <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! [&:hover_.item-wrapper]-bg-[#3296fa] [&:hover_.item-wrapper]-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] [&:hover_.iconfont]-text-[#fff] [&:active_.item-wrapper]-shadow-[none] [&:active_.item-wrapper]-bg-[#eaeaea] [&:active_.iconfont]-text-inherit" @click="addType(1)">
-          <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
+          <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] rounded-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
             <span class="iconfont text-35px lh-80px"></span>
           </div>
           <p>审批人</p>
@@ -876,7 +876,7 @@ exports[`single demo styleMaxWidth.tsx > vue.tsx 1`] = `
   <div class="red">
     nihao
   </div>
-  <div class="yellow max-w-[calc(100%_-_50px)] bg-[rgba(255,62,0,0.1)]">
+  <div class="yellow max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)]">
     hi
   </div>
 </template>
@@ -1792,7 +1792,7 @@ watch(
     <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
       <div class="add-node-popover-body flex">
         <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! [&:hover_.item-wrapper]-bg-[#3296fa] [&:hover_.item-wrapper]-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] [&:hover_.iconfont]-text-[#fff] [&:active_.item-wrapper]-shadow-[none] [&:active_.item-wrapper]-bg-[#eaeaea] [&:active_.iconfont]-text-inherit" @click="addType(1)">
-          <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] border-rd-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
+          <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] rounded-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
             <span class="iconfont text-35px lh-80px"></span>
           </div>
           <p>审批人</p>
@@ -1956,7 +1956,7 @@ body {
   <div class="red">
     nihao
   </div>
-  <div class="yellow max-w-[calc(100%_-_50px)] bg-[rgba(255,62,0,0.1)]">
+  <div class="yellow max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)]">
     hi
   </div>
 </template>
