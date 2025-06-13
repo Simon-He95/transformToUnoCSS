@@ -13,16 +13,17 @@
   },
   "dependencies": {
     "ant-design-vue": "^4.2.6",
-    "monaco-editor": "^0.36.1"
+    "monaco-editor": "^0.36.1",
+    "vue-use-monaco": "^0.0.7"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.2",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-    "@iconify-json/carbon": "^1.2.8",
-    "@iconify/json": "^2.2.337",
+    "@iconify-json/carbon": "^1.2.9",
+    "@iconify/json": "^2.2.348",
     "@simon_he/git-fork-vue": "^0.0.17",
-    "@types/node": "^18.19.100",
+    "@types/node": "^18.19.111",
     "@unocss/reset": "^0.47.6",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/test-utils": "^2.4.6",
@@ -38,8 +39,8 @@
     "vite": "^6.3.5",
     "vite-plugin-pages": "^0.28.0",
     "vitest": "^0.7.13",
-    "vivid-typing": "^1.1.46",
-    "vue": "^3.5.13",
+    "vivid-typing": "^1.1.47",
+    "vue": "^3.5.16",
     "vue-i18n": "^9.14.4",
     "vue-router": "^4.5.1",
     "vue-tsc": "^1.8.27"
