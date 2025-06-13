@@ -1,0 +1,13 @@
+diff --git a/dist/compiler-sfc.esm-browser.js b/dist/compiler-sfc.esm-browser.js
+index bcac8074be4193e3e56f1ec374e15e6e31cb9378..f23878f73144ebd14c5322bb5cfa345ab9481eb5 100644
+--- a/dist/compiler-sfc.esm-browser.js
++++ b/dist/compiler-sfc.esm-browser.js
+@@ -1921,7 +1921,7 @@ class Tokenizer {
+     this.buffer = input;
+     while (this.index < this.buffer.length) {
+       const c = this.buffer.charCodeAt(this.index);
+-      if (c === 10) {
++      if (c === 10 && this.state !== 33) {
+         this.newlines.push(this.index);
+       }
+       switch (this.state) {

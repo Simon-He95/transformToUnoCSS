@@ -1,0 +1,26 @@
+diff --git a/dist/compiler-core.cjs.js b/dist/compiler-core.cjs.js
+index 8251431d00b46ada29983a63593cbcec443e75b5..594f66e24692e01701219a80ff86d4fb18bb3e4e 100644
+--- a/dist/compiler-core.cjs.js
++++ b/dist/compiler-core.cjs.js
+@@ -1063,7 +1063,7 @@ class Tokenizer {
+     this.buffer = input;
+     while (this.index < this.buffer.length) {
+       const c = this.buffer.charCodeAt(this.index);
+-      if (c === 10) {
++      if (c === 10 && this.state !== 33) {
+         this.newlines.push(this.index);
+       }
+       switch (this.state) {
+diff --git a/dist/compiler-core.esm-bundler.js b/dist/compiler-core.esm-bundler.js
+index 81447fce87543763266bba5a6d668bc7498a494e..47d6c9e31ee62e089a142276ff19d0580da67c72 100644
+--- a/dist/compiler-core.esm-bundler.js
++++ b/dist/compiler-core.esm-bundler.js
+@@ -1023,7 +1023,7 @@ class Tokenizer {
+     this.buffer = input;
+     while (this.index < this.buffer.length) {
+       const c = this.buffer.charCodeAt(this.index);
+-      if (c === 10) {
++      if (c === 10 && this.state !== 33) {
+         this.newlines.push(this.index);
+       }
+       switch (this.state) {

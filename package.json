@@ -63,7 +63,7 @@
     "@unocss/core": "^0.50.8",
     "@unocss/preset-uno": "^0.50.8",
     "@vue/babel-plugin-jsx": "^1.4.0",
-    "@vue/compiler-sfc": "^3.5.13",
+    "@vue/compiler-sfc": "^3.5.16",
     "fast-glob": "^3.3.3",
     "less": "^4.3.0",
     "less-plugin-module-resolver": "^1.0.3",
