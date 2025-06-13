@@ -15,8 +15,8 @@ import 'vivid-typing/dist/index.css'
 
 const { t, locale } = useI18n()
 const input = ref('')
-let pre: any
-  = '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
+let pre: any =
+  '<template>\n  <button>button</button>\n</template>\n\n<style scoped>\n  button {\n    height: 32px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 14px;\n    cursor: pointer;\n    user-select: none;\n    padding: 8px 15px;\n    border-radius: 4px;\n    border: none;\n    box-sizing: border-box;\n    color: #fff;\n    background-color: #409eff;\n    margin: auto;\n  }\n  button:hover{\n    background-color: #67c23a ;\n  }\n</style>\n'
 
 const editor = ref(null)
 const editorResult = ref<HTMLElement>()
@@ -27,8 +27,7 @@ const isChecked = ref(false)
 const transform = computed(() => {
   try {
     return toUnocss(input.value, isChecked.value)
-  }
-  catch (err) {
+  } catch (err) {
     return ''
   }
 })
@@ -72,7 +71,7 @@ const cssCompletionProvider = {
     }
 
     return {
-      suggestions: cssSuggestions.map(prop => ({
+      suggestions: cssSuggestions.map((prop) => ({
         label: prop,
         kind: monaco.languages.CompletionItemKind.Property,
         insertText: prop,
@@ -85,7 +84,7 @@ const { createEditor, getEditorView } = useMonaco({
   onBeforeCreate(monaco) {
     return [
       monaco.languages.registerCompletionItemProvider('html', {
-        triggerCharacters: ['<', ' ', ':', '"', '\'', '.'],
+        triggerCharacters: ['<', ' ', ':', '"', "'", '.'],
         provideCompletionItems(model, position) {
           const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
@@ -95,9 +94,9 @@ const { createEditor, getEditorView } = useMonaco({
           })
 
           // Check if we're in a style section
-          const isInStyleSection
-            = /<style\b/.test(textUntilPosition)
-              && !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
+          const isInStyleSection =
+            /<style\b/.test(textUntilPosition) &&
+            !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
 
           // Check if we're in a style attribute
           const isInStyleAttribute = /style\s*=\s*["'][^"']*$/.test(
@@ -167,7 +166,7 @@ const { createEditor, getEditorView } = useMonaco({
             ]
 
             return {
-              suggestions: htmlTags.map(tag => ({
+              suggestions: htmlTags.map((tag) => ({
                 label: tag,
                 kind: monaco.languages.CompletionItemKind.Keyword,
                 insertText: `${tag}$0></${tag}>`,
@@ -261,7 +260,7 @@ const { createEditor: createEditor1, updateCode: updateCode1 } = useMonaco({
   onBeforeCreate(monaco) {
     return [
       monaco.languages.registerCompletionItemProvider('html', {
-        triggerCharacters: ['<', ' ', ':', '"', '\'', '.'],
+        triggerCharacters: ['<', ' ', ':', '"', "'", '.'],
         provideCompletionItems(model, position) {
           const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
@@ -271,9 +270,9 @@ const { createEditor: createEditor1, updateCode: updateCode1 } = useMonaco({
           })
 
           // Check if we're in a style section
-          const isInStyleSection
-            = /<style\b/.test(textUntilPosition)
-              && !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
+          const isInStyleSection =
+            /<style\b/.test(textUntilPosition) &&
+            !/<\/style>/.test(textUntilPosition.split(/<style\b/)[1] || '')
 
           // Check if we're in a style attribute
           const isInStyleAttribute = /style\s*=\s*["'][^"']*$/.test(
@@ -343,7 +342,7 @@ const { createEditor: createEditor1, updateCode: updateCode1 } = useMonaco({
             ]
 
             return {
-              suggestions: htmlTags.map(tag => ({
+              suggestions: htmlTags.map((tag) => ({
                 label: tag,
                 kind: monaco.languages.CompletionItemKind.Keyword,
                 insertText: `${tag}$0></${tag}>`,
@@ -433,8 +432,7 @@ const { createEditor: createEditor1, updateCode: updateCode1 } = useMonaco({
 })
 
 onMounted(() => {
-  if (editor.value)
-    createEditor(editor.value, editorInput.value, 'vue')
+  if (editor.value) createEditor(editor.value, editorInput.value, 'vue')
   if (editorResult.value) {
     createEditor1(
       editorResult.value,
@@ -453,8 +451,7 @@ onMounted(() => {
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
       const selection = document.getSelection()
-      if (!selection || !selection.toString())
-        return
+      if (!selection || !selection.toString()) return
       const text = selection.toString()
       window.parent.postMessage({ eventType: 'copy', text }, '*')
     }
@@ -466,12 +463,9 @@ onMounted(() => {
 
 const stop = useRaf(
   async () => {
-    console.log()
     const newInput = getEditorView().getValue()
-    if (!newInput)
-      return
-    if (!editorResult.value)
-      return
+    if (!newInput) return
+    if (!editorResult.value) return
     let code
     if ((!pre && newInput) || pre !== newInput) {
       pre = newInput
@@ -480,15 +474,13 @@ const stop = useRaf(
         code = await fetch('https://localhost/.netlify/functions/server', {
           method: 'POST',
           body: newInput,
-        }).then(res => res.text())
-      }
-      catch (error) {
+        }).then((res) => res.text())
+      } catch (error) {
         try {
           code = await transformVue(newInput, {
             isRem: isChecked.value,
           })
-        }
-        catch (e) {
+        } catch (e) {
           // eslint-disable-next-line no-alert
           alert(`Error: ${e}`)
           return
@@ -514,17 +506,18 @@ function codeToHtml(code: string) {
           classReg,
           (_: any, match: any) => `[data-v-display]${match} {`,
         ),
-      ))
+      ),
+    )
     .replace('<template>', '')
     .replace('<\/template>', '')
 }
-const options = ref(cssSuggestions.map(i => ({ value: i })))
+const options = ref(cssSuggestions.map((i) => ({ value: i })))
 function onSearch(searchText: string) {
   options.value = !searchText
-    ? cssSuggestions.map(i => ({ value: i }))
+    ? cssSuggestions.map((i) => ({ value: i }))
     : cssSuggestions
-        .map(i => ({ value: i }))
-        .filter(i => i.value.includes(searchText))
+        .map((i) => ({ value: i }))
+        .filter((i) => i.value.includes(searchText))
         .sort(
           (a, b) => a.value.indexOf(searchText) - b.value.indexOf(searchText),
         )
@@ -543,8 +536,7 @@ function copyStyle() {
 }
 
 function changelanguage() {
-  if (locale.value === 'en')
-    locale.value = 'zh'
+  if (locale.value === 'en') locale.value = 'zh'
   else locale.value = 'en'
 }
 
@@ -554,8 +546,7 @@ onUnmounted(() => {
   document.removeEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
       const selection = document.getSelection()
-      if (!selection || !selection.toString())
-        return
+      if (!selection || !selection.toString()) return
       const text = selection.toString()
       window.parent.postMessage({ eventType: 'copy', text }, '*')
     }
@@ -626,7 +617,7 @@ function onSelect(value: any) {
       @select="onSelect"
     />
     <div flex items-center my3>
-      <input v-model="isChecked" type="checkbox" w4 h4 mr1> isRem
+      <input v-model="isChecked" type="checkbox" w4 h4 mr1 /> isRem
     </div>
     <div min-h-20 flex items-center justify-center>
       <div v-if="transform" flex="~ gap-4" items-center>
