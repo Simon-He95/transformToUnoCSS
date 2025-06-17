@@ -1918,6 +1918,23 @@ export default defineComponent({
 ",
   "
 
+-----    sass-builtin-test.vue     -------
+
+<template>
+  <div class="sass-builtin-test">
+    Built-in Sass module test
+  </div>
+</template>
+
+<style>
+.sass-builtin-test {
+  width: 50px;
+  color: #ff3333;
+}
+</style>
+",
+  "
+
 -----    sass.vue     -------
 
 <script setup lang="ts">
@@ -2129,6 +2146,33 @@ onMounted(async () => {
 })
 </script>
 <style scoped></style>
+",
+  "
+
+-----    use-syntax-test.vue     -------
+
+<template>
+  <div class="test-use-syntax">
+    <div class="basic-use">Basic @use test</div>
+    <div class="use-as-namespace">@use with namespace test</div>
+    <div class="use-with-config">@use with configuration test</div>
+  </div>
+</template>
+
+<style>
+.test-use-syntax .basic-use {
+  color: blue;
+  font-size: 20px;
+}
+.test-use-syntax .use-as-namespace {
+  color: #ff0000;
+  font-size: 16px;
+}
+.test-use-syntax .use-with-config {
+  color: blue;
+  font-size: 18px;
+}
+</style>
 ",
   "
 

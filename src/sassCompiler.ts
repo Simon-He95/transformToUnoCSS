@@ -9,29 +9,95 @@ export async function sassCompiler(
 ) {
   if (typeof window !== 'undefined')
     throw new Error('sassCompiler is not supported in this browser')
-  let result = globalCss
-    ? `${globalCss.replace(/@(?:include|import)\s+["']([^"']*)['"]/g, (_, v) =>
-      _.replace(v, Url.pathToFileURL(path.resolve(process.cwd(), v)) as any))}${css}`
-    : css
+
+  const baseDir = filepath ? path.dirname(filepath) : process.cwd()
+
+  // 辅助函数：处理路径转换
+  const processPathInContent = (content: string) => {
+    let processed = content
+
+    // 处理基本的 @use, @forward, @include, @import 指令
+    processed = processed.replace(
+      /@(?:use|forward|include|import)\s+["']([^"']*)['"]/g,
+      (match, filePath) => {
+        // 跳过内置 Sass 模块 (sass:*, pkg:* 等)
+        if (filePath.includes(':')) {
+          return match
+        }
+        const resolvedPath = path.resolve(baseDir, filePath)
+        return match.replace(filePath, Url.pathToFileURL(resolvedPath) as any)
+      },
+    )
+
+    // 处理 @use 的扩展语法：@use "path" as namespace 或 @use "path" with (...)
+    processed = processed.replace(
+      /@use\s+["']([^"']*)['"]\s+(?:as\s+\w+\*?|with\s*\([^)]*\))/g,
+      (match, filePath) => {
+        // 跳过内置 Sass 模块
+        if (filePath.includes(':')) {
+          return match
+        }
+        const resolvedPath = path.resolve(baseDir, filePath)
+        return match.replace(filePath, Url.pathToFileURL(resolvedPath) as any)
+      },
+    )
+
+    // 处理 @forward 的扩展语法：@forward "path" show/hide/as
+    processed = processed.replace(
+      /@forward\s+["']([^"']*)['"]\s*(?:show\s+[^;]+|hide\s+[^;]+|as\s+[^;]+)/g,
+      (match, filePath) => {
+        // 跳过内置 Sass 模块
+        if (filePath.includes(':')) {
+          return match
+        }
+        const resolvedPath = path.resolve(baseDir, filePath)
+        return match.replace(filePath, Url.pathToFileURL(resolvedPath) as any)
+      },
+    )
+
+    return processed
+  }
+
+  // 处理 globalCss 和当前 CSS
+  let result = ''
+  if (globalCss) {
+    result += processPathInContent(globalCss)
+  }
+  result += processPathInContent(css)
   try {
-    result = (await import('sass')).default.compileString(
+    const sass = await import('sass')
+    result = sass.compileString(
       result,
       filepath
         ? {
             importers: [
               {
                 findFileUrl(url) {
-                  if (!url.startsWith('~'))
-                    return new URL(url, Url.pathToFileURL(filepath) as URL)
-                  return new URL(
-                    url.slice(1),
-                    Url.pathToFileURL(filepath) as URL,
-                  )
+                  // 处理波浪号路径 (~)
+                  if (url.startsWith('~')) {
+                    return new URL(
+                      url.slice(1),
+                      Url.pathToFileURL(baseDir) as URL,
+                    )
+                  }
+                  // 处理相对路径
+                  if (!url.startsWith('/') && !url.includes('://')) {
+                    return new URL(url, Url.pathToFileURL(baseDir) as URL)
+                  }
+                  // 处理绝对路径
+                  return new URL(url, Url.pathToFileURL(baseDir) as URL)
                 },
               },
             ],
+            // 启用现代 Sass API
+            syntax: 'scss',
+            // 支持 @use 和 @forward
+            loadPaths: [baseDir, process.cwd()],
           }
-        : {},
+        : {
+            syntax: 'scss',
+            loadPaths: [process.cwd()],
+          },
     ).css
     return result
   }

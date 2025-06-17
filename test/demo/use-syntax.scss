@@ -1,0 +1,8 @@
+// Test file for @use syntax
+$test-color: blue;
+$test-size: 20px;
+
+@mixin test-mixin() {
+  color: $test-color;
+  font-size: $test-size;
+}
