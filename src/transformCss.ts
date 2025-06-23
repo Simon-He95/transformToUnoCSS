@@ -1,8 +1,6 @@
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 import { escapeRegExp } from '@unocss/core'
-// @ts-expect-error vue
-import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
 import {
   isNot,
   joinWithUnderLine,
@@ -18,6 +16,7 @@ import {
   diffTemplateStyle,
   getCssType,
   getStyleScoped,
+  getVueCompilerSfc,
   isEmptyStyle,
   TRANSFER_FLAG,
   transformUnocssBack,
@@ -57,6 +56,7 @@ export async function transformCss(
 ): Promise<string> {
   isRem = _isRem
   const allChanges: AllChange[] = []
+  const { parse } = await getVueCompilerSfc()
   let newCode = (await importCss(code, style, filepath, isJsx, debug)) as string
 
   if (debug) {

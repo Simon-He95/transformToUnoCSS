@@ -1,9 +1,9 @@
-// @ts-expect-error vue
-import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
+import { getVueCompilerSfc } from './utils'
 
 const emptyStyle = /<style[\s\w'=]*>(\s+)/
 
 export async function prettierCode(code: string) {
+  const { parse } = await getVueCompilerSfc()
   const {
     descriptor: { styles },
   } = parse(code)
