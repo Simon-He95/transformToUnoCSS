@@ -29,6 +29,7 @@
 ```ts
 // vite.config.ts
 import { viteTransformToUnocss } from 'transform-to-unocss'
+
 export default defineConfig({
   plugins: [viteTransformToUnocss(/* options */)],
 })
@@ -43,6 +44,7 @@ export default defineConfig({
 // rollup.config.js
 import { resolve } from 'node:path'
 import { rollupTransformToUnocss } from 'transform-to-unocss'
+
 export default {
   plugins: [rollupTransformToUnocss(/* options */)],
 }

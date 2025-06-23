@@ -11,10 +11,29 @@ interface Options {
   type?: SuffixType
   isJsx?: boolean
   globalCss?: any
+  debug?: boolean
 }
 
 export async function transfromCode(code: string, options: Options) {
-  const { filepath, isRem, type, isJsx = true, globalCss } = options || {}
+  const {
+    filepath,
+    isRem,
+    type,
+    isJsx = true,
+    globalCss,
+    debug,
+  } = options || {}
+
+  if (debug) {
+    console.log('[DEBUG] transfromCode started:', {
+      filepath,
+      type,
+      isJsx,
+      isRem,
+      codeLength: code.length,
+    })
+  }
+
   // 删除代码中的注释部分
   // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
   if (type === 'tsx')
@@ -26,5 +45,5 @@ export async function transfromCode(code: string, options: Options) {
   if (type === 'astro')
     return transformAstro(code, isRem, globalCss)
 
-  return transformVue(code, { isJsx, filepath, isRem, globalCss })
+  return transformVue(code, { isJsx, filepath, isRem, globalCss, debug })
 }

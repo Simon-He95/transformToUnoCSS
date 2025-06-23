@@ -8,6 +8,7 @@ export function transformInlineStyle(
   code: string,
   isJsx?: boolean,
   isRem?: boolean,
+  debug = false,
 ): string {
   // code中提取template
   const match = code.match(templateReg)
@@ -26,8 +27,24 @@ export function transformInlineStyle(
   templateMatch.replace(styleReg, (target, tag, inlineStyle) => {
     const [after, noMap] = isJsx
       ? toUnocssClass(inlineStyle, isRem)
-      : transformStyleToUnocss(inlineStyle, isRem)
+      : transformStyleToUnocss(inlineStyle, isRem, debug)
     // transform inline-style
+
+    if (debug) {
+      console.log(
+        '[DEBUG] transformInlineStyle processing:',
+        JSON.stringify(
+          {
+            tag,
+            inlineStyle,
+            after,
+            noMapLength: noMap?.length || 0,
+          },
+          null,
+          2,
+        ),
+      )
+    }
 
     if (isJsx) {
       // (["]{1})(.*?)\1

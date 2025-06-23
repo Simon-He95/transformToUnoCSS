@@ -23,9 +23,21 @@ export async function cli() {
     })}`,
   )
   const asset = process.argv[2]
+  const isRevert = process.argv[3] === '-r' || process.argv[3] === '--revert'
+  const isForce = process.argv.includes('--force')
+  const isDebug
+    = process.argv.includes('--debug') || process.argv.includes('-d')
 
   if (!asset) {
     p.cancel('❌  Please specify a directory or file path to convert.')
+    p.note(
+      `Usage: tounocss <directory/file> [options]
+Options:
+  -r, --revert    Revert the conversion
+  --force         Force overwrite existing files
+  -d, --debug     Enable debug mode with detailed logging`,
+      'Available options:',
+    )
     return
   }
   const fileDir = path.resolve(process.cwd(), asset)
@@ -38,6 +50,7 @@ export async function cli() {
     const codeTransfer = await transfromCode(code, {
       filepath: fileDir,
       type: suffix,
+      debug: isDebug,
     })
     // 创建新文件
     try {
@@ -57,8 +70,7 @@ export async function cli() {
     p.cancel(`Directory not found: ${fileDir}`)
     return
   }
-  const isRevert = process.argv[3] === '-r' || process.argv[3] === '--revert'
-  const isForce = process.argv.includes('--force')
+
   const entries = await fg(
     ['**.vue', '**.tsx', '**.html', '**.svelte', '**.astro'],
     { cwd: fileDir },
@@ -119,6 +131,7 @@ export async function cli() {
         const codeTransfer = await transfromCode(code, {
           filepath,
           type: suffix,
+          debug: isDebug,
         })
         try {
           await fs.promises.writeFile(newfilepath, codeTransfer)

@@ -191,3 +191,113 @@ describe('single demo complex6.vue', async () => {
     ).toMatchFileSnapshot('./__snapshots__/complex6.test.ts.snap')
   })
 })
+
+describe('debug mode', () => {
+  it('should output debug logs when debug mode is enabled', async () => {
+    const testVueCode = `<template>
+  <div class="container">
+    <h1 class="title">Debug Test</h1>
+  </div>
+</template>
+
+<style scoped>
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+</style>`
+
+    // 捕获控制台输出
+    const originalConsoleLog = console.log
+    const logs: string[] = []
+    console.log = (...args) => {
+      // 将参数转换为字符串
+      const logString = args.map(arg => {
+        if (typeof arg === 'string') {
+          return arg
+        }
+        return String(arg)
+      }).join(' ')
+      logs.push(logString)
+      originalConsoleLog(...args)
+    }
+
+    try {
+      // 测试 debug 模式
+      await transfromCode(testVueCode, {
+        type: 'vue',
+        debug: true
+      })
+
+      // 验证是否有 debug 日志输出
+      const debugLogs = logs.filter(log => log.includes('[DEBUG]'))
+      expect(debugLogs.length).toBeGreaterThan(0)
+      
+      // 验证特定的 debug 消息
+      expect(debugLogs.some(log => log.includes('transformVue started'))).toBe(true)
+      expect(debugLogs.some(log => log.includes('transformCss started'))).toBe(true)
+      
+    } finally {
+      // 恢复原始的 console.log
+      console.log = originalConsoleLog
+    }
+  })
+
+  it('should output debug logs for inline styles when debug mode is enabled', async () => {
+    const testVueCodeWithInlineStyles = `<template>
+  <div style="width: 100px; height: 50px; background-color: red;">
+    <span style="font-size: 14px; color: blue;">Test</span>
+  </div>
+</template>
+
+<style scoped>
+.test {
+  margin: 10px;
+}
+</style>`
+
+    // 捕获控制台输出
+    const originalConsoleLog = console.log
+    const logs: string[] = []
+    console.log = (...args) => {
+      // 将参数转换为字符串
+      const logString = args.map(arg => {
+        if (typeof arg === 'string') {
+          return arg
+        }
+        return String(arg)
+      }).join(' ')
+      logs.push(logString)
+      originalConsoleLog(...args)
+    }
+
+    try {
+      // 测试 debug 模式
+      await transfromCode(testVueCodeWithInlineStyles, {
+        type: 'vue',
+        debug: true
+      })
+
+      // 验证是否有内联样式相关的 debug 日志输出
+      const inlineStyleDebugLogs = logs.filter(log => log.includes('[DEBUG] transformInlineStyle processing'))
+      expect(inlineStyleDebugLogs.length).toBeGreaterThan(0)
+      
+      // 验证特定的内联样式处理日志
+      expect(inlineStyleDebugLogs.some(log => log.includes('width: 100px; height: 50px; background-color: red;'))).toBe(true)
+      expect(inlineStyleDebugLogs.some(log => log.includes('font-size: 14px; color: blue;'))).toBe(true)
+      
+    } finally {
+      // 恢复原始的 console.log
+      console.log = originalConsoleLog
+    }
+  })
+})

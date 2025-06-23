@@ -52,7 +52,6 @@
     "preview": "pnpm run -C playground preview",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
-    "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
@@ -71,7 +70,7 @@
     "picocolors": "^1.1.1",
     "sass": "^1.89.2",
     "stylus": "^0.63.0",
-    "transform-to-unocss-core": "^0.0.66",
+    "transform-to-unocss-core": "^0.0.68",
     "unplugin": "^2.3.5"
   },
   "devDependencies": {
@@ -83,7 +82,6 @@
     "@types/stylus": "^0.48.43",
     "bumpp": "^8.2.1",
     "eslint": "^8.57.1",
-    "esno": "^0.16.3",
     "find-up": "^6.3.0",
     "lint-staged": "^13.3.0",
     "magic-string": "^0.30.17",

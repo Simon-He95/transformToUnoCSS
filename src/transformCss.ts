@@ -1,6 +1,7 @@
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 import { escapeRegExp } from '@unocss/core'
+// @ts-expect-error vue
 import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
 import {
   isNot,
@@ -52,10 +53,28 @@ export async function transformCss(
   isJsx = true,
   filepath?: string,
   _isRem?: boolean,
+  debug = false,
 ): Promise<string> {
   isRem = _isRem
   const allChanges: AllChange[] = []
-  let newCode = (await importCss(code, style, filepath, isJsx)) as string
+  let newCode = (await importCss(code, style, filepath, isJsx, debug)) as string
+
+  if (debug) {
+    console.log(
+      '[DEBUG] transformCss started:',
+      JSON.stringify(
+        {
+          filepath,
+          media,
+          isJsx,
+          styleLength: style.length,
+          codeLength: code.length,
+        },
+        null,
+        2,
+      ),
+    )
+  }
   const stack = parse(newCode).descriptor.template?.ast
   const updateOffsetMap: any = {}
   const deferRun: any[] = []
@@ -66,7 +85,39 @@ export async function transformCss(
 
       const originClassName = name
       const before = trim(value.replace(/\n\s*/g, ''))
+
+      if (debug) {
+        console.log(
+          '[DEBUG] Processing CSS rule:',
+          JSON.stringify(
+            {
+              originClassName,
+              before,
+              all,
+            },
+            null,
+            2,
+          ),
+        )
+      }
+
       const [transfer, noTransfer] = transformStyleToUnocss(before, isRem)
+
+      if (debug) {
+        console.log(
+          '[DEBUG] CSS transform result:',
+          JSON.stringify(
+            {
+              originClassName,
+              before,
+              transfer,
+              noTransfer: noTransfer?.length || 0,
+            },
+            null,
+            2,
+          ),
+        )
+      }
       const tailMatcher = name.match(tailReg)
 
       const prefix = tailMatcher
@@ -88,8 +139,15 @@ export async function transformCss(
           )}"`
           : (transfer ?? before)
       // 未被转换跳过
-      if (before === after)
+      if (before === after) {
+        if (debug) {
+          console.log(
+            '[DEBUG] CSS rule skipped - no transformation:',
+            JSON.stringify({ originClassName, before }, null, 2),
+          )
+        }
         return
+      }
 
       if (prefix)
         name = name.replace(tailMatcher[0], '')
@@ -97,8 +155,33 @@ export async function transformCss(
       // 找template > ast
       const result = nodeHtmlParser(newCode, originClassName, stack?.children)
 
-      if (!result.length)
+      if (!result.length) {
+        if (debug) {
+          console.log(
+            '[DEBUG] No HTML elements found for CSS rule:',
+            JSON.stringify({ originClassName, name }, null, 2),
+          )
+        }
         return
+      }
+
+      if (debug) {
+        console.log(
+          '[DEBUG] Found HTML elements for CSS rule:',
+          JSON.stringify(
+            {
+              originClassName,
+              elementsCount: result.length,
+              elements: result.map(r => ({
+                tag: r.tag,
+                start: r.loc.start.offset,
+              })),
+            },
+            null,
+            2,
+          ),
+        )
+      }
 
       // 拿出class
       const _class = newCode.match(/<style[^>]+>(.*)<\/style>/s)![1]
@@ -218,7 +301,27 @@ export async function transformCss(
     },
   )
   deferRun.forEach(run => run())
-  return await resolveConflictClass(allChanges, newCode, isJsx, updateOffsetMap)
+
+  if (debug) {
+    console.log(
+      '[DEBUG] transformCss finished, resolving conflicts:',
+      JSON.stringify(
+        {
+          allChangesCount: allChanges.length,
+        },
+        null,
+        2,
+      ),
+    )
+  }
+
+  return await resolveConflictClass(
+    allChanges,
+    newCode,
+    isJsx,
+    updateOffsetMap,
+    debug,
+  )
 }
 
 async function importCss(
@@ -226,13 +329,37 @@ async function importCss(
   style: string,
   filepath?: string,
   isJsx?: boolean,
+  debug = false,
 ) {
+  if (debug) {
+    console.log(
+      '[DEBUG] importCss started:',
+      JSON.stringify(
+        {
+          filepath,
+          styleLength: style.length,
+          hasImports: /@import/.test(style),
+        },
+        null,
+        2,
+      ),
+    )
+  }
+
   const originCode = code
   for await (const match of style.matchAll(
     /@import (url\()?["']*([\w./\-]*)["']*\)?;/g,
   )) {
     if (!match)
       continue
+
+    if (debug) {
+      console.log(
+        '[DEBUG] Processing CSS import:',
+        JSON.stringify({ importUrl: match[2] }, null, 2),
+      )
+    }
+
     const url = path.resolve(filepath!, '..', match[2])
 
     const content = await fsp.readFile(
@@ -283,9 +410,42 @@ async function resolveConflictClass(
   code: string,
   isJsx: boolean = true,
   updateOffset: Record<number, number>,
+  debug = false,
 ) {
+  if (debug) {
+    console.log(
+      '[DEBUG] resolveConflictClass started:',
+      JSON.stringify(
+        {
+          allChangesCount: allChange.length,
+          isJsx,
+        },
+        null,
+        2,
+      ),
+    )
+  }
+
   const changes = findSameSource(allChange)
   let result = code
+
+  if (debug) {
+    console.log(
+      '[DEBUG] Found conflict groups:',
+      JSON.stringify(
+        {
+          groupsCount: Object.keys(changes).length,
+          groups: Object.keys(changes).map(key => ({
+            key,
+            changesCount: changes[key].length,
+          })),
+        },
+        null,
+        2,
+      ),
+    )
+  }
+
   for await (const key of Object.keys(changes)) {
     const value = changes[key]
     const {
@@ -297,9 +457,28 @@ async function resolveConflictClass(
       end: { offset: offsetEnd },
     } = value[0]
 
-    let [after, transform] = await getConflictClass(value)
-    if (!after)
+    let [after, transform] = await getConflictClass(value, debug)
+    if (!after) {
+      if (debug) {
+        console.log('[DEBUG] No conflict resolution needed for group:', key)
+      }
       continue
+    }
+
+    if (debug) {
+      console.log(
+        '[DEBUG] Conflict resolved for group:',
+        JSON.stringify(
+          {
+            key,
+            after,
+            originalSource: source,
+          },
+          null,
+          2,
+        ),
+      )
+    }
 
     const newResult = transform(result)
     result = newResult
@@ -438,7 +617,26 @@ function findSameSource(allChange: AllChange[]) {
 const skipTransformFlag = Symbol('skipTransformFlag')
 async function getConflictClass(
   allChange: AllChange[],
+  debug = false,
 ): Promise<[string, (code: string) => string]> {
+  if (debug) {
+    console.log(
+      '[DEBUG] getConflictClass started:',
+      JSON.stringify(
+        {
+          changesCount: allChange.length,
+          changes: allChange.map(c => ({
+            name: c.name,
+            before: c.before,
+            after: c.after,
+          })),
+        },
+        null,
+        2,
+      ),
+    )
+  }
+
   let map: Record<string, Array<number | string | symbol>> = {}
   let transform = (code: string) => code
   for await (const item of allChange) {
@@ -532,6 +730,23 @@ async function getConflictClass(
               `${styleKey}:${map[key][1] as string}`,
               isRem,
             )[0]
+
+        if (debug) {
+          console.log(
+            '[DEBUG] Processing map key:',
+            JSON.stringify(
+              {
+                key,
+                styleKey,
+                prefix,
+                transferCss,
+                mapValue: map[key],
+              },
+              null,
+              2,
+            ),
+          )
+        }
 
         const match = transferCss.match(/(\S*)="\[([^\]]*)\]"/)
         if (match) {
