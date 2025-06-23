@@ -8,14 +8,25 @@ import { wrapperVueTemplate } from './wrapperVueTemplate'
 const linkCssReg = /<link.*href="(.+css)".*>/g
 const styleReg = /\s*<style[^>]*>(.*)<\/style>\s*/s
 
-export async function transformHtml(
-  code: string,
-  filepath?: string,
-  isRem?: boolean,
-) {
+interface Options {
+  filepath?: string
+  isRem?: boolean
+  globalCss?: any
+  debug?: boolean
+}
+
+export async function transformHtml(code: string, options?: Options) {
+  const { filepath, isRem, globalCss, debug = false } = options || {}
   const css = await getLinkCss(code, filepath!)
   const style = getStyleCss(code)
-  const newCode = await generateNewCode(css, style, code, isRem)
+  const newCode = await generateNewCode(
+    css,
+    style,
+    code,
+    isRem,
+    globalCss,
+    debug,
+  )
   return prettierCode(newCode)
 }
 
@@ -58,13 +69,20 @@ async function generateNewCode(
   style: string,
   code: string,
   isRem?: boolean,
+  globalCss?: any,
+  debug = false,
 ) {
   // 先处理style
   let template = getBody(code)
   const originBody = template
   if (style) {
     const vue = wrapperVueTemplate(template, style)
-    const transferCode = await transformVue(vue, { isJsx: true, isRem })
+    const transferCode = await transformVue(vue, {
+      isJsx: true,
+      isRem,
+      globalCss,
+      debug,
+    })
     template = transferCode
 
     // 如果没有style scoped 删除style
@@ -76,7 +94,12 @@ async function generateNewCode(
       const { url, content } = c
       const vue = wrapperVueTemplate(template, content)
 
-      const transferCode = await transformVue(vue, { isJsx: true, isRem })
+      const transferCode = await transformVue(vue, {
+        isJsx: true,
+        isRem,
+        globalCss,
+        debug,
+      })
 
       if (diffTemplateStyle(template, transferCode)) {
         // 新增的css全部被转换了,这个link可以被移除了

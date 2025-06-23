@@ -5,7 +5,7 @@ import { transformSvelte } from '../src/transformSvelte'
 describe('accent', () => {
   it('accent-color: inherit;', async () => {
     const html = await fsp.readFile('./test/demo/svelte.svelte', 'utf-8')
-    expect(await transformSvelte(html)).toMatchInlineSnapshot(`
+    expect(await transformSvelte(html, {})).toMatchInlineSnapshot(`
       "<script lang="ts">
       	let name = ''
       	let input: HTMLInputElement;

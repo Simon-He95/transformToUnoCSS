@@ -14,7 +14,7 @@ interface Options {
   debug?: boolean
 }
 
-export async function transfromCode(code: string, options: Options) {
+export async function transformCode(code: string, options: Options) {
   const {
     filepath,
     isRem,
@@ -25,25 +25,28 @@ export async function transfromCode(code: string, options: Options) {
   } = options || {}
 
   if (debug) {
-    console.log('[DEBUG] transfromCode started:', {
-      filepath,
-      type,
-      isJsx,
-      isRem,
-      codeLength: code.length,
-    })
+    console.log(
+      '[DEBUG] transformCode started:',
+      JSON.stringify({
+        filepath,
+        type,
+        isJsx,
+        isRem,
+        codeLength: code.length,
+      }),
+    )
   }
 
   // 删除代码中的注释部分
   // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
   if (type === 'tsx')
-    return transformJsx(code, filepath, isRem, globalCss)
+    return transformJsx(code, { filepath, isRem, globalCss, debug })
   if (type === 'html')
-    return transformHtml(code, filepath, isRem)
+    return transformHtml(code, { filepath, globalCss, debug })
   if (type === 'svelte')
-    return transformSvelte(code, isRem, globalCss)
+    return transformSvelte(code, { filepath, isRem, globalCss, debug })
   if (type === 'astro')
-    return transformAstro(code, isRem, globalCss)
+    return transformAstro(code, { filepath, isRem, globalCss, debug })
 
   return transformVue(code, { isJsx, filepath, isRem, globalCss, debug })
 }

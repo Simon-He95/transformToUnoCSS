@@ -55,6 +55,9 @@ export async function transformVue(code: string, options?: Options) {
     code,
     isJsx,
     isRem,
+    filepath,
+    debug,
+    globalCss,
   )
 
   code = transferMediaCode
@@ -100,8 +103,18 @@ export async function transformVue(code: string, options?: Options) {
       // 能被正确编译解析的css
       code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
       // 只针对scoped css处理
-      if (scoped)
-        code = await transformCss(css, code, '', isJsx, filepath, isRem, debug)
+      if (scoped) {
+        code = await transformCss(
+          css,
+          code,
+          '',
+          isJsx,
+          filepath,
+          isRem,
+          debug,
+          globalCss,
+        )
+      }
     }
   }
 

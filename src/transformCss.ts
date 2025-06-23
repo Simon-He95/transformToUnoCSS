@@ -53,11 +53,19 @@ export async function transformCss(
   filepath?: string,
   _isRem?: boolean,
   debug = false,
+  globalCss?: any,
 ): Promise<string> {
   isRem = _isRem
   const allChanges: AllChange[] = []
   const { parse } = await getVueCompilerSfc()
-  let newCode = (await importCss(code, style, filepath, isJsx, debug)) as string
+  let newCode = (await importCss(
+    code,
+    style,
+    filepath,
+    isJsx,
+    debug,
+    globalCss,
+  )) as string
 
   if (debug) {
     console.log(
@@ -330,6 +338,7 @@ async function importCss(
   filepath?: string,
   isJsx?: boolean,
   debug = false,
+  globalCss?: any,
 ) {
   if (debug) {
     console.log(
@@ -367,14 +376,20 @@ async function importCss(
       'utf-8',
     )
     const type = getCssType(url)
-    const css = await compilerCss(content, type)
+    const css = await compilerCss(content, type, url, globalCss)
 
     const [_, beforeStyle] = code.match(/<style.*>(.*)<\/style>/s)!
     code = code.replace(beforeStyle, '')
 
     const vue = wrapperVueTemplate(code, css)
 
-    const transfer = await transformVue(vue, { isJsx, isRem })
+    const transfer = await transformVue(vue, {
+      isJsx,
+      isRem,
+      filepath,
+      globalCss,
+      debug,
+    })
 
     if (diffTemplateStyle(transfer, vue)) {
       code = originCode

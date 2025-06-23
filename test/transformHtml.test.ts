@@ -8,7 +8,7 @@ describe('accent', () => {
     const html = await fsp.readFile('./test/demo/index.html', 'utf-8')
     const filepath = path.resolve(process.cwd(), './test/demo/index.html')
 
-    expect(await transformHtml(html, filepath)).toMatchInlineSnapshot(
+    expect(await transformHtml(html, { filepath })).toMatchInlineSnapshot(
    `
       "<!DOCTYPE html>
       <html lang="en">

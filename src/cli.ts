@@ -6,7 +6,7 @@ import { setTimeout } from 'node:timers/promises'
 import * as p from '@simon_he/clack-prompts'
 import colorize from '@simon_he/colorize'
 import fg from 'fast-glob'
-import { transfromCode } from './transformCode'
+import { transformCode } from './transformCode'
 import { TRANSFER_FLAG } from './utils'
 
 export async function cli() {
@@ -47,7 +47,7 @@ Options:
     s.start('Converting...')
     const suffix = fileDir.slice(fileDir.lastIndexOf('.') + 1) as SuffixType
     const code = await fs.promises.readFile(fileDir, 'utf-8')
-    const codeTransfer = await transfromCode(code, {
+    const codeTransfer = await transformCode(code, {
       filepath: fileDir,
       type: suffix,
       debug: isDebug,
@@ -128,7 +128,7 @@ Options:
           return
         }
         const code = await fs.promises.readFile(filepath, 'utf-8')
-        const codeTransfer = await transfromCode(code, {
+        const codeTransfer = await transformCode(code, {
           filepath,
           type: suffix,
           debug: isDebug,

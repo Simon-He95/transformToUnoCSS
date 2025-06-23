@@ -1,7 +1,7 @@
 import type { Options } from './type'
 import { createFilter } from '@rollup/pluginutils'
 import { createUnplugin } from 'unplugin'
-import { transfromCode } from './transformCode'
+import { transformCode } from './transformCode'
 
 const unplugin = createUnplugin((options?: Options): any => {
   const filter = createFilter(options?.include, options?.exclude)
@@ -30,7 +30,7 @@ const unplugin = createUnplugin((options?: Options): any => {
 
         if (!suffix)
           return code
-        return await transfromCode(code, {
+        return await transformCode(code, {
           filepath: id,
           type: suffix,
           globalCss,

@@ -4,12 +4,15 @@ import { parse as babelParse, traverse as babelTraverse } from '@babel/core'
 import vueJsxPlugin from '@vue/babel-plugin-jsx'
 import { transformVue } from './transformVue'
 
-export async function transformJsx(
-  code: string,
-  filepath?: string,
-  isRem?: boolean,
-  globalCss?: any,
-) {
+interface Options {
+  filepath?: string
+  isRem?: boolean
+  globalCss?: any
+  debug?: boolean
+}
+
+export async function transformJsx(code: string, options?: Options) {
+  const { filepath, isRem, globalCss, debug = false } = options || {}
   try {
     const ast = babelParse(code, {
       babelrc: false,
@@ -49,6 +52,8 @@ export async function transformJsx(
       isJsx,
       isRem,
       globalCss,
+      filepath,
+      debug,
     })
     // vueTransfer = vueTransfer.replace(/class/g, 'className')
     if (cssPath) {
