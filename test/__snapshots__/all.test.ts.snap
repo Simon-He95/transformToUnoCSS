@@ -1,0 +1,2490 @@
+[
+  "
+
+-----    classAdd.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-red w-[100%] lh-20px">
+    nihao
+  </div>
+  <div class="yellow bg-yellow! w-[100%] h-[100%]">
+    hi
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    classAttribute.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-red w-[100%] h-[100%]" name="hi" haha>
+    nihao
+  </div>
+  <div class="yellow h-[100%]">
+    hi
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    classChild.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-red w-[100%] lh-20px">
+    <div class="yellow bg-red w-[100%]">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    classCombine.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="bg-red w-[100%] lh-20px">
+    <div class="red yellow bg-red w-[100%]">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    classSpace.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-red w-[100%] lh-20px">
+    <div class="yellow bg-red! w-[100%]">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    classTail.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="container [&:focus-within]-bg-red [&:focus-within]-w-[100%]">
+    <div class="red bg-red w-[100%] lh-20px">
+      nihao
+    </div>
+    <div class="yellow">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    classWeight.vue     -------
+
+<script setup lang="ts">
+const nihao = ref(true)
+</script>
+<template>
+  <div class="red h-[100%] scale-150 bg-yellow w-[100%]" :class="[nihao?'w-10':'bg-red']">
+    nihao
+  </div>
+  <div>hi</div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    complex1.vue     -------
+
+<script>
+import inspectorOptions from 'virtual:vue-inspector-options'
+
+const base = inspectorOptions.base
+
+const KEY_DATA = 'data-v-inspector'
+const KEY_IGNORE = 'data-v-inspector-ignore'
+const KEY_PROPS_DATA = '__v_inspector'
+
+function getData(el) {
+  return (
+    el?.__vnode?.props?.[KEY_PROPS_DATA] ??
+    getComponentData(el) ??
+    el?.getAttribute?.(KEY_DATA)
+  )
+}
+
+function getComponentData(el) {
+  const ctxVNode = el?.__vnode?.ctx?.vnode
+  if (ctxVNode?.el === el) return ctxVNode?.props?.[KEY_PROPS_DATA]
+}
+
+export default {
+  name: 'VueInspectorOverlay',
+  data() {
+    return {
+      containerRef: null,
+      floatsRef: null,
+      enabled: inspectorOptions.enabled,
+      toggleCombo:
+        inspectorOptions.toggleComboKey?.toLowerCase?.()?.split?.('-') ?? false,
+      disableInspectorOnEditorOpen:
+        inspectorOptions.disableInspectorOnEditorOpen,
+      overlayVisible: false,
+      position: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      },
+      linkParams: {
+        file: '',
+        line: 0,
+        column: 0,
+      },
+      KEY_IGNORE,
+      animation: !inspectorOptions.reduceMotion,
+    }
+  },
+  computed: {
+    logoColors() {
+      return this.enabled
+        ? ['#42D392', '#213547', '#42b883']
+        : ['#E2C6C6', '#E2C6C6', '#E2C6C6']
+    },
+    containerVisible() {
+      const { toggleButtonVisibility } = inspectorOptions
+      return (
+        toggleButtonVisibility === 'always' ||
+        (toggleButtonVisibility === 'active' && this.enabled)
+      )
+    },
+    containerPosition() {
+      return inspectorOptions.toggleButtonPos
+        .split('-')
+        .map((p) => `${p}: 15px;`)
+        .join('')
+    },
+    bannerPosition() {
+      const [x, y] = inspectorOptions.toggleButtonPos.split('-')
+      return {
+        [x === 'top' ? 'bottom' : 'top']: '-45px',
+        [y]: 0,
+      }
+    },
+    floatsStyle() {
+      let margin = 10
+      let x = this.position.x + this.position.width / 2
+      let y = this.position.y + this.position.height + 5
+      const floatsRef = this.$refs.floatsRef
+      let floatsWidth = floatsRef?.clientWidth ?? 0
+      let floatsHeight = floatsRef?.clientHeight ?? 0
+
+      x = Math.max(margin, x)
+      x = Math.min(x, window.innerWidth - floatsWidth - margin)
+      if (x < floatsWidth / 2) {
+        x = floatsWidth / 2 + margin
+      }
+
+      y = Math.max(margin, y)
+      y = Math.min(y, window.innerHeight - floatsHeight - margin)
+
+      return {
+        left: `${x}px`,
+        top: `${y}px`,
+      }
+    },
+    sizeIndicatorStyle() {
+      return {
+        left: `${this.position.x}px`,
+        top: `${this.position.y}px`,
+        width: `${this.position.width}px`,
+        height: `${this.position.height}px`,
+      }
+    },
+  },
+  watch: {
+    enabled: {
+      handler(val, oldVal) {
+        if (val === oldVal) return
+        if (val) this.onEnabled()
+        else this.onDisabled()
+      },
+    },
+  },
+  mounted() {
+    this.toggleCombo &&
+      document.body.addEventListener('keydown', this.onKeydown)
+    this.toggleEventListener()
+
+    // Expose control to global
+    window.__VUE_INSPECTOR__ = this
+  },
+  methods: {
+    toggleEventListener() {
+      const listener = this.enabled
+        ? document.body.addEventListener
+        : document.body.removeEventListener
+
+      listener?.call(document.body, 'mousemove', this.updateLinkParams)
+      listener?.call(document.body, 'resize', this.closeOverlay, true)
+      listener?.call(document.body, 'click', this.handleClick, true)
+    },
+    toggleEnabled() {
+      this.enabled = !this.enabled
+      this.overlayVisible = false
+      this.toggleEventListener()
+    },
+    onKeydown(event) {
+      if (event.repeat || event.key === undefined) return
+
+      const isCombo = this.toggleCombo?.every((key) =>
+        this.isKeyActive(key, event),
+      )
+      if (isCombo) this.toggleEnabled()
+    },
+    isKeyActive(key, event) {
+      switch (key) {
+        case 'shift':
+        case 'control':
+        case 'alt':
+        case 'meta':
+          return event.getModifierState(
+            key.charAt(0).toUpperCase() + key.slice(1),
+          )
+        default:
+          return key === event.key.toLowerCase()
+      }
+    },
+    isChildOf(ele, target) {
+      if (!ele || ele === document) return false
+      return ele === target ? true : this.isChildOf(ele.parentNode, target)
+    },
+    getTargetNode(e) {
+      const splitRE = /(.+):([\d]+):([\d]+)$/
+      const path = e.path ?? e.composedPath()
+      if (!path) {
+        return {
+          targetNode: null,
+          params: null,
+        }
+      }
+      const ignoreIndex = path.findIndex((node) =>
+        node?.hasAttribute?.(KEY_IGNORE),
+      )
+      const targetNode = path
+        .slice(ignoreIndex + 1)
+        .find((node) => getData(node))
+      if (!targetNode) {
+        return {
+          targetNode: null,
+          params: null,
+        }
+      }
+      const match = getData(targetNode)?.match(splitRE)
+      const [_, file, line, column] = match || []
+      return {
+        targetNode,
+        params: match
+          ? {
+              file,
+              line,
+              column,
+              title: file,
+            }
+          : null,
+      }
+    },
+    handleClick(e) {
+      const { targetNode, params } = this.getTargetNode(e)
+      if (!targetNode) return
+      e.preventDefault()
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+      const { file, line, column } = params
+      this.overlayVisible = false
+      const url = new URL(
+        `${base}__open-in-editor?file=${encodeURIComponent(`${file}:${line}:${column}`)}`,
+        import.meta.url,
+      )
+      this.openInEditor(url)
+    },
+    updateLinkParams(e) {
+      const { targetNode, params } = this.getTargetNode(e)
+      if (targetNode) {
+        const rect = targetNode.getBoundingClientRect()
+        this.overlayVisible = true
+        this.position.x = rect.x
+        this.position.y = rect.y
+        this.position.width = rect.width
+        this.position.height = rect.height
+        this.linkParams = params
+      } else {
+        this.closeOverlay()
+      }
+      this.onUpdated()
+    },
+    closeOverlay() {
+      this.overlayVisible = false
+      this.linkParams = {
+        file: '',
+        line: 0,
+        column: 0,
+      }
+    },
+
+    // Public methods
+    enable() {
+      if (this.enabled) return
+      this.toggleEnabled()
+    },
+    disable() {
+      if (!this.enabled) return
+      this.toggleEnabled()
+    },
+    openInEditor(baseUrl, file, line, column) {
+      /**
+       * Vite built-in support
+       * https://github.com/vitejs/vite/blob/d59e1acc2efc0307488364e9f2fad528ec57f204/packages/vite/src/node/server/index.ts#L569-L570
+       */
+
+      const _url =
+        baseUrl instanceof URL
+          ? baseUrl
+          : `${baseUrl}/__open-in-editor?file=${encodeURIComponent(`${file}:${line}:${column}`)}`
+      const promise = fetch(_url, {
+        mode: 'no-cors',
+      })
+
+      if (this.disableInspectorOnEditorOpen) promise.then(this.disable)
+
+      return promise
+    },
+    onUpdated() {
+      // to be replaced programmatically
+    },
+    onEnabled() {
+      // to be replaced programmatically
+    },
+    onDisabled() {
+      // to be replaced programmatically
+    },
+  },
+}
+</script>
+
+<template>
+  <div v-bind="{ [KEY_IGNORE]: 'true' }">
+    <div
+      v-if="containerVisible"
+      ref="containerRef"
+      class="vue-inspector-container cursor-pointer fixed text-center z-2147483647 font-[Arial,_Helvetica,_sans-serif] [&:hover_.vue-inspector-banner]-block"
+      :style="containerPosition"
+      :class="{ 'vue-inspector-container--disabled': !enabled }"
+    >
+      <!-- Logo -->
+      <svg
+        width="100"
+        height="19"
+        viewBox="0 0 62 12"
+        fill="none"
+        @click.prevent.stop="toggleEnabled"
+      >
+        <path
+          d="M0.988281 5.34375C0.988281 5.26562 1.00391 5.20312 1.03516 5.15625C1.07422 5.10156 1.14062 5.04688 1.23438 4.99219C1.64062 4.80469 2.00391 4.62891 2.32422 4.46484C2.65234 4.30078 2.97266 4.14453 3.28516 3.99609C3.59766 3.83984 3.92188 3.6875 4.25781 3.53906C4.60156 3.39062 5 3.23047 5.45312 3.05859C5.46094 3.05859 5.46875 3.05859 5.47656 3.05859C5.48438 3.05078 5.49609 3.04688 5.51172 3.04688C5.59766 3.04688 5.66797 3.08594 5.72266 3.16406C5.77734 3.24219 5.80469 3.32031 5.80469 3.39844C5.80469 3.48438 5.78516 3.55469 5.74609 3.60938C5.71484 3.66406 5.65234 3.71094 5.55859 3.75L2.55859 5.07422L2.71094 5.22656C2.71094 5.23438 2.75 5.25781 2.82812 5.29688C2.91406 5.32812 3.02344 5.375 3.15625 5.4375C3.28906 5.5 3.4375 5.57031 3.60156 5.64844C3.77344 5.71875 3.94141 5.79297 4.10547 5.87109C4.27734 5.94141 4.44141 6.01172 4.59766 6.08203C4.75391 6.14453 4.88672 6.20312 4.99609 6.25781C5.07422 6.29688 5.18359 6.32812 5.32422 6.35156C5.47266 6.36719 5.61328 6.39062 5.74609 6.42188C5.88672 6.45312 6.00781 6.5 6.10938 6.5625C6.21875 6.61719 6.27344 6.70703 6.27344 6.83203C6.27344 6.94141 6.23047 7.02734 6.14453 7.08984C6.06641 7.14453 5.97656 7.17188 5.875 7.17188C5.77344 7.17188 5.625 7.15234 5.42969 7.11328C5.24219 7.06641 5.02344 7.00781 4.77344 6.9375C4.53125 6.85938 4.26562 6.76953 3.97656 6.66797C3.69531 6.56641 3.41406 6.46484 3.13281 6.36328C2.85156 6.26172 2.58203 6.15625 2.32422 6.04688C2.06641 5.9375 1.83594 5.83984 1.63281 5.75391C1.4375 5.66016 1.28125 5.57812 1.16406 5.50781C1.04688 5.4375 0.988281 5.38281 0.988281 5.34375Z"
+          :fill="logoColors[0]"
+        />
+        <path
+          d="M7.60066 0.599999H7.70866C7.77266 0.599999 7.82866 0.624 7.87666 0.672C7.92466 0.72 7.94866 0.776 7.94866 0.84V8.76C7.94866 8.824 7.92466 8.88 7.87666 8.928C7.82866 8.976 7.77266 9 7.70866 9H7.60066C7.52866 9 7.46866 8.976 7.42066 8.928C7.38066 8.88 7.36066 8.824 7.36066 8.76V0.84C7.36066 0.776 7.38066 0.72 7.42066 0.672C7.46866 0.624 7.52866 0.599999 7.60066 0.599999ZM11.851 2.976C12.451 2.976 12.911 3.136 13.231 3.456C13.551 3.768 13.711 4.228 13.711 4.836V8.76C13.711 8.92 13.635 9 13.483 9H13.387C13.227 9 13.147 8.92 13.147 8.76V4.968C13.147 4.016 12.711 3.54 11.839 3.54C11.383 3.54 10.995 3.72 10.675 4.08C10.587 4.152 10.511 4.188 10.447 4.188C10.303 4.188 10.227 4.108 10.219 3.948C10.219 3.884 10.235 3.82 10.267 3.756C10.435 3.524 10.659 3.336 10.939 3.192C11.219 3.048 11.523 2.976 11.851 2.976ZM9.823 3.012H9.919C9.983 3.012 10.039 3.036 10.087 3.084C10.135 3.124 10.159 3.18 10.159 3.252V8.76C10.159 8.832 10.135 8.892 10.087 8.94C10.039 8.98 9.983 9 9.919 9H9.823C9.759 9 9.703 8.98 9.655 8.94C9.607 8.892 9.583 8.832 9.583 8.76V3.252C9.583 3.18 9.607 3.124 9.655 3.084C9.703 3.036 9.759 3.012 9.823 3.012ZM15.5172 4.572C15.5172 4.116 15.6692 3.736 15.9732 3.432C16.2852 3.128 16.7452 2.976 17.3532 2.976C17.9692 2.976 18.4412 3.128 18.7692 3.432C19.0972 3.728 19.2612 4.168 19.2612 4.752C19.2612 4.816 19.2372 4.872 19.1892 4.92C19.1492 4.96 19.0972 4.98 19.0332 4.98H18.9252C18.8612 4.98 18.8052 4.96 18.7572 4.92C18.7172 4.872 18.6972 4.82 18.6972 4.764C18.6972 3.956 18.2452 3.552 17.3412 3.552C16.9252 3.552 16.6092 3.652 16.3932 3.852C16.1852 4.052 16.0812 4.304 16.0812 4.608C16.0812 4.912 16.1812 5.156 16.3812 5.34C16.5892 5.516 16.9772 5.66 17.5452 5.772C18.1132 5.884 18.5572 6.06 18.8772 6.3C19.1972 6.54 19.3572 6.9 19.3572 7.38C19.3572 7.852 19.1812 8.248 18.8292 8.568C18.4852 8.88 18.0012 9.036 17.3772 9.036C16.7612 9.036 16.2612 8.88 15.8772 8.568C15.4932 8.248 15.3012 7.78 15.3012 7.164C15.3012 6.996 15.3812 6.912 15.5412 6.912H15.6372C15.7892 6.912 15.8652 6.992 15.8652 7.152C15.8652 8.024 16.3812 8.46 17.4132 8.46C17.8772 8.46 18.2212 8.356 18.4452 8.148C18.6772 7.932 18.7932 7.668 18.7932 7.356C18.7932 7.044 18.6732 6.82 18.4332 6.684C18.1932 6.54 17.7732 6.404 17.1732 6.276C16.5812 6.148 16.1572 5.944 15.9012 5.664C15.6452 5.384 15.5172 5.02 15.5172 4.572ZM20.7741 4.956C20.7741 4.332 20.9621 3.848 21.3381 3.504C21.7221 3.152 22.2181 2.976 22.8261 2.976C23.4421 2.976 23.9421 3.148 24.3261 3.492C24.7101 3.836 24.9021 4.324 24.9021 4.956V7.044C24.9021 7.66 24.7101 8.144 24.3261 8.496C23.9421 8.848 23.4421 9.024 22.8261 9.024C22.2181 9.024 21.7221 8.86 21.3381 8.532V11.772C21.3381 11.924 21.2621 12 21.1101 12H21.0021C20.8501 12 20.7741 11.924 20.7741 11.772V4.956ZM23.9061 3.912C23.6261 3.672 23.2701 3.552 22.8381 3.552C22.4061 3.552 22.0461 3.676 21.7581 3.924C21.4781 4.164 21.3381 4.512 21.3381 4.968V7.884C21.8261 8.26 22.3061 8.448 22.7781 8.448C23.2501 8.448 23.6261 8.324 23.9061 8.076C24.1941 7.828 24.3381 7.476 24.3381 7.02V4.968C24.3381 4.504 24.1941 4.152 23.9061 3.912ZM27.0353 4.956C27.0353 4.324 27.2273 3.836 27.6113 3.492C27.9953 3.148 28.4953 2.976 29.1113 2.976C29.7273 2.976 30.2233 3.152 30.5993 3.504C30.9753 3.848 31.1633 4.332 31.1633 4.956V5.676C31.1633 6.02 30.9993 6.192 30.6713 6.192H28.0793C28.0073 6.192 27.9473 6.168 27.8993 6.12C27.8593 6.072 27.8393 6.016 27.8393 5.952V5.856C27.8393 5.792 27.8593 5.736 27.8993 5.688C27.9473 5.64 28.0073 5.616 28.0793 5.616H30.5993V4.968C30.5993 4.512 30.4593 4.164 30.1793 3.924C29.8993 3.676 29.5433 3.552 29.1113 3.552C28.6793 3.552 28.3193 3.676 28.0313 3.924C27.7513 4.164 27.6113 4.512 27.6113 4.968V7.032C27.6113 7.488 27.7513 7.84 28.0313 8.088C28.3193 8.328 28.6753 8.448 29.0993 8.448C29.5313 8.448 29.8873 8.332 30.1673 8.1C30.4553 7.86 30.5993 7.52 30.5993 7.08C30.5993 7.016 30.6193 6.96 30.6593 6.912C30.7073 6.864 30.7633 6.84 30.8273 6.84H30.9233C30.9953 6.84 31.0513 6.864 31.0913 6.912C31.1393 6.96 31.1633 7.016 31.1633 7.08C31.1553 7.696 30.9633 8.176 30.5873 8.52C30.2113 8.856 29.7193 9.024 29.1113 9.024C28.5033 9.024 28.0033 8.852 27.6113 8.508C27.2273 8.156 27.0353 7.668 27.0353 7.044V4.956ZM32.9181 4.956C32.9181 4.324 33.1101 3.836 33.4941 3.492C33.8781 3.148 34.3781 2.976 34.9941 2.976C35.6101 2.976 36.1061 3.152 36.4821 3.504C36.8581 3.848 37.0461 4.332 37.0461 4.956C37.0461 5.108 36.9661 5.184 36.8061 5.184H36.7101C36.5581 5.184 36.4821 5.108 36.4821 4.956C36.4821 4.5 36.3421 4.152 36.0621 3.912C35.7821 3.672 35.4261 3.552 34.9941 3.552C34.5621 3.552 34.2021 3.676 33.9141 3.924C33.6341 4.164 33.4941 4.512 33.4941 4.968V7.032C33.4941 7.488 33.6341 7.84 33.9141 8.088C34.2021 8.328 34.5621 8.448 34.9941 8.448C35.4261 8.448 35.7781 8.332 36.0501 8.1C36.3301 7.86 36.4741 7.52 36.4821 7.08C36.4821 7.016 36.5021 6.96 36.5421 6.912C36.5901 6.864 36.6461 6.84 36.7101 6.84H36.8061C36.8781 6.84 36.9341 6.864 36.9741 6.912C37.0221 6.96 37.0461 7.016 37.0461 7.08C37.0301 7.688 36.8341 8.164 36.4581 8.508C36.0821 8.852 35.5901 9.024 34.9821 9.024C34.3821 9.024 33.8861 8.852 33.4941 8.508C33.1101 8.156 32.9181 7.668 32.9181 7.044V4.956ZM39.4927 0.24H39.5887C39.7407 0.24 39.8167 0.316 39.8167 0.468L39.7807 7.152C39.7887 7.56 39.9007 7.876 40.1167 8.1C40.3407 8.324 40.6327 8.436 40.9927 8.436H41.2927C41.3567 8.436 41.4087 8.46 41.4487 8.508C41.4967 8.556 41.5207 8.608 41.5207 8.664V8.76C41.5207 8.92 41.3407 9 40.9807 9C40.4527 9 40.0287 8.84 39.7087 8.52C39.3887 8.192 39.2247 7.74 39.2167 7.164L39.2527 0.468C39.2687 0.316 39.3487 0.24 39.4927 0.24ZM38.5687 3H38.8567C38.9287 3 38.9847 3.024 39.0247 3.072C39.0727 3.12 39.0967 3.176 39.0967 3.24V3.312C39.0967 3.376 39.0727 3.432 39.0247 3.48C38.9847 3.528 38.9287 3.552 38.8567 3.552H38.5687C38.4967 3.552 38.4367 3.528 38.3887 3.48C38.3487 3.432 38.3287 3.376 38.3287 3.312V3.24C38.3287 3.176 38.3487 3.12 38.3887 3.072C38.4367 3.024 38.4967 3 38.5687 3ZM40.1767 3H41.0647C41.1287 3 41.1807 3.024 41.2207 3.072C41.2687 3.12 41.2927 3.176 41.2927 3.24V3.312C41.2927 3.376 41.2687 3.432 41.2207 3.48C41.1807 3.528 41.1287 3.552 41.0647 3.552H40.1767C40.1127 3.552 40.0567 3.528 40.0087 3.48C39.9607 3.432 39.9367 3.376 39.9367 3.312V3.24C39.9367 3.176 39.9607 3.12 40.0087 3.072C40.0567 3.024 40.1127 3 40.1767 3ZM43.008 4.956C43.008 4.324 43.2 3.836 43.584 3.492C43.968 3.148 44.468 2.976 45.084 2.976C45.7 2.976 46.196 3.152 46.572 3.504C46.948 3.848 47.136 4.332 47.136 4.956V7.044C47.136 7.668 46.948 8.156 46.572 8.508C46.196 8.852 45.7 9.024 45.084 9.024C44.476 9.024 43.976 8.852 43.584 8.508C43.2 8.156 43.008 7.668 43.008 7.044V4.956ZM46.572 4.956C46.572 4.5 46.432 4.152 46.152 3.912C45.872 3.664 45.516 3.54 45.084 3.54C44.652 3.54 44.292 3.664 44.004 3.912C43.716 4.152 43.572 4.5 43.572 4.956V7.044C43.572 7.5 43.716 7.852 44.004 8.1C44.292 8.34 44.652 8.46 45.084 8.46C45.516 8.46 45.872 8.34 46.152 8.1C46.432 7.852 46.572 7.5 46.572 7.044V4.956ZM51.0948 2.976C51.2468 2.976 51.3228 3.056 51.3228 3.216V3.3C51.3228 3.364 51.2988 3.42 51.2508 3.468C51.2108 3.516 51.1588 3.54 51.0948 3.54C50.6388 3.54 50.2748 3.656 50.0028 3.888C49.7308 4.12 49.5948 4.476 49.5948 4.956V8.76C49.5948 8.832 49.5708 8.892 49.5228 8.94C49.4748 8.98 49.4188 9 49.3548 9H49.2708C49.2068 9 49.1508 8.98 49.1028 8.94C49.0548 8.892 49.0308 8.832 49.0308 8.76V4.956C49.0308 4.3 49.2148 3.808 49.5828 3.48C49.9508 3.144 50.4548 2.976 51.0948 2.976Z"
+          fill="url(#paint0_linear_2_49)"
+          fill-opacity="0.94"
+        />
+        <path
+          d="M51.6953 8.66016C51.6953 8.47266 51.7188 8.29688 51.7656 8.13281C51.8203 7.96875 51.8828 7.80859 51.9531 7.65234C52.0312 7.49609 52.1094 7.34375 52.1875 7.19531C52.2656 7.03906 52.3359 6.87891 52.3984 6.71484C52.3984 6.68359 52.4141 6.61328 52.4453 6.50391C52.4766 6.39453 52.5117 6.27734 52.5508 6.15234C52.5898 6.01953 52.625 5.89844 52.6562 5.78906C52.6953 5.67188 52.7227 5.60156 52.7383 5.57812C52.7695 5.49219 52.8242 5.35938 52.9023 5.17969C52.9883 5 53.082 4.79688 53.1836 4.57031C53.2852 4.34375 53.3945 4.10547 53.5117 3.85547C53.6289 3.60547 53.7383 3.36719 53.8398 3.14062C53.9492 2.91406 54.0469 2.71094 54.1328 2.53125C54.2188 2.35156 54.2852 2.22266 54.332 2.14453C54.3398 2.10547 54.3555 2.07812 54.3789 2.0625C54.4102 2.04688 54.4414 2.03516 54.4727 2.02734C54.5117 2.01953 54.5469 2.01953 54.5781 2.02734C54.6172 2.02734 54.6484 2.02734 54.6719 2.02734C54.8203 2.02734 54.9141 2.05078 54.9531 2.09766C55 2.13672 55.0234 2.23047 55.0234 2.37891C55.0234 2.39453 55.0195 2.43359 55.0117 2.49609C55.0117 2.55859 55.0117 2.59375 55.0117 2.60156C54.7305 3.03125 54.4688 3.50781 54.2266 4.03125C53.9844 4.54688 53.7578 5.07422 53.5469 5.61328C53.3359 6.15234 53.1406 6.6875 52.9609 7.21875C52.7891 7.74219 52.6328 8.22266 52.4922 8.66016C52.4453 8.80078 52.3945 8.89453 52.3398 8.94141C52.2852 8.98828 52.1836 9.01172 52.0352 9.01172C51.9023 9.01172 51.8125 8.98438 51.7656 8.92969C51.7188 8.875 51.6953 8.78516 51.6953 8.66016Z"
+          :fill="logoColors[1]"
+        />
+        <path
+          d="M56.4883 7.61719V7.26562C56.4883 7.21875 56.4961 7.18359 56.5117 7.16016C56.5273 7.12891 56.5508 7.09766 56.582 7.06641C56.6133 7.03516 56.6641 7 56.7344 6.96094L59.6992 4.89844C59.793 4.88281 59.8711 4.84375 59.9336 4.78125C59.9961 4.71875 60.0312 4.64062 60.0391 4.54688C59.9844 4.53125 59.8984 4.50781 59.7812 4.47656C59.6719 4.44531 59.5469 4.41016 59.4062 4.37109C59.2656 4.32422 59.1133 4.27734 58.9492 4.23047C58.793 4.17578 58.6406 4.12891 58.4922 4.08984L58.1172 3.96094C58 3.92188 57.918 3.89062 57.8711 3.86719C57.8398 3.85938 57.7812 3.83594 57.6953 3.79688C57.6172 3.75 57.5156 3.70312 57.3906 3.65625C57.2734 3.60156 57.1445 3.54297 57.0039 3.48047C56.8711 3.41016 56.7344 3.34375 56.5938 3.28125C56.4609 3.21094 56.332 3.14844 56.207 3.09375C56.0898 3.03906 56 2.99219 55.9375 2.95312C55.875 2.92188 55.8086 2.88672 55.7383 2.84766C55.668 2.80859 55.6055 2.76172 55.5508 2.70703C55.4961 2.65234 55.4453 2.59375 55.3984 2.53125C55.3594 2.46875 55.3398 2.40234 55.3398 2.33203C55.3398 2.28516 55.3438 2.23828 55.3516 2.19141C55.3672 2.14453 55.3867 2.10156 55.4102 2.0625C55.4414 2.01562 55.4727 1.98047 55.5039 1.95703C55.5352 1.92578 55.582 1.91016 55.6445 1.91016C55.6445 1.91016 55.6484 1.91406 55.6562 1.92188C55.6641 1.92188 55.6719 1.92188 55.6797 1.92188C55.6875 1.92969 55.6953 1.93359 55.7031 1.93359C55.7188 1.93359 55.7383 1.94531 55.7617 1.96875C55.7852 1.98438 55.8086 2.00391 55.832 2.02734C55.8555 2.05078 55.875 2.07422 55.8906 2.09766C55.9141 2.12109 55.9297 2.14062 55.9375 2.15625C56.3594 2.39844 56.7734 2.60156 57.1797 2.76562C57.5938 2.92969 58.0078 3.07812 58.4219 3.21094C58.8359 3.33594 59.25 3.46094 59.6641 3.58594C60.0781 3.70312 60.5078 3.83594 60.9531 3.98438C61.0859 4.03125 61.1953 4.10547 61.2812 4.20703C61.375 4.30078 61.4219 4.42188 61.4219 4.57031C61.4219 4.625 61.4102 4.67578 61.3867 4.72266C61.3633 4.76953 61.2969 4.78906 61.1875 4.78125L56.8398 7.85156C56.832 7.85938 56.8203 7.86328 56.8047 7.86328H56.7461C56.6758 7.86328 56.6211 7.85156 56.582 7.82812C56.5508 7.80469 56.5273 7.77734 56.5117 7.74609C56.4961 7.70703 56.4883 7.66406 56.4883 7.61719Z"
+          :fill="logoColors[2]"
+        />
+        <defs>
+          <linearGradient
+            id="paint0_linear_2_49"
+            x1="31.5"
+            y1="-3"
+            x2="31.5"
+            y2="15"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0.515625" :stop-color="logoColors[0]" />
+            <stop offset="0.552083" :stop-color="logoColors[2]" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- Banner  -->
+      <a
+        :style="bannerPosition"
+        class="vue-inspector-banner vue-inspector-card font-[Arial,_Helvetica,_sans-serif] px-8px py-5px rounded-[4px] text-left text-[#e9e9e9] text-14px bg-[#42b883] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] hidden absolute m-0 w-260px"
+        href="https://github.com/webfansplz/vite-plugin-vue-inspector"
+        target="_blank"
+      >
+        <div>vite-plugin-vue-inspector</div>
+        <div class="tip text-11px op-70">Click on a element › Open IDE › Link to File</div>
+      </a>
+    </div>
+    <!-- Overlay -->
+    <template v-if="overlayVisible && linkParams">
+      <div
+        ref="floatsRef"
+        class="vue-inspector-floats vue-inspector-card font-[Arial,_Helvetica,_sans-serif] px-8px py-5px rounded-[4px] text-left text-[#e9e9e9] text-14px bg-[#42b883] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] z-2147483647 fixed translate-x--50% pointer-events-none"
+        :class="[{ 'vue-inspector-animated': animation }]"
+        :style="floatsStyle"
+      >
+        <div>
+          {{ linkParams.title }}:{{ linkParams.line }}:{{ linkParams.column }}
+        </div>
+        <div class="tip text-11px op-70">Click to go to the file</div>
+      </div>
+      <div
+        class="vue-inspector-size-indicator z-2147483646 fixed bg-[#42b88325] border-1px border-solid border-[#42b88350] rounded-[5px] pointer-events-none"
+        :class="[{ 'vue-inspector-animated': animation }]"
+        :style="sizeIndicatorStyle"
+      />
+    </template>
+  </div>
+</template>
+
+<style scoped>
+.vue-inspector-banner {text-decoration: none}
+.vue-inspector-container--disabled:hover .vue-inspector-banner {
+  display: none;
+}
+.vue-inspector-animated {
+  transition: all 0.1s ease-in;
+}
+@media (prefers-reduced-motion) {
+  .vue-inspector-animated {
+    transition: none !important;
+  }
+}
+</style>
+",
+  "
+
+-----    complex2.vue     -------
+
+<script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    loading?: boolean
+    title?: string
+  }>(),
+  {
+    loading: () => false,
+  },
+)
+</script>
+
+<template>
+  <div class="z-loading relative w-[100%] top-0 bottom-0">
+    <div class="z-loading__bg absolute bg-[rgba(255,255,255,0)] w-[100%] h-[100%] z-999" v-if="loading"></div>
+    <div
+      class="-z-loader bg-slate-950/80 rounded-md h-[84px] flex flex-col justify-center items-center p-4 z-1000 absolute top-[50%] left-[50%] min-w-88px h-84px translate-[-50%,-50%]"
+      v-if="loading"
+    >
+      <img
+        class="z-load-icon animate-[rotate] animate-duration-1s animate-ease-[linear] animate-count-infinite"
+        src="@renderer/apps/nextim/assets/loading.svg"
+        alt=""
+      />
+      <div
+        v-if="title"
+        class="text-center text-slate-50 text-sm font-normal mt-2"
+      >
+        {{ title }}
+      </div>
+    </div>
+
+    <slot> </slot>
+  </div>
+</template>
+<style scoped>@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+",
+  "
+
+-----    complex3.vue     -------
+
+<template>
+  <div class="user-item flex flex-row gap-10px min-h-28px overflow-hidden px-12px py-8px box-content bg-[#fff] items-center cursor-default [&:hover]-bg-[var(--gray-08,rgba(245,246,248,0.8))]" @click="onClick">
+    <span class="checkbox" v-if="pickMode" :class="{ checked: checked }"></span>
+    <ChannelAvatar
+      :avatar="avatar"
+      :name="name"
+      :color-seed="colorSeed"
+      :isOneToOne="item?.one_to_one == 1"
+    >
+    </ChannelAvatar>
+    <div class="user-item__info flex flex-col grow-1 shrink-1 max-w-200px">
+      <div class="flex flex-row items-center gap-1">
+        <div
+          v-if="showedName"
+          class="name text-14px font-not-italic font-400 lh-20px min-h-20px max-w-70px shrink-0 text-[var(--color-text-1)] break-all truncate"
+          :class="[!department && '!max-w-[150px]']"
+        >
+          {{ showedName }}
+        </div>
+        <ExternalTag v-if="is_external" class="whitespace-nowrap"></ExternalTag>
+        <div
+          class="text-gray-500 text-xs font-normal truncate"
+          v-if="is_external && isSingleChatUser && showedTenantName"
+        >
+          {{ showedTenantName }}
+        </div>
+      </div>
+      <div class="user-item__info__department text-12px font-400 lh-20px text-[#6b7280] text-ellipsis break-all line-clamp-2">{{ department }}</div>
+    </div>
+    <div class="extra shrink-0">
+      <slot name="extra"></slot>
+    </div>
+  </div>
+</template>
+<script lang="ts" setup>
+import { stringToHashNum } from '@renderer/apps/nextim/utils/avatarSeed'
+import { computed } from 'vue'
+import ChannelAvatar from '../channel/ChannelAvatar.vue'
+import { loginStore } from '@renderer/apps/nextim/stores/login/login.store'
+import { globalStore } from '@renderer/apps/nextim/stores/global.store'
+import ExternalTag from '@renderer/apps/nextim/components/contact/ExternalTag.vue'
+const props = defineProps<{
+  pickMode: boolean
+  avatar?: string
+  name: string
+  checked?: boolean
+  item: any
+}>()
+
+// 是否是单聊用户
+const isSingleChatUser = computed(() => props.item.one_to_one === 1)
+
+const showedName = computed(() => {
+  const text = props.name || props.item.display_name || ''
+  if (text.length > 15) {
+    return Array.from(text).slice(0, 12).join('') + '...'
+  } else {
+    return text
+  }
+})
+const is_external = computed(() => {
+  // console.log('useritem', props.item)
+  // return props.item.tenant_id !== globalStore.tenant_id && !props.item.type
+  return props.item.is_external === 1
+})
+const showedTenantName = computed(() => {
+  if (props.item.tenant_id === globalStore.tenant_id) return ''
+
+  const tenant = loginStore.allTenantMap.get(props.item.tenant_id)
+  if (tenant) {
+    return tenant.tenantDisplayName || tenant.tenantName || ''
+  }
+})
+const department = computed(() => {
+  if (props.item.department) {
+    return props.item.department
+  }
+  return ''
+})
+const colorSeed = computed(() => {
+  if (props.item.id) {
+    const numb = stringToHashNum(props.item.id)
+    return numb
+  } else {
+    return 10000
+  }
+})
+const emits = defineEmits(['click'])
+const onClick = () => {
+  emits('click')
+}
+</script>
+<style scoped>.user-item .checkbox {
+  width: 16px;
+  height: 16px;
+  display: block;
+  margin-top: 8px;
+  align-self: flex-start;
+  flex-shrink: 0;
+  background-image: url("@renderer/apps/nextim/assets/uncheck.svg");
+}
+.user-item .checkbox.checked {
+  background-image: url("@renderer/apps/nextim/assets/checked.svg");
+}
+.user-item .avatar {
+  height: 28px;
+  width: 28px;
+  line-height: 28px;
+  align-self: flex-start;
+}
+.user-item .avatar img {
+  height: 100%;
+  width: 100%;
+}
+.user-item .avatar.avatar-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #8b91a0;
+  background-color: #d9dce5;
+  border-radius: 20px;
+}</style>
+",
+  "
+
+-----    complex4.vue     -------
+
+<script lang="ts" setup>
+import { i18nHelper } from '@i18n/i18n.helper'
+import fileExcel from '@renderer/apps/nextim/assets/message/file/file-excel.svg'
+import filePdf from '@renderer/apps/nextim/assets/message/file/file-pdf.svg'
+import filePpt from '@renderer/apps/nextim/assets/message/file/file-ppt.svg'
+import fileUnknow from '@renderer/apps/nextim/assets/message/file/file-unknow.svg'
+import fileWord from '@renderer/apps/nextim/assets/message/file/file-word.svg'
+import ZProgress from '@renderer/apps/nextim/components/widgets/progress/ZProgress.vue'
+import { msgStore, useMessageStore } from '@renderer/apps/nextim/stores/message'
+import type { Message } from '@renderer/apps/nextim/stores/message.type'
+import { useSettingStore } from '@renderer/apps/nextim/stores/setting'
+import { zUnsafePreload } from '@src/preload'
+import { vElementVisibility } from '@vueuse/components'
+import { filesize } from 'filesize'
+import { throttle } from 'lodash-es'
+import { computed, onMounted, ref, watchEffect } from 'vue'
+
+const settings = useSettingStore()
+const shouldDownloadOptShow = computed(() => {
+  return !msgUIState.value.fileExists
+})
+const fileDownloadedPath = computed(() => {
+  return msgStore.messageUIStateDict[
+    `${props.msg.channel_id}_${props.msg.cmid}`
+  ].fileDownloadedPath
+})
+const shouldUploadDetailShow = computed(() => {
+  return fileDirection.value === 'upload'
+})
+const shouldUploadOptShow = computed(() => {
+  return !(msgUIState.value.fileUploaded && msgUIState.value.status == 0)
+})
+onMounted(async () => {
+  // updateProgressStatus()
+  // await msgStore.messageUIStateDict[
+  //   `${props.msg.channel_id}_${props.msg.cmid}`
+  // ].checkFileDownloadPath()
+})
+
+const msgUIState = computed(() => {
+  return msgStore.messageUIStateDict[
+    `${props.msg.channel_id}_${props.msg.cmid}`
+  ]
+})
+const fileDirection = computed(() => {
+  return msgUIState.value.fileDirection
+})
+// const progressStatus = ref('paused' as 'started' | 'paused')
+const progressStatus = computed({
+  set(val: 'started' | 'paused') {
+    msgUIState.value.downloadStatus = val
+  },
+  get() {
+    return msgUIState.value.downloadStatus
+  },
+})
+const uploadStatus = computed({
+  set(val: any) {
+    msgUIState.value.uploadStatus = val
+  },
+  get() {
+    return msgUIState.value.uploadStatus
+  },
+})
+const downloadStatus = ref('idle')
+const props = defineProps<{
+  url?: string
+  mimeType?: string
+  name: string
+  size?: number
+  progress: number
+  msg: Message
+  filePath?: string //仅用于上传逻辑中的使用
+  self: boolean
+}>()
+watchEffect(() => {
+  if (!props.filePath) {
+    progressStatus.value = 'paused'
+  } else {
+    downloadStatus.value = 'downloaded'
+  }
+})
+const messageStore = useMessageStore()
+const opening = false
+
+const tryOpen = async () => {
+  try {
+    console.log('tryOpen', msgUIState, props.filePath)
+    if (props.self) {
+      //打开自己上传的文件
+      const filePath = await zUnsafePreload.invokeRoute({
+        channel: 'message',
+        route: 'getUploadFilePath',
+        payload: {
+          channelId: props.msg.channel_id,
+          cmid: props.msg.cmid,
+        },
+      })
+      console.log('filePath', filePath)
+      if (filePath) {
+        const exists = await messageStore.openFile({
+          filePath,
+          channelId: props.msg.channel_id,
+          cmid: props.msg.cmid,
+        })
+        if (!exists) {
+          console.log('文件不存在还原ui状态')
+          msgStore.messageUIStateDict[
+            `${props.msg.channel_id}_${props.msg.cmid}`
+          ].resetFile()
+        }
+      } else {
+        msgStore.remindFileNotFound(props.msg.channel_id, props.msg.cmid)
+        msgStore.messageUIStateDict[
+          `${props.msg.channel_id}_${props.msg.cmid}`
+        ].resetFile()
+      }
+    } else {
+      //获取路径
+      const filePath = await zUnsafePreload.invokeRoute({
+        channel: 'message',
+        route: 'getFilePath',
+        payload: {
+          channelId: props.msg.channel_id,
+          cmid: props.msg.cmid,
+        },
+      })
+      if (filePath) {
+        const exists = await messageStore.openFile({
+          filePath,
+          channelId: props.msg.channel_id,
+          cmid: props.msg.cmid,
+        })
+        if (!exists) {
+          msgStore.messageUIStateDict[
+            `${props.msg.channel_id}_${props.msg.cmid}`
+          ].resetFile()
+        }
+      } else {
+        msgStore.remindFileNotFound(props.msg.channel_id, props.msg.cmid)
+        msgStore.messageUIStateDict[
+          `${props.msg.channel_id}_${props.msg.cmid}`
+        ].resetFile()
+      }
+    }
+  } catch (e) {}
+}
+const tryOpenThrottled = throttle(tryOpen, 1000, {
+  leading: true,
+  trailing: true,
+})
+//progress应该来源于uploadCache
+const downloadProgress = computed(() => {
+  return msgUIState.value.downloadProgress
+})
+const showName = computed(() => {
+  return ellipsis(props.name, 50)
+})
+const showSize = computed(() => {
+  if (isDownloading.value) {
+    return i18nHelper.get().file.downloading
+  }
+  if (uploadStatus.value === 'started' && shouldUploadOptShow.value) {
+    return i18nHelper.get().file.uploading
+  }
+  return filesize(props.size, { base: 2, standard: 'jedec' })
+})
+const ellipsis = (str, len) => {
+  if (typeof str !== 'string') {
+    return ''
+  }
+  if (str.length <= len) return str
+  const len2 = len / 2
+  return `${str.substring(0, len2)}...${str.substring(str.length - len2)}`
+}
+const iconUrl = computed(() => {
+  if (!props.mimeType || props.mimeType === 'application/octet-stream') {
+    return fileUnknow
+  }
+  if (props.mimeType.includes('application/pdf')) {
+    return filePdf
+  }
+  //excel number
+  if (
+    props.mimeType.includes('application/vnd.ms-excel') ||
+    props.mimeType.includes('application/vnd.apple.numbers') ||
+    props.mimeType.includes(
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    ) ||
+    props.mimeType.includes('text/csv')
+  ) {
+    return fileExcel
+  }
+  //word pages
+  if (
+    props.mimeType.includes('application/msword') ||
+    props.mimeType.includes(
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ) ||
+    props.mimeType.includes('application/vnd.apple.pages')
+  ) {
+    return fileWord
+  }
+  //ppt
+  if (props.mimeType.includes('application/vnd.ms-powerpoint')) {
+    return filePpt
+  }
+  return fileUnknow
+})
+const canAutoDownload = computed(() => {
+  //如果是视频，下载20M以内
+  //非视频,autodownload under 100M
+  if (props.mimeType?.indexOf('video') === 0) {
+    return props.size < 20 * 1024 * 1024
+  }
+  return props.size < 100 * 1024 * 1024
+})
+const download = () => {
+  if (msgStore.checkDownloadingMsgCache(props.msg.channel_id, props.msg.cmid)) {
+    return
+  }
+  msgStore.addDownloadingMsg(props.msg.channel_id, props.msg.cmid)
+  messageStore.downloadFile({
+    channelId: props.msg.channel_id,
+    cmid: props.msg.cmid,
+    fileId: props.url,
+    fileName: props.name,
+    size: props.size,
+  })
+}
+const isDownloading = computed(() => {
+  return messageStore.checkDownloadingMsgCache(
+    props.msg.channel_id,
+    props.msg.cmid,
+  )
+})
+const pauseUpload = () => {
+  msgStore.pauseUpload({
+    channelId: props.msg.channel_id,
+    cmid: props.msg.cmid,
+  })
+}
+const resumeUpload = () => {
+  msgStore.resumeUpload({
+    channelId: props.msg.channel_id,
+    cmid: props.msg.cmid,
+  })
+}
+
+const uploadStart = () => {
+  resumeUpload()
+}
+const uploadStop = () => {
+  pauseUpload()
+}
+const downloadStart = () => {
+  if (msgStore.checkDownloadingMsgCache(props.msg.channel_id, props.msg.cmid)) {
+    return
+  }
+  msgStore.addDownloadingMsg(props.msg.channel_id, props.msg.cmid)
+  messageStore.downloadFile({
+    channelId: props.msg.channel_id,
+    cmid: props.msg.cmid,
+    fileId: props.url,
+    fileName: props.name,
+    size: props.size,
+  })
+}
+const downloadStop = () => {
+  msgStore.pauseDownload({
+    channelId: props.msg.channel_id,
+    cmid: props.msg.cmid,
+  })
+}
+const tryAutoDownload = async () => {
+  // if (!settings.auto_download||props.self)return
+  const autoDownloaded = messageStore.autoDownloadCache.exists([
+    props.msg.channel_id,
+    props.msg.cmid,
+  ])
+  if (autoDownloaded || !canAutoDownload.value) {
+    return
+  }
+  const filePath = await zUnsafePreload.invokeRoute({
+    channel: 'message',
+    route: 'getFilePath',
+    payload: {
+      channelId: props.msg.channel_id,
+      cmid: props.msg.cmid,
+    },
+  })
+  //曾经下载过，手动删除过，不再自动下载
+  if (filePath) return
+  if (
+    canAutoDownload.value &&
+    !isDownloading.value &&
+    progressStatus.value === 'paused' &&
+    shouldDownloadOptShow.value &&
+    !msgStore.checkDownloadingMsgCache(props.msg.channel_id, props.msg.cmid)
+  ) {
+    msgStore.addDownloadingMsg(props.msg.channel_id, props.msg.cmid)
+    if (
+      messageStore.autoDownloadCache.exists([
+        props.msg.channel_id,
+        props.msg.cmid,
+      ])
+    )
+      return
+
+    msgStore.autoDownloadCache.add([props.msg.channel_id, props.msg.cmid], {
+      channelId: props.msg.channel_id,
+      cmid: props.msg.cmid,
+    })
+    progressStatus.value = 'started'
+    messageStore.autoDownloadFile({
+      channelId: props.msg.channel_id,
+      cmid: props.msg.cmid,
+      fileId: props.url,
+      fileName: props.name,
+      size: props.size,
+    })
+  }
+}
+const updateProgressStatus = () => {
+  progressStatus.value = isDownloading.value ? 'started' : 'paused'
+}
+const onElementVisibility = async (state: any) => {
+  updateProgressStatus()
+  if (state) {
+    await msgStore.messageUIStateDict[
+      `${props.msg.channel_id}_${props.msg.cmid}`
+    ].checkFileDownloadPath()
+    if (settings.auto_download) {
+      tryAutoDownload()
+    }
+  }
+}
+// const onIntersectionObserver = async ([
+//   { isIntersecting }
+// ]: IntersectionObserverEntry[]) => {
+//   console.log('onIntersectionObserver')
+//   updateProgressStatus()
+//   if (!settings.auto_download) return
+//   if (isIntersecting) {
+//     await msgStore.messageUIStateDict[
+//       `${props.msg.channel_id}_${props.msg.cmid}`
+//     ].checkFileDownloadPath()
+//     tryAutoDownload()
+//   }
+// }
+</script>
+<template>
+  <div
+    class="file-item"
+    @click.stop="tryOpenThrottled"
+    v-element-visibility="onElementVisibility"
+  >
+    <!--    <div class="icon" :class="iconType"></div>-->
+    <img class="icon" :src="iconUrl" alt="" />
+    <div class="info">
+      <div class="info__name">
+        {{ showName }}
+      </div>
+      <div class="info__status">
+        <div class="info__status__upload" v-if="shouldUploadDetailShow">
+          <div>
+            {{ showSize }}
+          </div>
+          <div class="info__status__upload__opt" v-if="shouldUploadOptShow">
+            <div
+              v-if="msgUIState.fileSpeed && uploadStatus === 'started'"
+              style="
+                display: inline-block;
+                overflow: hidden;
+                max-width: 80px;
+                line-height: 20px;
+                text-align: right;
+              "
+              class="mr-2 inline-block overflow-hidden max-w-80px lh-20px text-right" style=""
+            >
+              {{ msgUIState.fileSpeed }}
+            </div>
+            <div class="inline-block max-w-50px lh-20px text-right" style="
+              style="
+                display: inline-block;
+                max-width: 50px;
+                line-height: 20px;
+                text-align: right;
+              "
+            >
+              <span v-if="uploadStatus === 'started'">
+                {{ (progress * 100).toFixed(0) }}%
+              </span>
+              <span v-else>{{ i18nHelper.get().file.paused }}</span>
+            </div>
+            <ZProgress class="ml-4px"
+             
+              v-model:model-value="uploadStatus"
+              :size="20"
+              action="upload"
+              :progress="progress"
+              type="circle"
+              @start="uploadStart"
+              @stop="uploadStop"
+            >
+            </ZProgress>
+          </div>
+        </div>
+        <div v-if="fileDirection === 'download'" class="info__status__download">
+          <div>
+            {{ showSize }}
+          </div>
+          <div v-if="shouldDownloadOptShow" class="info__status__download__opt">
+            <div class="inline-block overflow-hidden max-w-80px lh-20px text-right" style="
+              v-if="msgUIState.fileSpeed && isDownloading"
+              style="
+                display: inline-block;
+                overflow: hidden;
+                max-width: 80px;
+                line-height: 20px;
+                text-align: right;
+              "
+            >
+              {{ msgUIState.fileSpeed }}
+            </div>
+            <div class="inline-block w-34px lh-20px text-right" style="
+              v-if="isDownloading"
+              style="
+                display: inline-block;
+                width: 34px;
+                line-height: 20px;
+                text-align: right;
+              "
+            >
+              {{ (downloadProgress * 100).toFixed(0) }}%
+            </div>
+            <ZProgress class="ml-4px"
+             
+              v-model:model-value="progressStatus"
+              :size="20"
+              action="download"
+              :progress="downloadProgress"
+              type="circle"
+              @start="downloadStart"
+              @stop="downloadStop"
+            >
+            </ZProgress>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<style>
+.file-item {
+  display: flex;
+  flex-direction: row;
+  width: 240px;
+  height: 50px;
+  align-items: center;
+}
+.file-item .info {
+  margin-left: 12px;
+  width: 100%;
+}
+.file-item .info .info__name {
+  font-size: 12px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 16px;
+}
+.file-item .info .info__status {
+  font-size: 12px;
+  margin-top: 4px;
+  height: 20px;
+}
+.file-item .info .info__status .info__status__upload {
+  display: flex;
+  align-items: center;
+}
+.file-item .info .info__status .info__status__upload .info__status__upload__opt {
+  display: flex;
+  margin-left: auto;
+}
+.file-item .info .info__status .arco-progress-size-large .arco-progress-line-text {
+  font-size: 12px !important;
+  margin-left: 4px;
+}
+.file-item .info .info__status .info__status__pause:hover {
+  color: #4b7bff;
+}
+.file-item .info .info__status .info__status__resume:hover {
+  color: #4b7bff;
+}
+.file-item .info .info__status .info__status__download {
+  display: flex;
+  color: var(--gray-04, #8b91a0);
+  align-items: center;
+}
+.file-item .info .info__status .info__status__download .progress {
+  margin-left: 4px;
+}
+.file-item .info .info__status .info__status__download .info__status__download__opt {
+  display: flex;
+  margin-left: auto;
+}
+</style>
+",
+  "
+
+-----    complex5.vue     -------
+
+<template>
+  <div
+    class="avatar w-32px h-32px shrink-0 relative"
+    :style="{
+      width: size,
+      height: size,
+    }"
+  >
+    <img
+      class="w-full h-full rounded-[8px] object-contain"
+      v-if="avatar && !failedImg"
+      :src="avatar"
+      alt="avatar"
+      draggable="false"
+      @error="failedImg = true"
+    />
+    <img
+      v-else-if="!isOneToOne && (failedImg || !avatar)"
+      class="w-full h-full p-1 rounded-[8px] object-contain"
+      draggable="false"
+      :src="computedSrc"
+      :style="{
+        background: computedBg,
+      }"
+    />
+    <img
+      class="w-full h-full rounded-[8px] object-contain"
+      v-else-if="isOneToOne && (failedImg || !avatar)"
+      draggable="false"
+      src="https://storage-zm-s3.cdn.zenmen.com/zmchat-avatar/66c2701be4acd73673516aa62a4bc4f1+9cbbf63d-28e8-4111-be5e-094c7446ff6d"
+    />
+    <div
+      :class="['unread-cnt', isMute ? 'mute' : '']"
+      v-if="unreadCnt && unreadCnt > 0"
+    >
+      {{ unreadCnt > 99 ? '99+' : unreadCnt }}
+    </div>
+  </div>
+</template>
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
+
+import bg_0 from '@renderer/apps/nextim/assets/channel/default_group_avatar_0.svg'
+import bg_1 from '@renderer/apps/nextim/assets/channel/default_group_avatar_1.svg'
+import bg_2 from '@renderer/apps/nextim/assets/channel/default_group_avatar_2.svg'
+import bg_3 from '@renderer/apps/nextim/assets/channel/default_group_avatar_3.svg'
+import bg_4 from '@renderer/apps/nextim/assets/channel/default_group_avatar_4.svg'
+import bg_5 from '@renderer/apps/nextim/assets/channel/default_group_avatar_5.svg'
+
+const getImage = (index: number) => {
+  switch (index) {
+    case 0:
+      return bg_0
+    case 1:
+      return bg_1
+    case 2:
+      return bg_2
+    case 3:
+      return bg_3
+    case 4:
+      return bg_4
+    case 5:
+      return bg_5
+    default:
+      break
+  }
+}
+const colorArray: string[] = [
+  '#DC26261a',
+  '#D977061a',
+  '#7C3AED1a',
+  '#EA580C1a',
+  '#0596691a',
+  '#0D94881a',
+]
+
+function randomBackgroundColor(seed: number): number {
+  // console.log('seed', seed)
+  const index = seed % colorArray.length
+  return index
+}
+const props = withDefaults(
+  defineProps<{
+    avatar?: string
+    name: string
+    unreadCnt?: number
+    colorSeed: number
+    isMute?: boolean
+    size?: string
+    isOneToOne: boolean
+  }>(),
+  {
+    size: '32px',
+    isMute: false,
+  },
+)
+// console.log(props.avatar)
+const failedImg = ref(false)
+
+const bgColorIdx = computed(() => {
+  const res = randomBackgroundColor(props.colorSeed)
+  return res
+})
+const computedSrc = computed(() => {
+  const index = bgColorIdx.value
+  switch (index) {
+    case 0:
+      return bg_0
+    case 1:
+      return bg_1
+    case 2:
+      return bg_2
+    case 3:
+      return bg_3
+    case 4:
+      return bg_4
+    case 5:
+      return bg_5
+    default:
+      break
+  }
+})
+const computedBg = computed(() => {
+  return colorArray[bgColorIdx.value]
+})
+</script>
+<style scoped>.avatar .unread-cnt {
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  display: flex;
+  padding: 0px 3px;
+  min-width: 18px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #fff;
+  background: #ff6b6b;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.avatar .unread-cnt.mute {
+  background: #94a1b6;
+}
+</style>
+",
+  "
+
+-----    complex6.vue     -------
+
+<template>
+  <div @click.stop="onTagClick" class="tag flex-center h-24px lh-24px text-center bg-[rgba(99,214,173,0.1)] rounded-[4px] font-500 text-14px text-[#3fc193] px-8px py-0 box-border" :class="[type]">
+    {{ tag }}
+  </div>
+</template>
+<script setup lang="ts">
+const emit = defineEmits(['on-tag-click'])
+
+const props = defineProps<{
+  tag: string
+  type?: string
+}>()
+function onTagClick() {
+  emit('on-tag-click')
+}
+</script>
+<style scoped>.tag.success {
+  color: #3fc193;
+  background: rgba(99, 214, 173, 0.1);
+}
+.tag.primary {
+  font-weight: 400;
+  color: #4b7bff;
+  background: rgba(75, 123, 255, 0.1);
+}
+.tag.disabled {
+  color: var(--color-text-1, #1d2129);
+  background: var(--color-fill-3, #e5e6eb);
+}
+.tag.warning {
+  background: rgba(255, 143, 40, 0.1);
+  color: #ff8f28;
+  font-weight: 400;
+}
+</style>
+",
+  "
+
+-----    demo1.vue     -------
+
+<template>
+  <div class="my-process-designer">
+    <div class="my-process-designer__container">
+      <div class="my-process-designer__canvas h-760px" ref="bpmnCanvas"></div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import BpmnViewer from 'bpmn-js/lib/Viewer'
+import DefaultEmptyXML from './plugins/defaultEmpty'
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { formatDate } from '@/utils/formatTime'
+import { isEmpty } from '@/utils/is'
+
+defineOptions({ name: 'MyProcessViewer' })
+
+const props = defineProps({
+  value: {
+    // BPMN XML 字符串
+    type: String,
+    default: ''
+  },
+  prefix: {
+    // 使用哪个引擎
+    type: String,
+    default: 'camunda'
+  },
+  activityData: {
+    // 活动的数据.传递时,可高亮流程
+    type: Array,
+    default: () => []
+  },
+  processInstanceData: {
+    // 流程实例的数据.传递时,可展示流程发起人等信息
+    type: Object,
+    default: () => {}
+  },
+  taskData: {
+    // 任务实例的数据.传递时,可展示 UserTask 审核相关的信息
+    type: Array,
+    default: () => []
+  }
+})
+
+provide('configGlobal', props)
+
+const emit = defineEmits(['destroy'])
+
+let bpmnModeler
+
+const xml = ref('')
+const activityLists = ref<any[]>([])
+const processInstance = ref<any>(undefined)
+const taskList = ref<any[]>([])
+const bpmnCanvas = ref()
+// const element = ref()
+const elementOverlayIds = ref<any>(null)
+const overlays = ref<any>(null)
+
+const initBpmnModeler = () => {
+  if (bpmnModeler) return
+  bpmnModeler = new BpmnViewer({
+    container: bpmnCanvas.value,
+    bpmnRenderer: {}
+  })
+}
+
+/* 创建新的流程图 */
+const createNewDiagram = async (xml) => {
+  // 将字符串转换成图显示出来
+  let newId = `Process_${new Date().getTime()}`
+  let newName = `业务流程_${new Date().getTime()}`
+  let xmlString = xml || DefaultEmptyXML(newId, newName, props.prefix)
+  try {
+    let { warnings } = await bpmnModeler.importXML(xmlString)
+    if (warnings && warnings.length) {
+      warnings.forEach((warn) => console.warn(warn))
+    }
+    // 高亮流程图
+    await highlightDiagram()
+    const canvas = bpmnModeler.get('canvas')
+    canvas.zoom('fit-viewport', 'auto')
+  } catch (e) {
+    console.error(e)
+    // console.error(`[Process Designer Warn]: ${e?.message || e}`);
+  }
+}
+
+/* 高亮流程图 */
+// TODO 芋艿:如果多个 endActivity 的话,目前的逻辑可能有一定的问题.https://www.jdon.com/workflow/multi-events.html
+const highlightDiagram = async () => {
+  const activityList = activityLists.value
+  if (activityList.length === 0) {
+    return
+  }
+  // 参考自 https://gitee.com/tony2y/RuoYi-flowable/blob/master/ruoyi-ui/src/components/Process/index.vue#L222 实现
+  // 再次基础上,增加不同审批结果的颜色等等
+  let canvas = bpmnModeler.get('canvas')
+  let todoActivity: any = activityList.find((m: any) => !m.endTime) // 找到待办的任务
+  let endActivity: any = activityList[activityList.length - 1] // 获得最后一个任务
+  let findProcessTask = false //是否已经高亮了进行中的任务
+  //进行中高亮之后的任务 key 集合,用于过滤掉 taskList 进行中后面的任务,避免进行中后面的数据 Hover 还有数据
+  let removeTaskDefinitionKeyList = []
+  // debugger
+  bpmnModeler.getDefinitions().rootElements[0].flowElements?.forEach((n: any) => {
+    let activity: any = activityList.find((m: any) => m.key === n.id) // 找到对应的活动
+    if (!activity) {
+      return
+    }
+    if (n.$type === 'bpmn:UserTask') {
+      // 用户任务
+      // 处理用户任务的高亮
+      const task: any = taskList.value.find((m: any) => m.id === activity.taskId) // 找到活动对应的 taskId
+      if (!task) {
+        return
+      }
+      // 进行中的任务已经高亮过了,则不高亮后面的任务了
+      if (findProcessTask) {
+        removeTaskDefinitionKeyList.push(n.id)
+        return
+      }
+      // 高亮任务
+      canvas.addMarker(n.id, getResultCss(task.status))
+      //标记是否高亮了进行中任务
+      if (task.status === 1) {
+        findProcessTask = true
+      }
+      // 如果非通过,就不走后面的线条了
+      if (task.status !== 2) {
+        return
+      }
+      // 处理 outgoing 出线
+      const outgoing = getActivityOutgoing(activity)
+      outgoing?.forEach((nn: any) => {
+        // debugger
+        let targetActivity: any = activityList.find((m: any) => m.key === nn.targetRef.id)
+        // 如果目标活动存在,则根据该活动是否结束,进行[bpmn:SequenceFlow]连线的高亮设置
+        if (targetActivity) {
+          canvas.addMarker(nn.id, targetActivity.endTime ? 'highlight' : 'highlight-todo')
+        } else if (nn.targetRef.$type === 'bpmn:ExclusiveGateway') {
+          // TODO 芋艿:这个流程,暂时没走到过
+          canvas.addMarker(nn.id, activity.endTime ? 'highlight' : 'highlight-todo')
+          canvas.addMarker(nn.targetRef.id, activity.endTime ? 'highlight' : 'highlight-todo')
+        } else if (nn.targetRef.$type === 'bpmn:EndEvent') {
+          // TODO 芋艿:这个流程,暂时没走到过
+          if (!todoActivity && endActivity.key === n.id) {
+            canvas.addMarker(nn.id, 'highlight')
+            canvas.addMarker(nn.targetRef.id, 'highlight')
+          }
+          if (!activity.endTime) {
+            canvas.addMarker(nn.id, 'highlight-todo')
+            canvas.addMarker(nn.targetRef.id, 'highlight-todo')
+          }
+        }
+      })
+    } else if (n.$type === 'bpmn:ExclusiveGateway') {
+      // 排它网关
+      // 设置[bpmn:ExclusiveGateway]排它网关的高亮
+      canvas.addMarker(n.id, getActivityHighlightCss(activity))
+      // 查找需要高亮的连线
+      let matchNN: any = undefined
+      let matchActivity: any = undefined
+      n.outgoing?.forEach((nn: any) => {
+        let targetActivity = activityList.find((m: any) => m.key === nn.targetRef.id)
+        if (!targetActivity) {
+          return
+        }
+        // 特殊判断 endEvent 类型的原因,ExclusiveGateway 可能后续连有 2 个路径:
+        //  1. 一个是 UserTask => EndEvent
+        //  2. 一个是 EndEvent
+        // 在选择路径 1 时,其实 EndEvent 可能也存在,导致 1 和 2 都高亮,显然是不正确的.
+        // 所以,在 matchActivity 为 EndEvent 时,需要进行覆盖~~
+        if (!matchActivity || matchActivity.type === 'endEvent') {
+          matchNN = nn
+          matchActivity = targetActivity
+        }
+      })
+      if (matchNN && matchActivity) {
+        canvas.addMarker(matchNN.id, getActivityHighlightCss(matchActivity))
+      }
+    } else if (n.$type === 'bpmn:ParallelGateway') {
+      // 并行网关
+      // 设置[bpmn:ParallelGateway]并行网关的高亮
+      canvas.addMarker(n.id, getActivityHighlightCss(activity))
+      n.outgoing?.forEach((nn: any) => {
+        // 获得连线是否有指向目标.如果有,则进行高亮
+        const targetActivity = activityList.find((m: any) => m.key === nn.targetRef.id)
+        if (targetActivity) {
+          canvas.addMarker(nn.id, getActivityHighlightCss(targetActivity)) // 高亮[bpmn:SequenceFlow]连线
+          // 高亮[...]目标.其中 ... 可以是 bpm:UserTask、也可以是其它的.当然,如果是 bpm:UserTask 的话,其实不做高亮也没问题,因为上面有逻辑做了这块.
+          canvas.addMarker(nn.targetRef.id, getActivityHighlightCss(targetActivity))
+        }
+      })
+    } else if (n.$type === 'bpmn:StartEvent') {
+      // 开始节点
+      canvas.addMarker(n.id, 'highlight')
+      n.outgoing?.forEach((nn) => {
+        // outgoing 例如说[bpmn:SequenceFlow]连线
+        // 获得连线是否有指向目标.如果有,则进行高亮
+        let targetActivity = activityList.find((m: any) => m.key === nn.targetRef.id)
+        if (targetActivity) {
+          canvas.addMarker(nn.id, 'highlight') // 高亮[bpmn:SequenceFlow]连线
+          canvas.addMarker(n.id, 'highlight') // 高亮[bpmn:StartEvent]开始节点(自己)
+        }
+      })
+    } else if (n.$type === 'bpmn:EndEvent') {
+      // 结束节点
+      if (!processInstance.value || processInstance.value.status === 1) {
+        return
+      }
+      canvas.addMarker(n.id, getResultCss(processInstance.value.status))
+    } else if (n.$type === 'bpmn:ServiceTask') {
+      //服务任务
+      if (activity.startTime > 0 && activity.endTime === 0) {
+        //进入执行,标识进行色
+        canvas.addMarker(n.id, getResultCss(1))
+      }
+      if (activity.endTime > 0) {
+        // 执行完成,节点标识完成色, 所有outgoing标识完成色.
+        canvas.addMarker(n.id, getResultCss(2))
+        const outgoing = getActivityOutgoing(activity)
+        outgoing?.forEach((out) => {
+          canvas.addMarker(out.id, getResultCss(2))
+        })
+      }
+    } else if (n.$type === 'bpmn:SequenceFlow') {
+      let targetActivity = activityList.find((m: any) => m.key === n.targetRef.id)
+      if (targetActivity) {
+        canvas.addMarker(n.id, getActivityHighlightCss(targetActivity))
+      }
+    }
+  })
+  if (!isEmpty(removeTaskDefinitionKeyList)) {
+    taskList.value = taskList.value.filter(
+      (item) => !removeTaskDefinitionKeyList.includes(item.taskDefinitionKey)
+    )
+  }
+}
+
+const getActivityHighlightCss = (activity) => {
+  return activity.endTime ? 'highlight' : 'highlight-todo'
+}
+
+const getResultCss = (status) => {
+  if (status === 1) {
+    // 审批中
+    return 'highlight-todo'
+  } else if (status === 2) {
+    // 已通过
+    return 'highlight'
+  } else if (status === 3) {
+    // 不通过
+    return 'highlight-reject'
+  } else if (status === 4) {
+    // 已取消
+    return 'highlight-cancel'
+  } else if (status === 5) {
+    // 退回
+    return 'highlight-return'
+  } else if (status === 6) {
+    // 委派
+    return 'highlight-todo'
+  } else if (status === 7) {
+    // 审批通过中
+    return 'highlight-todo'
+  } else if (status === 0) {
+    // 待审批
+    return 'highlight-todo'
+  }
+  return ''
+}
+
+const getActivityOutgoing = (activity) => {
+  // 如果有 outgoing,则直接使用它
+  if (activity.outgoing && activity.outgoing.length > 0) {
+    return activity.outgoing
+  }
+  // 如果没有,则遍历获得起点为它的[bpmn:SequenceFlow]节点们.原因是:bpmn-js 的 UserTask 拿不到 outgoing
+  const flowElements = bpmnModeler.getDefinitions().rootElements[0].flowElements
+  const outgoing: any[] = []
+  flowElements.forEach((item: any) => {
+    if (item.$type !== 'bpmn:SequenceFlow') {
+      return
+    }
+    if (item.sourceRef.id === activity.key) {
+      outgoing.push(item)
+    }
+  })
+  return outgoing
+}
+const initModelListeners = () => {
+  const EventBus = bpmnModeler.get('eventBus')
+  // 注册需要的监听事件
+  EventBus.on('element.hover', function (eventObj) {
+    let element = eventObj ? eventObj.element : null
+    elementHover(element)
+  })
+  EventBus.on('element.out', function (eventObj) {
+    let element = eventObj ? eventObj.element : null
+    elementOut(element)
+  })
+}
+// 流程图的元素被 hover
+const elementHover = (element) => {
+  element.value = element
+  !elementOverlayIds.value && (elementOverlayIds.value = {})
+  !overlays.value && (overlays.value = bpmnModeler.get('overlays'))
+  // 展示信息
+  // console.log(activityLists.value, 'activityLists.value')
+  // console.log(element.value, 'element.value')
+  const activity = activityLists.value.find((m) => m.key === element.value.id)
+  // console.log(activity, 'activityactivityactivityactivity')
+  if (!activity) {
+    return
+  }
+  if (!elementOverlayIds.value[element.value.id] && element.value.type !== 'bpmn:Process') {
+    let html = `<div class="element-overlays">
+            <p>Elemet id: ${element.value.id}</p>
+            <p>Elemet type: ${element.value.type}</p>
+          </div>` // 默认值
+    if (element.value.type === 'bpmn:StartEvent' && processInstance.value) {
+      html = `<p>发起人:${processInstance.value.startUser.nickname}</p>
+                  <p>部门:${processInstance.value.startUser.deptName}</p>
+                  <p>创建时间:${formatDate(processInstance.value.createTime)}`
+    } else if (element.value.type === 'bpmn:UserTask') {
+      let task = taskList.value.find((m) => m.id === activity.taskId) // 找到活动对应的 taskId
+      if (!task) {
+        return
+      }
+      let optionData = getIntDictOptions(DICT_TYPE.BPM_TASK_STATUS)
+      let dataResult = ''
+      optionData.forEach((element) => {
+        if (element.value == task.status) {
+          dataResult = element.label
+        }
+      })
+      html = `<p>审批人:${task.assigneeUser.nickname}</p>
+                  <p>部门:${task.assigneeUser.deptName}</p>
+                  <p>结果:${dataResult}</p>
+                  <p>创建时间:${formatDate(task.createTime)}</p>`
+      // html = `<p>审批人:${task.assigneeUser.nickname}</p>
+      //             <p>部门:${task.assigneeUser.deptName}</p>
+      //             <p>结果:${getIntDictOptions(
+      //               DICT_TYPE.BPM_PROCESS_INSTANCE_RESULT,
+      //               task.status
+      //             )}</p>
+      //             <p>创建时间:${formatDate(task.createTime)}</p>`
+      if (task.endTime) {
+        html += `<p>结束时间:${formatDate(task.endTime)}</p>`
+      }
+      if (task.reason) {
+        html += `<p>审批建议:${task.reason}</p>`
+      }
+    } else if (element.value.type === 'bpmn:ServiceTask' && processInstance.value) {
+      if (activity.startTime > 0) {
+        html = `<p>创建时间:${formatDate(activity.startTime)}</p>`
+      }
+      if (activity.endTime > 0) {
+        html += `<p>结束时间:${formatDate(activity.endTime)}</p>`
+      }
+      console.log(html)
+    } else if (element.value.type === 'bpmn:EndEvent' && processInstance.value) {
+      let optionData = getIntDictOptions(DICT_TYPE.BPM_TASK_STATUS)
+      let dataResult = ''
+      optionData.forEach((element) => {
+        if (element.value == processInstance.value.status) {
+          dataResult = element.label
+        }
+      })
+      html = `<p>结果:${dataResult}</p>`
+      // html = `<p>结果:${getIntDictOptions(
+      //   DICT_TYPE.BPM_PROCESS_INSTANCE_RESULT,
+      //   processInstance.value.status
+      // )}</p>`
+      if (processInstance.value.endTime) {
+        html += `<p>结束时间:${formatDate(processInstance.value.endTime)}</p>`
+      }
+    }
+    // console.log(html, 'html111111111111111')
+    elementOverlayIds.value[element.value.id] = toRaw(overlays.value)?.add(element.value, {
+      position: { left: 0, bottom: 0 },
+      html: `<div class="element-overlays">${html}</div>`
+    })
+  }
+}
+
+// 流程图的元素被 out
+const elementOut = (element) => {
+  toRaw(overlays.value).remove({ element })
+  elementOverlayIds.value[element.id] = null
+}
+
+onMounted(() => {
+  xml.value = props.value
+  activityLists.value = props.activityData
+  // 初始化
+  initBpmnModeler()
+  createNewDiagram(xml.value)
+  // 初始模型的监听器
+  initModelListeners()
+})
+
+onBeforeUnmount(() => {
+  // this.$once('hook:beforeDestroy', () => {
+  // })
+  if (bpmnModeler) bpmnModeler.destroy()
+  emit('destroy', bpmnModeler)
+  bpmnModeler = null
+})
+
+watch(
+  () => props.value,
+  (newValue) => {
+    xml.value = newValue
+    createNewDiagram(xml.value)
+  }
+)
+watch(
+  () => props.activityData,
+  (newActivityData) => {
+    activityLists.value = newActivityData
+    createNewDiagram(xml.value)
+  }
+)
+watch(
+  () => props.processInstanceData,
+  (newProcessInstanceData) => {
+    processInstance.value = newProcessInstanceData
+    createNewDiagram(xml.value)
+  }
+)
+watch(
+  () => props.taskData,
+  (newTaskListData) => {
+    taskList.value = newTaskListData
+    createNewDiagram(xml.value)
+  }
+)
+</script>
+
+<style>
+@charset "UTF-8";
+/** 处理中 */
+.highlight-todo.djs-connection > .djs-visual > path {
+  stroke: #1890ff !important;
+  stroke-dasharray: 4px !important;
+  fill-opacity: 0.2 !important;
+}
+.highlight-todo.djs-shape .djs-visual > :nth-child(1) {
+  fill: #1890ff !important;
+  stroke: #1890ff !important;
+  stroke-dasharray: 4px !important;
+  fill-opacity: 0.2 !important;
+}
+:deep(.highlight-todo.djs-connection > .djs-visual > path) {
+  stroke: #1890ff !important;
+  stroke-dasharray: 4px !important;
+  fill-opacity: 0.2 !important;
+  marker-end: url("#sequenceflow-end-_E7DFDF-_E7DFDF-803g1kf6zwzmcig1y2ulm5egr");
+}
+:deep(.highlight-todo.djs-shape .djs-visual > :nth-child(1)) {
+  fill: #1890ff !important;
+  stroke: #1890ff !important;
+  stroke-dasharray: 4px !important;
+  fill-opacity: 0.2 !important;
+}
+/** 通过 */
+.highlight.djs-shape .djs-visual > :nth-child(1) {
+  fill: green !important;
+  stroke: green !important;
+  fill-opacity: 0.2 !important;
+}
+.highlight.djs-shape .djs-visual > :nth-child(2) {
+  fill: green !important;
+}
+.highlight.djs-shape .djs-visual > path {
+  fill: green !important;
+  fill-opacity: 0.2 !important;
+  stroke: green !important;
+}
+.highlight.djs-connection > .djs-visual > path {
+  stroke: green !important;
+}
+.highlight:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: green !important; /* color elements as green */
+}
+:deep(.highlight.djs-shape .djs-visual > :nth-child(1)) {
+  fill: green !important;
+  stroke: green !important;
+  fill-opacity: 0.2 !important;
+}
+:deep(.highlight.djs-shape .djs-visual > :nth-child(2)) {
+  fill: green !important;
+}
+:deep(.highlight.djs-shape .djs-visual > path) {
+  fill: green !important;
+  fill-opacity: 0.2 !important;
+  stroke: green !important;
+}
+:deep(.highlight.djs-connection > .djs-visual > path) {
+  stroke: green !important;
+}
+.djs-element.highlight > .djs-visual > path {
+  stroke: green !important;
+}
+/** 不通过 */
+.highlight-reject.djs-shape .djs-visual > :nth-child(1) {
+  fill: red !important;
+  stroke: red !important;
+  fill-opacity: 0.2 !important;
+}
+.highlight-reject.djs-shape .djs-visual > :nth-child(2) {
+  fill: red !important;
+}
+.highlight-reject.djs-shape .djs-visual > path {
+  fill: red !important;
+  fill-opacity: 0.2 !important;
+  stroke: red !important;
+}
+.highlight-reject.djs-connection > .djs-visual > path {
+  stroke: red !important;
+  marker-end: url(#sequenceflow-end-white-success) !important;
+}
+.highlight-reject:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: red !important; /* color elements as green */
+}
+:deep(.highlight-reject.djs-shape .djs-visual > :nth-child(1)) {
+  fill: red !important;
+  stroke: red !important;
+  fill-opacity: 0.2 !important;
+}
+:deep(.highlight-reject.djs-shape .djs-visual > :nth-child(2)) {
+  fill: red !important;
+}
+:deep(.highlight-reject.djs-shape .djs-visual > path) {
+  fill: red !important;
+  fill-opacity: 0.2 !important;
+  stroke: red !important;
+}
+:deep(.highlight-reject.djs-connection > .djs-visual > path) {
+  stroke: red !important;
+}
+/** 已取消 */
+.highlight-cancel.djs-shape .djs-visual > :nth-child(1) {
+  fill: grey !important;
+  stroke: grey !important;
+  fill-opacity: 0.2 !important;
+}
+.highlight-cancel.djs-shape .djs-visual > :nth-child(2) {
+  fill: grey !important;
+}
+.highlight-cancel.djs-shape .djs-visual > path {
+  fill: grey !important;
+  fill-opacity: 0.2 !important;
+  stroke: grey !important;
+}
+.highlight-cancel.djs-connection > .djs-visual > path {
+  stroke: grey !important;
+}
+.highlight-cancel:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: grey !important; /* color elements as green */
+}
+:deep(.highlight-cancel.djs-shape .djs-visual > :nth-child(1)) {
+  fill: grey !important;
+  stroke: grey !important;
+  fill-opacity: 0.2 !important;
+}
+:deep(.highlight-cancel.djs-shape .djs-visual > :nth-child(2)) {
+  fill: grey !important;
+}
+:deep(.highlight-cancel.djs-shape .djs-visual > path) {
+  fill: grey !important;
+  fill-opacity: 0.2 !important;
+  stroke: grey !important;
+}
+:deep(.highlight-cancel.djs-connection > .djs-visual > path) {
+  stroke: grey !important;
+}
+/** 回退 */
+.highlight-return.djs-shape .djs-visual > :nth-child(1) {
+  fill: #e6a23c !important;
+  stroke: #e6a23c !important;
+  fill-opacity: 0.2 !important;
+}
+.highlight-return.djs-shape .djs-visual > :nth-child(2) {
+  fill: #e6a23c !important;
+}
+.highlight-return.djs-shape .djs-visual > path {
+  fill: #e6a23c !important;
+  fill-opacity: 0.2 !important;
+  stroke: #e6a23c !important;
+}
+.highlight-return.djs-connection > .djs-visual > path {
+  stroke: #e6a23c !important;
+}
+.highlight-return:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: #e6a23c !important; /* color elements as green */
+}
+:deep(.highlight-return.djs-shape .djs-visual > :nth-child(1)) {
+  fill: #e6a23c !important;
+  stroke: #e6a23c !important;
+  fill-opacity: 0.2 !important;
+}
+:deep(.highlight-return.djs-shape .djs-visual > :nth-child(2)) {
+  fill: #e6a23c !important;
+}
+:deep(.highlight-return.djs-shape .djs-visual > path) {
+  fill: #e6a23c !important;
+  fill-opacity: 0.2 !important;
+  stroke: #e6a23c !important;
+}
+:deep(.highlight-return.djs-connection > .djs-visual > path) {
+  stroke: #e6a23c !important;
+}
+.element-overlays {
+  width: 200px;
+  padding: 8px;
+  color: #fafafa;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+</style>
+",
+  "
+
+-----    demo2.vue     -------
+
+<template>
+  <div class="add-node-btn-box w-240px inline-flex  shrink-0    relative">
+    <div class="add-node-btn">
+      <el-popover placement="right-start" v-model="visible" width="auto">
+        <div class="add-node-popover-body">
+          <a class="add-node-popover-item approver" @click="addType(1)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
+            </div>
+            <p>审批人</p>
+          </a>
+          <a class="add-node-popover-item notifier" @click="addType(2)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
+            </div>
+            <p>抄送人</p>
+          </a>
+          <a class="add-node-popover-item condition" @click="addType(4)">
+            <div class="item-wrapper">
+              <span class="iconfont"></span>
+            </div>
+            <p>条件分支</p>
+          </a>
+        </div>
+        <template #reference>
+          <button class="btn" type="button">
+            <span class="iconfont"></span>
+          </button>
+        </template>
+      </el-popover>
+    </div>
+  </div>
+</template>
+<script setup></script>
+<style scoped>
+.add-node-btn-box {-ms-flex-negative: 0;-webkit-box-flex: 1;-webkit-nihao-flex: 1;-ms-flex-positive: 1}
+</style>
+",
+  "
+
+-----    demo3.vue     -------
+
+<template>
+  <div class="add-node-btn-box w-240px inline-flex  shrink-0   relative [&:before]-content-[''] [&:before]-absolute [&:before]-top-0 [&:before]-left-0 [&:before]-right-0 [&:before]-bottom-0 [&:before]--z-1 [&:before]-m-auto [&:before]-w-2px [&:before]-h-[100%] [&:before]-bg-[#cacaca]">
+    <div class="add-node-btn select-none w-240px px-0 pt-20px pb-32px flex  justify-center shrink-0  grow-1">
+      <div class="add-node-popover-body flex">
+        <a class="add-node-popover-item approver mr-10px cursor-pointer text-center flex-1 text-[#191f25]! [&:hover_.item-wrapper]-bg-[#3296fa] [&:hover_.item-wrapper]-shadow-[0_10px_20px_0_rgba(50,150,250,0.4)] [&:hover_.iconfont]-text-[#fff] [&:active_.item-wrapper]-shadow-[none] [&:active_.item-wrapper]-bg-[#eaeaea] [&:active_.iconfont]-text-inherit" @click="addType(1)">
+          <div class="item-wrapper select-none inline-block w-80px h-80px mb-5px bg-[#fff] border-1px border-solid border-[#e2e2e2] rounded-[50%] transition-all transition-duration-0.3s transition-ease-[cubic-bezier(0.645,0.045,0.355,1)] text-[#ff943e]">
+            <span class="iconfont text-35px lh-80px"></span>
+          </div>
+          <p>审批人</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+<script setup></script>
+<style scoped>
+.add-node-btn-box {-ms-flex-negative: 0;-webkit-box-flex: 1;-ms-flex-positive: 1}.add-node-btn-box .add-node-btn {-webkit-box-pack: center;-webkit-box-flex: 1}
+.add-node-btn-box .add-node-btn .btn {
+  outline: none;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  width: 30px;
+  height: 30px;
+  background: #3296fa;
+  border-radius: 50%;
+  position: relative;
+  border: none;
+  line-height: 30px;
+  -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.add-node-btn-box .add-node-btn .btn .iconfont {
+  color: #fff;
+  font-size: 16px;
+}
+.add-node-btn-box .add-node-btn .btn:hover {
+  transform: scale(1.3);
+  box-shadow: 0 13px 27px 0 rgba(0, 0, 0, 0.1);
+}
+.add-node-btn-box .add-node-btn .btn:active {
+  transform: none;
+  background: #1e83e9;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}.add-node-popover-body .add-node-popover-item.notifier .item-wrapper {
+  color: #3296fa;
+}
+.add-node-popover-body .add-node-popover-item.condition .item-wrapper {
+  color: #15bc83;
+}</style>
+",
+  "
+
+-----    hover.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="bg-red w-[100%] lh-20px">
+    <div class="red [&:hover]-text-yellow">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    less.vue     -------
+
+<template>
+	<div class="box mx-auto my-0 border-1px border-solid border-[#f00] flex justify-center flex-col items-center">
+		<UsePinia />
+		<br />
+		<router-link to="/login">点击跳转至login</router-link>
+	</div>
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
+	name: 'index',
+	components: {
+	},
+	setup() {
+		const state = reactive({
+			test: 'index',
+		})
+		return {
+			...toRefs(state),
+		}
+	}
+});
+</script>
+<style scoped></style>
+",
+  "
+
+-----    media.vue     -------
+
+<script setup lang="ts"></script>
+
+<template>
+  <div class="red sm:bg-red max-2xl:bg-red bg-red">
+    nihao
+  </div>
+</template>
+
+<style scoped>
+@media (min-width: 120px) {
+  .red {
+    background-color: red;
+  }
+}
+</style>
+",
+  "
+
+-----    nth.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="bg-red w-[100%] lh-20px" id="test">
+    <div class="red yellow green nth-last-[1]-text-yellow">
+      n1
+    </div>
+    <div class="red">
+      n2
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    sass-builtin-test.vue     -------
+
+<template>
+  <div class="sass-builtin-test">
+    Built-in Sass module test
+  </div>
+</template>
+
+<style>
+.sass-builtin-test {
+  width: 50px;
+  color: #ff3333;
+}
+</style>
+",
+  "
+
+-----    sass.vue     -------
+
+<script setup lang="ts">
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+</script>
+
+<template>
+  <RouterView></RouterView>
+</template>
+
+<style>
+.size, html #app,
+body #app, html,
+body {
+  width: 100%;
+  height: 100%;
+}
+html,
+body {
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+}
+.namespace-app-grey-mode {
+  filter: grayscale(100%);
+}
+</style>
+",
+  "
+
+-----    styleMaxWidth.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="red">
+    nihao
+  </div>
+  <div class="yellow max-w-[calc(100%-50px)] bg-[rgba(255,62,0,0.1)]">
+    hi
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    styleWeight.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-pink bg-red" style="hi:123">
+    nihao
+  </div>
+  <div class="yellow bg-yellow" >
+    hi
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    stylus.vue     -------
+
+<script setup lang="ts">
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+</script>
+
+<template>
+  <RouterView></RouterView>
+</template>
+
+<style>
+.size,
+html,
+body,
+html #app,
+body #app {
+  width: 100%;
+  height: 100%;
+}
+html,
+body {
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+}
+</style>
+",
+  "
+
+-----    test-1.vue     -------
+
+<script setup lang="ts"></script>
+<template>
+  <div bg="red" w="[100%]" leading20px>
+    <div
+      flex
+      flex-1
+      h-100px
+      bg-red
+      class="container scale-80 scale-90"
+     
+    >
+      <div flex-1 h-100px bg-red />
+      <div />
+    </div>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    test-vue-1.vue     -------
+
+<script setup lang="ts">
+// 这里可以添加你的逻辑
+const newsList = [
+  { title: '公司新闻1', link: '#' },
+  { title: '公司新闻2', link: '#' },
+  { title: '公司新闻3', link: '#' },
+]
+</script>
+<template>
+  <div class="portal-container font-['Segoe_UI',_Arial,_sans-serif] bg-[#f5f6fa] min-h-100vh flex flex-col">
+    <header class="portal-header bg-[#2d8cf0] text-[#fff] pt-24px pb-16px pl0 pr0 text-center">
+      <h1>门户网站</h1>
+      <nav class="mt-12px">
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">首页</a>
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">新闻</a>
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">关于我们</a>
+        <a class="text-[#fff] mx-16px my0 decoration-none font-medium transition-text-decoration transition-duration-0.2s hover-decoration-underline" href="#">联系我们</a>
+      </nav>
+    </header>
+    <main class="portal-main flex-1 max-w-900px mt-32px mb0 ml-auto mr-auto px-16px py0">
+      <section class="banner bg-[#fff] rounded-8px px-24px py-32px shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-center mb-32px">
+        <h2>欢迎来到我们的门户网站</h2>
+        <p>这里是企业、学校或组织的门户首页。</p>
+      </section>
+      <section class="news bg-[#fff] rounded-8px px-20px py-24px shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+        <h3 class="mb-16px">最新新闻</h3>
+        <ul class="list-none p0 m0">
+          <li class="mb-10px" v-for="item in newsList" :key="item.title">
+            <a class="text-[#2d8cf0] decoration-none transition-text-decoration transition-duration-0.2s hover-decoration-underline" :href="item.link">{{ item.title }}</a>
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer class="portal-footer bg-[#222] text-[#fff] text-center px0 py-16px text-14px mt-40px">
+      &copy; 2025 门户网站. 保留所有权利.
+    </footer>
+  </div>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    test-vue-2.vue     -------
+
+<script setup lang="ts">
+// 这里可以添加你的逻辑
+</script>
+<template>
+<p class="font-bold">Track &amp; field champions:</p>
+<ul>
+  <li>Adhemar da Silva</li>
+  <li>Wang Junxia</li>
+  <li>Wilma Rudolph</li>
+  <li>Babe Didrikson-Zaharias</li>
+  <li>Betty Cuthbert</li>
+  <li>Fanny Blankers-Koen</li>
+  <li>Florence Griffith-Joyner</li>
+  <li>Irena Szewinska</li>
+  <li>Jackie Joyner-Kersee</li>
+  <li>Shirley Strickland</li>
+  <li>Carl Lewis</li>
+  <li>Emil Zatopek</li>
+  <li>Haile Gebrselassie</li>
+  <li>Jesse Owens</li>
+  <li>Jim Thorpe</li>
+  <li>Paavo Nurmi</li>
+  <li>Sergei Bubka</li>
+  <li class="[&:last-child]:hover-border-2px [&:last-child]:hover-border-solid [&:last-child]:hover-border-orange">Usain Bolt</li>
+</ul>
+</template>
+<style scoped></style>
+",
+  "
+
+-----    test.vue     -------
+
+<template>
+  <div>
+    <ul class="list-group list-group-striped">
+      <li class="list-group-item px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec]">
+        <Icon class="mr-5px" icon="ep:user" />
+        {{ t('profile.user.username') }}
+        <div class="pull-right float-right!">{{ userInfo?.username }}</div>
+      </li>
+      <li class="list-group-item px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec]">
+        <Icon class="mr-5px" icon="ep:phone" />
+        {{ t('profile.user.mobile') }}
+        <div class="pull-right float-right!">{{ userInfo?.mobile }}</div>
+      </li>
+      <li class="list-group-item px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec]">
+        <Icon class="mr-5px" icon="fontisto:email" />
+        {{ t('profile.user.email') }}
+        <div class="pull-right float-right!">{{ userInfo?.email }}</div>
+      </li>
+      <li class="list-group-item px-0 py-11px mb--1px text-13px border-t-1px border-t-solid border-t-[#e7eaec] border-b-1px border-b-solid border-b-[#e7eaec]">
+        <Icon class="mr-5px" icon="ep:calendar" />
+        {{ t('profile.user.createTime') }}
+        <div class="pull-right float-right!">{{ formatDate(userInfo.createTime) }}</div>
+      </li>
+    </ul>
+  </div>
+</template>
+<script lang="ts" setup>
+import { formatDate } from '@/utils/formatTime'
+import UserAvatar from './UserAvatar.vue'
+import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
+defineOptions({ name: 'ProfileUser' })
+const { t } = useI18n()
+const userInfo = ref({} as ProfileVO)
+const getUserInfo = async () => {
+  const users = await getUserProfile()
+  userInfo.value = users
+}
+onMounted(async () => {
+  await getUserInfo()
+})
+</script>
+<style scoped></style>
+",
+  "
+
+-----    use-syntax-test.vue     -------
+
+<template>
+  <div class="test-use-syntax">
+    <div class="basic-use">Basic @use test</div>
+    <div class="use-as-namespace">@use with namespace test</div>
+    <div class="use-with-config">@use with configuration test</div>
+  </div>
+</template>
+
+<style>
+.test-use-syntax .basic-use {
+  color: blue;
+  font-size: 20px;
+}
+.test-use-syntax .use-as-namespace {
+  color: #ff0000;
+  font-size: 16px;
+}
+.test-use-syntax .use-with-config {
+  color: blue;
+  font-size: 18px;
+}
+</style>
+",
+  "
+
+-----    vue.tsx     -------
+
+import { defineComponent, ref } from 'vue'
+import './index.css'
+
+export const component = defineComponent({
+  name: 'Component',
+  props: {
+    title: {
+      type: String,
+      default: '',
+    },
+    content: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props) {
+    const count = ref(0)
+    const increment = () => count.value++
+    return () => (
+      <div>
+        <h1 bg-red style="hi:123" class="red">{props.title}</h1>
+        <p>{props.content}</p>
+        <div onClick={increment}>
+          count: {count.value}
+        </div>
+      </div>
+    )
+  },
+})
+",
+]

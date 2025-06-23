@@ -1,0 +1,12 @@
+<script setup lang="ts"></script>
+<template>
+  <div class="container [&:focus-within]-bg-red [&:focus-within]-w-[100%]">
+    <div class="red bg-red w-[100%] lh-20px">
+      nihao
+    </div>
+    <div class="yellow">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>

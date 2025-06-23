@@ -1,6 +1,7 @@
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 import { escapeRegExp } from '@unocss/core'
+import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
 import {
   isNot,
   joinWithUnderLine,
@@ -16,7 +17,6 @@ import {
   diffTemplateStyle,
   getCssType,
   getStyleScoped,
-  getVueCompilerSfc, // 从utils引入公共函数
   isEmptyStyle,
   TRANSFER_FLAG,
   transformUnocssBack,
@@ -56,7 +56,6 @@ export async function transformCss(
   isRem = _isRem
   const allChanges: AllChange[] = []
   let newCode = (await importCss(code, style, filepath, isJsx)) as string
-  const { parse } = await getVueCompilerSfc()
   const stack = parse(newCode).descriptor.template?.ast
   const updateOffsetMap: any = {}
   const deferRun: any[] = []
@@ -75,6 +74,10 @@ export async function transformCss(
         : ''
       // :deep()
       if (prefix === 'group-deep')
+        return
+
+      // hover .xxx 这种没办法处理因为 tailwind 只支持 hover:[&:xxx] 在当前的元素下
+      if (prefix.includes(' '))
         return
 
       const after
@@ -352,7 +355,8 @@ async function resolveConflictClass(
 
     if (isJsx || after.replace(/[\w\-]+=("{1})(.*?)\1/g, '').includes('[')) {
       const newReg = new RegExp(
-        `<${tag}.*\\sclass=["']([^"']+)["'][^\\/>]*\/?>`,
+        `^<${tag}(?:[^\/'">]|"[^"]*"|'[^']*')*[^:]class=["']([^"']+)["']([^\/'">]|"[^"]*"|'[^']*')*\/?>`,
+        's',
       )
       const matcher = target.match(newReg)
 
@@ -442,7 +446,7 @@ async function getConflictClass(
     const pre = prefix ? `${prefix}|` : ''
     const beforeArr = before.split(';').filter(Boolean)
     const data = beforeArr.map((item) => {
-      const [key, value] = item.split(':')
+      const [key, value] = item.trim().split(':')
       return [`${pre}${key}`, value]
     })
     data.forEach((item) => {
@@ -503,7 +507,7 @@ async function getConflictClass(
     // map 赋值新 newStyle
     map = newStyle.split(';').reduce(
       (acc: Record<string, Array<number | string | symbol>>, item: string) => {
-        const [key, value] = item.split(':')
+        const [key, value] = item.trim().split(':')
         if (value !== undefined) {
           acc[key] = [map[key][0], value]
         }

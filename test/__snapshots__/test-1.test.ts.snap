@@ -1,0 +1,17 @@
+<script setup lang="ts"></script>
+<template>
+  <div bg="red" w="[100%]" leading20px>
+    <div
+      flex
+      flex-1
+      h-100px
+      bg-red
+      class="container scale-80 scale-90"
+     
+    >
+      <div flex-1 h-100px bg-red />
+      <div />
+    </div>
+  </div>
+</template>
+<style scoped></style>

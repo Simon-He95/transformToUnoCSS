@@ -1,0 +1,10 @@
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-pink bg-red" style="hi:123">
+    nihao
+  </div>
+  <div class="yellow bg-yellow" >
+    hi
+  </div>
+</template>
+<style scoped></style>

@@ -1,9 +1,8 @@
-import { getVueCompilerSfc } from './utils'
+import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js'
 
 const emptyStyle = /<style[\s\w'=]*>(\s+)/
 
 export async function prettierCode(code: string) {
-  const { parse } = await getVueCompilerSfc()
   const {
     descriptor: { styles },
   } = parse(code)

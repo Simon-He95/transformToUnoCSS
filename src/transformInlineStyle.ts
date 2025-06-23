@@ -42,7 +42,7 @@ export function transformInlineStyle(
             .replace(
               `class="${matcher[2]}"`,
               noMap.length
-                ? `class="${matcher[2]} ${after}" style="${noMap.join(';')}"`
+                ? `class="${matcher[2]} ${after}" style="${noMap.map(item => item && item.trim()).join(';')}"`
                 : `class="${matcher[2]} ${after}"`,
             ),
         ))
@@ -55,7 +55,7 @@ export function transformInlineStyle(
           .replace(
             `<${tag}`,
             noMap.length
-              ? `<${tag} class="${after}" style="${noMap.join(';')}`
+              ? `<${tag} class="${after}" style="${noMap.map(item => item && item.trim()).join(';')}`
               : `<${tag} class="${after}"`,
           ),
       ))
@@ -68,7 +68,7 @@ export function transformInlineStyle(
         .replace(
           `<${tag}`,
           noMap.length
-            ? `<${tag} ${after} style="${noMap.join(';')}"`
+            ? `<${tag} ${after} style="${noMap.map(item => item && item.trim()).join(';')}"`
             : `<${tag} ${after}`,
         ),
     ))

@@ -1,0 +1,44 @@
+<script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    loading?: boolean
+    title?: string
+  }>(),
+  {
+    loading: () => false,
+  },
+)
+</script>
+
+<template>
+  <div class="z-loading relative w-[100%] top-0 bottom-0">
+    <div class="z-loading__bg absolute bg-[rgba(255,255,255,0)] w-[100%] h-[100%] z-999" v-if="loading"></div>
+    <div
+      class="-z-loader bg-slate-950/80 rounded-md h-[84px] flex flex-col justify-center items-center p-4 z-1000 absolute top-[50%] left-[50%] min-w-88px h-84px translate-[-50%,-50%]"
+      v-if="loading"
+    >
+      <img
+        class="z-load-icon animate-[rotate] animate-duration-1s animate-ease-[linear] animate-count-infinite"
+        src="@renderer/apps/nextim/assets/loading.svg"
+        alt=""
+      />
+      <div
+        v-if="title"
+        class="text-center text-slate-50 text-sm font-normal mt-2"
+      >
+        {{ title }}
+      </div>
+    </div>
+
+    <slot> </slot>
+  </div>
+</template>
+<style scoped>@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

@@ -1,0 +1,9 @@
+<script setup lang="ts"></script>
+<template>
+  <div class="red bg-red w-[100%] lh-20px">
+    <div class="yellow bg-red! w-[100%]">
+      hi
+    </div>
+  </div>
+</template>
+<style scoped></style>

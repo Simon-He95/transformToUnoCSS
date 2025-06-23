@@ -1,0 +1,35 @@
+<template>
+  <div @click.stop="onTagClick" class="tag flex-center h-24px lh-24px text-center bg-[rgba(99,214,173,0.1)] rounded-[4px] font-500 text-14px text-[#3fc193] px-8px py-0 box-border" :class="[type]">
+    {{ tag }}
+  </div>
+</template>
+<script setup lang="ts">
+const emit = defineEmits(['on-tag-click'])
+
+const props = defineProps<{
+  tag: string
+  type?: string
+}>()
+function onTagClick() {
+  emit('on-tag-click')
+}
+</script>
+<style scoped>.tag.success {
+  color: #3fc193;
+  background: rgba(99, 214, 173, 0.1);
+}
+.tag.primary {
+  font-weight: 400;
+  color: #4b7bff;
+  background: rgba(75, 123, 255, 0.1);
+}
+.tag.disabled {
+  color: var(--color-text-1, #1d2129);
+  background: var(--color-fill-3, #e5e6eb);
+}
+.tag.warning {
+  background: rgba(255, 143, 40, 0.1);
+  color: #ff8f28;
+  font-weight: 400;
+}
+</style>

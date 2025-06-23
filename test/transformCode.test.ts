@@ -1,5 +1,5 @@
-import fsp from 'fs/promises'
-import path from 'path'
+import fsp from 'node:fs/promises'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { transfromCode } from '../src'
 
@@ -10,19 +10,26 @@ describe('transformCode', () => {
       demos.map(async (demo) => {
         const url = `./test/demo/${demo}`
         const filepath = path.resolve(process.cwd(), url)
-        const suffix = demo.endsWith('.vue') ? 'vue' : demo.endsWith('.tsx') ? 'tsx' : ''
-        if (!suffix)
-          return
+        const suffix = demo.endsWith('.vue')
+          ? 'vue'
+          : demo.endsWith('.tsx')
+            ? 'tsx'
+            : ''
+        if (!suffix) return
 
         return `\n\n-----    ${demo}     -------\n\n${await transfromCode(
           await fsp.readFile(url, 'utf-8'),
-          {filepath,
-          type:suffix,}
+          {
+            filepath,
+            type: suffix,
+          },
         )}`
       }),
     )
 
-    expect(contents.filter(Boolean)).toMatchSnapshot()
+    await expect(contents.filter(Boolean)).toMatchFileSnapshot(
+      './__snapshots__/all.test.ts.snap',
+    )
   })
 })
 
@@ -30,142 +37,157 @@ describe('single demo classWeight', async () => {
   const demo = await fsp.readFile('./test/demo/classWeight.vue', 'utf-8')
   const filepath = path.resolve(process.cwd(), './test/demo/classWeight.vue')
   it('classWeight.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue',isJsx:true})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/classWeight.test.ts.snap')
   })
 })
 
-describe('single demo classCombine', async () => {
-  const demo = await fsp.readFile('./test/demo/classCombine.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/classCombine.vue')
+describe('single demo classCombine', () => {
   it('classCombine.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    const demo = await fsp.readFile('./test/demo/classCombine.vue', 'utf-8')
+    const filepath = path.resolve(process.cwd(), './test/demo/classCombine.vue')
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/classCombine.test.ts.snap')
   })
 })
 
-describe('single demo classTail', async () => {
-  const demo = await fsp.readFile('./test/demo/classTail.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+describe('single demo classTail', () => {
   it('classTail.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    const demo = await fsp.readFile('./test/demo/classTail.vue', 'utf-8')
+    const filepath = path.resolve(process.cwd(), './test/demo/classTail.vue')
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/classTail.test.ts.snap')
   })
 })
 
-describe('single demo Media', async () => {
-  const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/media.vue')
-  it('Media.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+describe('single demo Media', () => {
+  it('media.vue', async () => {
+    const demo = await fsp.readFile('./test/demo/media.vue', 'utf-8')
+    const filepath = path.resolve(process.cwd(), './test/demo/media.vue')
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/media.test.ts.snap')
   })
 })
 
-describe('classSpace.vue', async () => {
-  const demo = await fsp.readFile('./test/demo/classSpace.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/classSpace.vue')
+describe('classSpace.vue', () => {
   it('classSpace.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    const demo = await fsp.readFile('./test/demo/classSpace.vue', 'utf-8')
+    const filepath = path.resolve(process.cwd(), './test/demo/classSpace.vue')
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/classSpace.test.ts.snap')
   })
 })
 
-describe('single demo styleWeight', async () => {
-  const demo = await fsp.readFile('./test/demo/styleWeight.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/styleWeight.vue')
+describe('single demo styleWeight', () => {
   it('styleWeight.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    const demo = await fsp.readFile('./test/demo/styleWeight.vue', 'utf-8')
+    const filepath = path.resolve(process.cwd(), './test/demo/styleWeight.vue')
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/styleWeight.test.ts.snap')
   })
 })
 
-describe('single test', async () => {
-  const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
+describe('single test', () => {
   it('single.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    const demo = await fsp.readFile('./test/demo/test.vue', 'utf-8')
+    const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/test.test.ts.snap')
   })
 })
 
-describe('less vue test', async () => {
-  const demo = await fsp.readFile('./test/demo/less.vue', 'utf-8')
-  const filepath = path.resolve(process.cwd(), './test/demo/test.vue')
-  it('single.vue', async () => {
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
-  })
-})
-
-describe('single demo vue.tsx', async () => {
-  const _path = './test/demo/vue.tsx'
-  const demo = await fsp.readFile(_path, 'utf-8')
-
+describe('single demo vue.tsx', () => {
   it('vue.tsx', async () => {
+    const _path = './test/demo/vue.tsx'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-
-    expect(await transfromCode(demo, {filepath, type:'tsx'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'tsx' }),
+    ).toMatchFileSnapshot('./__snapshots__/vue.test.ts.snap')
   })
 })
 
-describe('single demo styleMaxWidth.tsx', async () => {
-  const _path = './test/demo/styleMaxWidth.vue'
-  const demo = await fsp.readFile(_path, 'utf-8')
-
-  it('vue.tsx', async () => {
+describe('single demo test-1.vue', () => {
+  it('test-1.vue', async () => {
+    const _path = './test/demo/test-1.vue'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/test-1.test.ts.snap')
   })
 })
 
-describe('sass vue test', async () => {
-  const _path = './test/demo/sass.vue'
-  const demo = await fsp.readFile(_path, 'utf-8')
-
-  it('sass.vue', async () => {
+describe('single demo complex1.vue', () => {
+  it('complex.vue', async () => {
+    const _path = './test/demo/complex1.vue'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-    
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/complex1.test.ts.snap')
   })
 })
 
-describe('stylus vue test', async () => {
-  const _path = './test/demo/stylus.vue'
-  const demo = await fsp.readFile(_path, 'utf-8')
-
-  it('stylus.vue', async () => {
+describe('single demo complex2.vue', () => {
+  it('complex.vue', async () => {
+    const _path = './test/demo/complex2.vue'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-    
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/complex2.test.ts.snap')
   })
 })
 
-describe('demo1 vue test', async () => {
-  const _path = './test/demo/demo1.vue'
-  const demo = await fsp.readFile(_path, 'utf-8')
-
-  it('demo1.vue', async () => {
+describe('single demo complex3.vue', () => {
+  it('complex.vue', async () => {
+    const _path = './test/demo/complex3.vue'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/complex3.test.ts.snap')
   })
 })
 
-describe('demo2 vue test', async () => {
-  const _path = './test/demo/demo2.vue'
-  const demo = await fsp.readFile(_path, 'utf-8')
-  it('demo2.vue', async () => {
+describe('single demo complex4.vue', () => {
+  it('complex.vue', async () => {
+    const _path = './test/demo/complex4.vue'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/complex4.test.ts.snap')
   })
 })
 
-describe('demo3 vue test', async () => {
-  const _path = './test/demo/demo3.vue'
-  const demo = await fsp.readFile(_path, 'utf-8')
-  it('demo2.vue', async () => {
+describe('single demo complex5.vue', () => {
+  it('complex.vue', async () => {
+    const _path = './test/demo/complex5.vue'
+    const demo = await fsp.readFile(_path, 'utf-8')
     const filepath = path.resolve(process.cwd(), _path)
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/complex5.test.ts.snap')
   })
 })
 
-describe('nth vue test', async () => {
-  const _path = './test/demo/nth.vue'
+describe('single demo complex6.vue', async () => {
+  const _path = './test/demo/complex6.vue'
   const demo = await fsp.readFile(_path, 'utf-8')
-  it('nth.vue', async () => {
+
+  it('complex.vue', async () => {
     const filepath = path.resolve(process.cwd(), _path)
-    expect(await transfromCode(demo, {filepath, type:'vue'})).toMatchSnapshot()
+    await expect(
+      await transfromCode(demo, { filepath, type: 'vue' }),
+    ).toMatchFileSnapshot('./__snapshots__/complex6.test.ts.snap')
   })
 })

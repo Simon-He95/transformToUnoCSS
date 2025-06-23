@@ -1,0 +1,10 @@
+<script setup lang="ts">
+const nihao = ref(true)
+</script>
+<template>
+  <div class="red h-[100%] scale-150 bg-yellow w-[100%]" :class="[nihao?'w-10':'bg-red']">
+    nihao
+  </div>
+  <div>hi</div>
+</template>
+<style scoped></style>
