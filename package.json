@@ -3,8 +3,11 @@
   "type": "module",
   "version": "0.1.16",
   "packageManager": "pnpm@10.12.2",
-  "description": "The tool that transform css to unocss",
-  "author": "Simon He",
+  "description": "🚀 Effortlessly transform CSS, inline styles, and preprocessors (Sass/Less/Stylus) to UnoCSS with smart conflict resolution and debug support",
+  "author": {
+    "name": "Simon He",
+    "url": "https://github.com/Simon-He95"
+  },
   "license": "MIT",
   "funding": "https://github.com/sponsors/Simon-He95",
   "homepage": "https://github.com/Simon-He95/transformToUnocss#readme",
@@ -15,7 +18,25 @@
   "bugs": "https://github.com/Simon-He95/transformToUnocss/issues",
   "keywords": [
     "transform-to-unocss",
-    "unocss"
+    "unocss",
+    "css-migration",
+    "css-to-unocss",
+    "tailwindcss",
+    "atomic-css",
+    "css-transform",
+    "build-tool",
+    "vite-plugin",
+    "webpack-plugin",
+    "rollup-plugin",
+    "vue",
+    "react",
+    "svelte",
+    "astro",
+    "sass",
+    "less",
+    "stylus",
+    "performance-optimization",
+    "cli-tool"
   ],
   "sideEffects": false,
   "exports": {
@@ -39,7 +60,11 @@
     "tounocss": "./cli.mjs"
   },
   "files": [
-    "dist"
+    "README.md",
+    "README_zh.md",
+    "cli.mjs",
+    "dist",
+    "license"
   ],
   "scripts": {
     "build": "tsdown ./src/index.ts ./src/cli.ts",
