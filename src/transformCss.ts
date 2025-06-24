@@ -780,8 +780,7 @@ async function getConflictClass(
           )}`
         }
 
-        // transferCss = `${match[1]}-${joinWithUnderLine(match[2])}`
-
+        transferCss = transferCss.replace(/"/g, '\'')
         const _transferCss = prefix
           ? isNot(prefix)
             ? `class="${prefix}${transferCss
