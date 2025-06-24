@@ -535,7 +535,7 @@ const props = withDefaults(
 
 <template>
   <div class="user-item flex flex-row gap-10px min-h-28px overflow-hidden px-12px py-8px box-content bg-[#fff] items-center cursor-default [&:hover]-bg-[var(--gray-08,rgba(245,246,248,0.8))]" @click="onClick">
-    <span class="checkbox" v-if="pickMode" :class="{ checked: checked }"></span>
+    <span class="checkbox w-16px h-16px block mt-8px self-start shrink-0 bg-[url(@renderer/apps/nextim/assets/uncheck.svg)]" v-if="pickMode" :class="{ checked: checked }"></span>
     <ChannelAvatar
       :avatar="avatar"
       :name="name"
@@ -625,16 +625,7 @@ const onClick = () => {
   emits('click')
 }
 </script>
-<style scoped>.user-item .checkbox {
-  width: 16px;
-  height: 16px;
-  display: block;
-  margin-top: 8px;
-  align-self: flex-start;
-  flex-shrink: 0;
-  background-image: url("@renderer/apps/nextim/assets/uncheck.svg");
-}
-.user-item .checkbox.checked {
+<style scoped>.user-item .checkbox.checked {
   background-image: url("@renderer/apps/nextim/assets/checked.svg");
 }
 .user-item .avatar {
@@ -2265,19 +2256,23 @@ body {
 </template>
 
 <style>
-.size,
-html,
-body,
-html #app,
-body #app {
-  width: 100%;
-  height: 100%;
+$prefix-cls = name-app
+.size {
+  width: 100%
+  height: 100%
 }
 html,
 body {
-  padding: 0 !important;
-  margin: 0;
-  overflow: hidden;
+  @extend .size
+  padding: 0 !important
+  margin: 0
+  overflow: hidden
+  #app {
+    @extend .size
+  }
+}
+.$prefix-cls-grey-mode {
+  filter: grayscale(100%);
 }
 </style>
 ",

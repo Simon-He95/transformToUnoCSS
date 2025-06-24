@@ -1,4 +1,4 @@
-import type { CssType } from './utils'
+import type { CssType } from './type'
 import { compilerCss } from './compilerCss'
 import { prettierCode } from './prettierCode'
 import { transformCss } from './transformCss'
@@ -83,7 +83,13 @@ export async function transformVue(code: string, options?: Options) {
       lang = 'css',
     } = styles[0]
 
-    const css = await compilerCss(style, lang as CssType, filepath, globalCss)
+    const css = await compilerCss(
+      style,
+      lang as CssType,
+      filepath,
+      globalCss,
+      debug,
+    )
     if (css) {
       if (debug) {
         console.log(

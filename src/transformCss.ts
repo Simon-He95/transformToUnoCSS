@@ -1,3 +1,4 @@
+import type { CssType } from './type'
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 import { escapeRegExp } from '@unocss/core'
@@ -87,7 +88,7 @@ export async function transformCss(
   const updateOffsetMap: any = {}
   const deferRun: any[] = []
   style.replace(
-    /(.*)\{([#\\\s\w\-.:;,%()+'"!]*)\}/g,
+    /([.#\w](?:[^{}]|\n)*)\{([#\\\s\w\-.:;,%@/()+'"!]*)\}/g,
     (all: any, name: any, value: any = '') => {
       name = trim(name.replace(/\s+/g, ' '))
 
@@ -376,7 +377,13 @@ async function importCss(
       'utf-8',
     )
     const type = getCssType(url)
-    const css = await compilerCss(content, type, url, globalCss)
+    const css = await compilerCss(
+      content,
+      type as CssType,
+      url,
+      globalCss,
+      debug,
+    )
 
     const [_, beforeStyle] = code.match(/<style.*>(.*)<\/style>/s)!
     code = code.replace(beforeStyle, '')

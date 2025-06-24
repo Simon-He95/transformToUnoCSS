@@ -1,7 +1,7 @@
+import type { CssType } from './type'
 import { createGenerator } from '@unocss/core'
 import presetUno from '@unocss/preset-uno'
 
-export type CssType = 'less' | 'scss' | 'css' | 'styl'
 export const TRANSFER_FLAG = '.__unocss_transfer__'
 
 export function transformUnocssBack(code: string[]) {
@@ -74,4 +74,25 @@ export function getCssType(filename: string) {
 export async function getVueCompilerSfc() {
   const { parse } = await import('@vue/compiler-sfc')
   return { parse }
+}
+
+/**
+ * 检查是否在 Node.js 环境中运行
+ * @returns {boolean} 如果在 Node.js 环境中返回 true，在浏览器环境中返回 false
+ */
+export function isNodeEnvironment(): boolean {
+  try {
+    // 使用 require 而不是全局 process 以避免 ESLint 警告
+    // eslint-disable-next-line ts/no-require-imports
+    const process = require('node:process')
+    return (
+      typeof window === 'undefined'
+      && typeof process !== 'undefined'
+      && Boolean(process.versions?.node)
+    )
+  }
+  catch {
+    // 如果在浏览器环境中，require 可能会失败
+    return false
+  }
 }

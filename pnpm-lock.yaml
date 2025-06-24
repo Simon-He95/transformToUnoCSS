@@ -14,9 +14,6 @@ importers:
       '@rollup/pluginutils':
         specifier: ^5.2.0
         version: 5.2.0(rollup@4.40.0)
-      '@simon_he/clack-prompts':
-        specifier: ^0.8.11
-        version: 0.8.11
       '@unocss/core':
         specifier: ^0.50.8
         version: 0.50.8
@@ -32,24 +29,9 @@ importers:
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
-      less:
-        specifier: ^4.3.0
-        version: 4.3.0
-      less-plugin-module-resolver:
-        specifier: ^1.0.3
-        version: 1.0.3
       node-html-parser:
         specifier: ^7.0.1
         version: 7.0.1
-      picocolors:
-        specifier: ^1.1.1
-        version: 1.1.1
-      sass:
-        specifier: ^1.89.2
-        version: 1.89.2
-      stylus:
-        specifier: ^0.63.0
-        version: 0.63.0
       transform-to-unocss-core:
         specifier: ^0.0.68
         version: 0.0.68
@@ -60,6 +42,9 @@ importers:
       '@antfu/eslint-config':
         specifier: ^4.16.1
         version: 4.16.1(@vue/compiler-sfc@3.5.17)(eslint@8.57.1)(typescript@5.8.3)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@18.19.112)(jiti@2.4.2)(jsdom@19.0.0)(less@4.3.0)(lightningcss@1.29.3)(sass@1.89.2)(stylus@0.63.0)(tsx@3.14.0)(yaml@2.7.1))
+      '@simon_he/clack-prompts':
+        specifier: ^0.8.11
+        version: 0.8.11
       '@simon_he/colorize':
         specifier: ^0.0.1
         version: 0.0.1
@@ -84,21 +69,36 @@ importers:
       find-up:
         specifier: ^6.3.0
         version: 6.3.0
+      less:
+        specifier: ^4.3.0
+        version: 4.3.0
+      less-plugin-module-resolver:
+        specifier: ^1.0.3
+        version: 1.0.3
       lint-staged:
         specifier: ^13.3.0
         version: 13.3.0
       magic-string:
         specifier: ^0.30.17
         version: 0.30.17
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
       prettier:
         specifier: ^3.6.0
         version: 3.6.0
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
+      sass:
+        specifier: ^1.89.2
+        version: 1.89.2
       simple-git-hooks:
         specifier: ^2.13.0
         version: 2.13.0
+      stylus:
+        specifier: ^0.63.0
+        version: 0.63.0
       transform-to-unocss:
         specifier: workspace:^
         version: 'link:'
