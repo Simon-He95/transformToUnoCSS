@@ -92,6 +92,18 @@ export async function transformCss(
     (all: any, name: any, value: any = '') => {
       name = trim(name.replace(/\s+/g, ' '))
 
+      // 过滤掉特殊的CSS选择器
+      if (
+        name.includes(':deep(')
+        || name.includes('>>>')
+        || name.includes('/deep/')
+        || name.includes('::v-deep')
+        || name.includes(':global(')
+        || name.includes('@') // 过滤 @media, @keyframes 等
+      ) {
+        return
+      }
+
       const originClassName = name
       const before = trim(value.replace(/\n\s*/g, ''))
 
