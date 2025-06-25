@@ -40,6 +40,7 @@ interface AllChange {
   tag: string
   prefix: string
   attr: string[]
+  class: string
   media: string
   start: Position
   end: Position
@@ -285,11 +286,12 @@ export async function transformCss(
           props,
         } = r
 
+        let _class = ''
         const attr = props.reduce((result: string[], cur: any) => {
           let item
 
           if (cur.name === 'class' && (item = cur.value?.content))
-            result.push(item)
+            _class = item
           else if (!cur.value)
             result.push(cur.name)
 
@@ -310,6 +312,7 @@ export async function transformCss(
             source: newSource,
             tag,
             attr,
+            class: _class,
             prefix,
             media,
             start,
@@ -636,6 +639,42 @@ function calculateWeight(c: string) {
   return num
 }
 
+function getMatchingWeight(name: string, currentClass: string): number {
+  // 如果name包含逗号，说明是多个选择器，需要找到匹配当前class的选择器
+  if (name.includes(',')) {
+    const selectors = name.split(',').map(s => s.trim())
+    const currentClasses = currentClass.split(' ').filter(Boolean)
+
+    // 找到最匹配的选择器
+    let bestMatch = ''
+    let maxMatchCount = 0
+
+    for (const selector of selectors) {
+      let matchCount = 0
+      // 提取选择器中的类名
+      const selectorClasses = selector.match(/\.[A-Z][\w-]*/gi) || []
+
+      for (const selectorClass of selectorClasses) {
+        const className = selectorClass.substring(1) // 去掉点号
+        if (currentClasses.includes(className)) {
+          matchCount++
+        }
+      }
+
+      if (matchCount > maxMatchCount) {
+        maxMatchCount = matchCount
+        bestMatch = selector
+      }
+    }
+
+    // 如果找到匹配的选择器，使用它计算权重，否则使用第一个
+    return calculateWeight(bestMatch || selectors[0])
+  }
+
+  // 如果没有逗号，直接计算权重
+  return calculateWeight(name)
+}
+
 function findSameSource(allChange: AllChange[]) {
   const result: any = {}
   allChange.forEach((item) => {
@@ -674,27 +713,39 @@ async function getConflictClass(
   let map: Record<string, Array<number | string | symbol>> = {}
   let transform = (code: string) => code
   for await (const item of allChange) {
-    const { before, name, source, attr, after, prefix, media } = item
+    const {
+      before,
+      name,
+      source,
+      attr,
+      after,
+      prefix,
+      media,
+      class: _class,
+    } = item
     const pre = prefix ? `${prefix}|` : ''
     const beforeArr = before.split(';').filter(Boolean)
     const data = beforeArr.map((item) => {
       const [key, value] = item.trim().split(':')
       return [`${pre}${key}`, value]
     })
+
+    // 计算当前选择器的权重
+    const currentWeight = getMatchingWeight(name, _class)
+
     data.forEach((item) => {
       const [key, value] = item
       if (value === undefined)
         return
       if (!map[key]) {
-        map[key] = [calculateWeight(name), value]
+        map[key] = [currentWeight, value]
       }
       else {
         const [preWeight] = map[key] as any
         if (preWeight === skipTransformFlag)
           return
-        const curWeight = calculateWeight(name)
-        if (+curWeight >= +preWeight)
-          map[key] = [+curWeight, value]
+        if (+currentWeight >= +preWeight)
+          map[key] = [+currentWeight, value]
       }
     })
 
