@@ -113,7 +113,7 @@
     "unplugin": "^2.3.5"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.19.0",
+    "@antfu/eslint-config": "^5.1.0",
     "@simon_he/clack-prompts": "^0.8.11",
     "@simon_he/colorize": "^0.0.1",
     "@types/babel__core": "^7.20.5",
@@ -121,7 +121,7 @@
     "@types/node": "^18.19.121",
     "@types/stylus": "^0.48.43",
     "bumpp": "^8.2.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.32.0",
     "find-up": "^6.3.0",
     "less": "^4.4.0",
     "less-plugin-module-resolver": "^1.0.3",

@@ -788,18 +788,27 @@ async function getConflictClass(
   const { transformedResult, newStyle } = transformStyleToUnocssPre(joinMap)
   if (transformedResult) {
     // map 赋值新 newStyle
-    map = newStyle.split(';').reduce(
-      (acc: Record<string, Array<number | string | symbol>>, item: string) => {
-        const [key, value] = item.trim().split(':')
-        if (value !== undefined) {
-          acc[key] = [map[key][0], value]
-        }
-        return acc
-      },
-      // 将 transformedResult 赋值给 map
-      // map[]
-      {},
-    )
+    map = newStyle
+      .split(';')
+      .reduce(
+        (
+          acc: Record<string, Array<number | string | symbol>>,
+          item: string,
+        ) => {
+          // 这里 split 应该要排除 [] 中的情况
+          // 使用正则分割第一个不在 [] 内的冒号
+          const match = item.trim().match(/(^(?:[^:[]|\[[^\]]*\])+):\s*(.*)$/)
+          if (match) {
+            const key = match[1].trim()
+            const value = match[2]
+            if (value !== undefined) {
+              acc[key] = [map[key]?.[0] ?? 1, value]
+            }
+          }
+          return acc
+        },
+        {},
+      )
     map[transformedResult] = [1, skipTransformFlag]
   }
   return [
