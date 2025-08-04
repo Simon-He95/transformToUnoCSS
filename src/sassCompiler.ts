@@ -14,14 +14,14 @@ import path from 'node:path'
  *
  * @param css 要编译的 CSS 内容
  * @param filepath 文件路径，用于解析 @import 等
- * @param globalCss 全局 CSS 内容
+ * @param globalCss 全局 CSS 内容（字符串）或包含 CSS 的对象（如 {css: string}）
  * @param debug 是否开启调试模式
  * @returns 编译后的 CSS 字符串
  */
 export async function sassCompiler(
   css: string,
   filepath: string,
-  globalCss?: string,
+  globalCss?: string | any,
   debug?: boolean,
 ) {
   if (typeof window !== 'undefined')
@@ -66,7 +66,29 @@ export async function sassCompiler(
   // 处理 globalCss 和当前 CSS
   let result = ''
   if (globalCss) {
-    result += globalCss
+    // 检查 globalCss 的类型，确保它是字符串
+    if (typeof globalCss === 'string') {
+      result += globalCss
+    }
+    else if (typeof globalCss === 'object' && globalCss !== null) {
+      // 如果是对象，尝试提取 CSS 内容
+      const globalCssObj = globalCss as any
+      if ('css' in globalCssObj && typeof globalCssObj.css === 'string') {
+        result += globalCssObj.css
+      }
+      else if (debug) {
+        console.warn(
+          `[transform-to-unocss] Unexpected globalCss object format:`,
+          globalCss,
+        )
+      }
+    }
+    else if (debug) {
+      console.warn(
+        `[transform-to-unocss] globalCss is not a string or valid object: ${typeof globalCss}`,
+        globalCss,
+      )
+    }
   }
   result += css
 
