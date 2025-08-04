@@ -106,10 +106,10 @@
     "@unocss/core": "^0.50.8",
     "@unocss/preset-uno": "^0.50.8",
     "@vue/babel-plugin-jsx": "^1.4.0",
-    "@vue/compiler-sfc": "^3.5.17",
+    "@vue/compiler-sfc": "^3.5.18",
     "fast-glob": "^3.3.3",
     "node-html-parser": "^7.0.1",
-    "transform-to-unocss-core": "^0.0.68",
+    "transform-to-unocss-core": "^0.0.69",
     "unplugin": "^2.3.5"
   },
   "devDependencies": {

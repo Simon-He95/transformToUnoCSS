@@ -16,6 +16,33 @@ interface Options {
 
 export async function transformVue(code: string, options?: Options) {
   const { isJsx, filepath, isRem, globalCss, debug } = options || {}
+
+  // 添加基本的输入验证
+  if (typeof code !== 'string') {
+    if (debug) {
+      console.warn(
+        `[transform-to-unocss] transformVue received non-string code: ${typeof code}, filepath: ${filepath}`,
+      )
+    }
+    return String(code || '')
+  }
+
+  // 检查文件路径和内容，避免处理非Vue文件
+  if (
+    filepath
+    && !filepath.endsWith('.vue')
+    && !code.includes('<template>')
+    && !code.includes('<script>')
+    && !code.includes('<style>')
+  ) {
+    if (debug) {
+      console.warn(
+        `[transform-to-unocss] transformVue called for non-Vue file: ${filepath}`,
+      )
+    }
+    return code
+  }
+
   const { parse } = await getVueCompilerSfc()
   if (debug) {
     console.log(
