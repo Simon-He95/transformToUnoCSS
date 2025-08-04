@@ -1,7 +1,7 @@
 {
   "name": "transform-to-unocss",
   "type": "module",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "packageManager": "pnpm@10.14.0",
   "description": "🚀 Effortlessly transform CSS, inline styles, and preprocessors (Sass/Less/Stylus) to UnoCSS with smart conflict resolution and debug support",
   "author": {
