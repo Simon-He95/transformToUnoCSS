@@ -1,0 +1,30 @@
+<template>
+	<div class="waterfall-container layout-pd">
+		<el-card shadow="hover" header="瀑布屏（布局一）" class="mb15">
+			<div class="waterfall-first grid   grid-flow-row-dense auto-rows-[20px]">
+				<div class="waterfall-first-item w-[100%] bg-[var(--el-color-primary)] text-[var(--el-color-white)] transition-all transition-duration-0.3s transition-ease-[ease] rounded-[3px] nth-of-type-row-auto/span nth-of-type-8 [&:hover]-shadow-[0_2px_12px_0_rgba(0,0,0,0.1)] [&:hover]-transition='all [&:hover]-duration-0.3s [&:hover]-ease-[ease]' [&:hover]-cursor-pointer" v-for="v in 30" :key="v" v-waves>
+					<div class="w100 h100 flex">
+						<span class="flex-margin">{{ v }}</span>
+					</div>
+				</div>
+			</div>
+		</el-card>
+		<el-card shadow="hover" header="瀑布屏（布局二）">
+			<div class="waterfall-last grid  grid-flow-row-dense auto-rows-[minmax(188px,20vmin)] grid-cols-14">
+				<div class="waterfall-last-item h-[100%] bg-[var(--el-color-primary)] text-[var(--el-color-white)] transition-all transition-duration-0.3s transition-ease-[ease] rounded-[3px] [&:hover]-shadow-[0_2px_12px_0_rgba(0,0,0,0.1)] [&:hover]-transition='all [&:hover]-duration-0.3s [&:hover]-ease-[ease]' [&:hover]-cursor-pointer nth-of-type-col-auto/span nth-of-type-3" v-for="v in 30" :key="v" v-waves="'light'">
+					<div class="w100 h100 flex">
+						<span class="flex-margin">{{ v }}</span>
+					</div>
+				</div>
+			</div>
+		</el-card>
+	</div>
+</template>
+
+<script setup lang="ts" name="pagesWaterfall">
+// 此处需有内容（注释也得），否则缓存将失败
+</script>
+
+<style scoped>
+.waterfall-container .waterfall-first {grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));grid-gap: 0.25em}.waterfall-container .waterfall-last {grid-gap: 0.25em}@media (min-width: 576px) and (min-width: 1024px)
+</style>

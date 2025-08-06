@@ -25,7 +25,7 @@ import {
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 
 const tailReg = /:?:(.+)/ // :after
-const emptyClass = /[,\w>.#\-+:[\]="'\s()]+\{\}\n/g
+const emptyClass = /[@,\w>.#\-+:[\]="'\s()]+\{\}\n/g
 
 interface Position {
   column: number
