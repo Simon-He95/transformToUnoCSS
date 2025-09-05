@@ -13,10 +13,17 @@ interface Options {
   isRem?: boolean
   globalCss?: any
   debug?: boolean
+  resolveAlias?: any
 }
 
 export async function transformHtml(code: string, options?: Options) {
-  const { filepath, isRem, globalCss, debug = false } = options || {}
+  const {
+    filepath,
+    isRem,
+    globalCss,
+    debug = false,
+    resolveAlias,
+  } = options || {}
   const css = await getLinkCss(code, filepath!)
   const style = getStyleCss(code)
   const newCode = await generateNewCode(
@@ -26,6 +33,7 @@ export async function transformHtml(code: string, options?: Options) {
     isRem,
     globalCss,
     debug,
+    resolveAlias,
   )
   return prettierCode(newCode)
 }
@@ -71,6 +79,7 @@ async function generateNewCode(
   isRem?: boolean,
   globalCss?: any,
   debug = false,
+  resolveAlias?: any,
 ) {
   // 先处理style
   let template = getBody(code)
@@ -82,6 +91,7 @@ async function generateNewCode(
       isRem,
       globalCss,
       debug,
+      resolveAlias,
     })
     template = transferCode
 
@@ -99,6 +109,7 @@ async function generateNewCode(
         isRem,
         globalCss,
         debug,
+        resolveAlias,
       })
 
       if (diffTemplateStyle(template, transferCode)) {

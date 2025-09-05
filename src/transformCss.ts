@@ -56,6 +56,7 @@ export async function transformCss(
   _isRem?: boolean,
   debug = false,
   globalCss?: any,
+  resolveAlias?: any,
 ): Promise<string> {
   isRem = _isRem
   const allChanges: AllChange[] = []
@@ -67,6 +68,7 @@ export async function transformCss(
     isJsx,
     debug,
     globalCss,
+    resolveAlias,
   )) as string
 
   if (debug) {
@@ -355,6 +357,7 @@ async function importCss(
   isJsx?: boolean,
   debug = false,
   globalCss?: any,
+  resolveAlias?: any,
 ) {
   if (debug) {
     console.log(
@@ -398,6 +401,7 @@ async function importCss(
       url,
       globalCss,
       debug,
+      resolveAlias,
     )
 
     const [_, beforeStyle] = code.match(/<style.*>(.*)<\/style>/s)!
@@ -411,6 +415,7 @@ async function importCss(
       filepath,
       globalCss,
       debug,
+      resolveAlias,
     })
 
     if (diffTemplateStyle(transfer, vue)) {

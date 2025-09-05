@@ -1,8 +1,12 @@
+import path from 'node:path'
+import process from 'node:process'
+
 export async function lessCompiler(
   css: string,
   filepath: string,
   globalCss?: string,
   debug?: boolean,
+  resolveAlias?: any,
 ) {
   if (typeof window !== 'undefined')
     throw new Error('lessCompiler is not supported in this browser')
@@ -22,12 +26,44 @@ export async function lessCompiler(
       'less-plugin-module-resolver'
     )
 
+    // normalize resolveAlias into plain alias object { find: replacement }
+    const aliasObj: Record<string, string> = {}
+    try {
+      if (resolveAlias) {
+        if (Array.isArray(resolveAlias)) {
+          for (const a of resolveAlias) {
+            if (a && a.find && a.replacement) {
+              aliasObj[a.find] = path.isAbsolute(a.replacement)
+                ? a.replacement
+                : path.resolve(process.cwd(), a.replacement)
+            }
+          }
+        }
+        else if (typeof resolveAlias === 'object') {
+          for (const k of Object.keys(resolveAlias)) {
+            const val = resolveAlias[k]
+            aliasObj[k] = path.isAbsolute(val)
+              ? val
+              : path.resolve(process.cwd(), val)
+          }
+        }
+      }
+    }
+    catch (e) {
+      if (debug) {
+        console.warn(
+          '[transform-to-unocss] less resolveAlias normalize failed',
+          e,
+        )
+      }
+    }
+
     result = (
       await less.default.render(result, {
         filename: filepath,
         plugins: [
           new LessPluginModuleResolver({
-            alias: {},
+            alias: aliasObj,
           }),
         ],
       })

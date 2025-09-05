@@ -7,10 +7,17 @@ interface Options {
   isRem?: boolean
   globalCss?: any
   debug?: boolean
+  resolveAlias?: any
 }
 
 export async function transformSvelte(code: string, options?: Options) {
-  const { filepath, isRem, globalCss, debug = false } = options || {}
+  const {
+    filepath,
+    isRem,
+    globalCss,
+    debug = false,
+    resolveAlias,
+  } = options || {}
   const match = code.match(
     /(<script.*<\/script>)?(.*(?=<style>))(<style>.*<\/style>)?/s,
   )
@@ -27,6 +34,7 @@ export async function transformSvelte(code: string, options?: Options) {
     globalCss,
     filepath,
     debug,
+    resolveAlias,
   })
 
   vue.replace(

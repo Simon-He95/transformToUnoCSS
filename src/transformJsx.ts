@@ -9,10 +9,17 @@ interface Options {
   isRem?: boolean
   globalCss?: any
   debug?: boolean
+  resolveAlias?: any
 }
 
 export async function transformJsx(code: string, options?: Options) {
-  const { filepath, isRem, globalCss, debug = false } = options || {}
+  const {
+    filepath,
+    isRem,
+    globalCss,
+    debug = false,
+    resolveAlias,
+  } = options || {}
   try {
     const ast = babelParse(code, {
       babelrc: false,
@@ -54,6 +61,7 @@ export async function transformJsx(code: string, options?: Options) {
       globalCss,
       filepath,
       debug,
+      resolveAlias,
     })
     // vueTransfer = vueTransfer.replace(/class/g, 'className')
     if (cssPath) {

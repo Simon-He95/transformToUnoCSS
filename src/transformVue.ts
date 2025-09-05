@@ -12,10 +12,12 @@ interface Options {
   isRem?: boolean
   globalCss?: any
   debug?: boolean
+  resolveAlias?: any
 }
 
 export async function transformVue(code: string, options?: Options) {
-  const { isJsx, filepath, isRem, globalCss, debug } = options || {}
+  const { isJsx, filepath, isRem, globalCss, debug, resolveAlias }
+    = options || {}
 
   // 添加基本的输入验证
   if (typeof code !== 'string') {
@@ -116,6 +118,7 @@ export async function transformVue(code: string, options?: Options) {
       filepath,
       globalCss,
       debug,
+      resolveAlias,
     )
     if (css) {
       if (debug) {
@@ -146,6 +149,7 @@ export async function transformVue(code: string, options?: Options) {
           isRem,
           debug,
           globalCss,
+          resolveAlias,
         )
       }
     }

@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 
 /**
  * Sass 编译器 - 处理 SCSS/Sass 文件编译
@@ -23,6 +24,7 @@ export async function sassCompiler(
   filepath: string,
   globalCss?: string | any,
   debug?: boolean,
+  resolveAlias?: any,
 ) {
   if (typeof window !== 'undefined')
     throw new Error('sassCompiler is not supported in this browser')
@@ -92,6 +94,23 @@ export async function sassCompiler(
   }
   result += css
 
+  if (process.env.DEBUG_SASS) {
+    console.log(
+      '[transform-to-unocss] [sassCompiler] globalCss type:',
+      typeof globalCss,
+    )
+
+    console.log(
+      '[transform-to-unocss] [sassCompiler] result before replace length:',
+      result.length,
+    )
+
+    console.log(
+      '[transform-to-unocss] [sassCompiler] result before replace snippet:',
+      result.slice(0, 200),
+    )
+  }
+
   try {
     // 使用用户项目中的 sass 版本（通过 peerDependencies）
     const sass = await import('sass')
@@ -129,7 +148,8 @@ export async function sassCompiler(
         // 启用现代 Sass API
         syntax: 'scss',
         // 支持 @use 和 @forward，让 Sass 使用默认的文件解析
-        loadPaths: [baseDir],
+        // 同时添加项目 src 目录到 loadPaths，方便解析 '@/...' 别名
+        loadPaths: [baseDir, path.resolve(process.cwd(), 'src')],
       }
 
       // 为现代版本的 Sass 添加兼容性配置
@@ -182,6 +202,136 @@ export async function sassCompiler(
         }
       }
 
+      // 在编译前，尝试将源码中以 '@/...' 或 '~@/...' 开头的别名导入替换为可解析的绝对路径。
+      // 这能解决在没有构建别名解析器（如 vite/webpack）的环境中，Sass 无法直接解析别名的问题。
+      const fs = await import('node:fs')
+
+      const replaceAliasImports = (source: string) => {
+        const importRegex = /@(import|use|forward)\s+(['"])(~?@\/[\w\-./]+)\2/g
+
+        const resolveAliasLocal = (impPath: string) => {
+          // impPath like '@/styles/foo' or '~@/styles/foo'
+          const rel = impPath.replace(/^~?@\//, '')
+          // If we have a resolver map from Vite/Rollup, try to resolve via it
+          try {
+            if (resolveAlias) {
+              // config.resolve.alias can be array or object
+              if (Array.isArray(resolveAlias)) {
+                for (const a of resolveAlias) {
+                  // { find, replacement }
+                  if (
+                    typeof a.find === 'string'
+                    && impPath.startsWith(a.find)
+                  ) {
+                    return path.resolve(
+                      a.replacement,
+                      impPath.slice(a.find.length),
+                    )
+                  }
+                  if (a.find instanceof RegExp) {
+                    const m = impPath.match(a.find)
+                    if (m)
+                      return impPath.replace(a.find, a.replacement)
+                  }
+                }
+              }
+              else if (typeof resolveAlias === 'object') {
+                for (const key of Object.keys(resolveAlias)) {
+                  if (impPath.startsWith(key)) {
+                    return path.resolve(
+                      resolveAlias[key],
+                      impPath.slice(key.length),
+                    )
+                  }
+                }
+              }
+            }
+          }
+          catch (e) {
+            // ignore resolver errors and fallback
+            if (debug)
+              console.warn('[transform-to-unocss] resolveAlias failed', e)
+          }
+          const candidateSrc = path.resolve(process.cwd(), 'src', rel)
+          const candidateRoot = path.resolve(process.cwd(), rel)
+
+          const exts = ['', '.scss', '.sass', '.css']
+          const underscoreVariants = (p: string) => {
+            const dir = path.dirname(p)
+            const base = path.basename(p)
+            return path.join(dir, `_${base}`)
+          }
+
+          const tryPaths = (base: string) => {
+            for (const e of exts) {
+              const p1 = base + e
+              if (fs.existsSync(p1))
+                return p1
+              const p2 = underscoreVariants(base) + e
+              if (fs.existsSync(p2))
+                return p2
+            }
+            return null
+          }
+
+          // Prefer src-based resolution
+          let found = tryPaths(candidateSrc)
+          if (found)
+            return found
+
+          found = tryPaths(candidateRoot)
+          if (found)
+            return found
+
+          // 最后回退到 src 路径（即使文件可能不存在），让 Sass 去进一步解析
+          return candidateSrc
+        }
+
+        return source.replace(importRegex, (match, kw, quote, impPath) => {
+          try {
+            const resolved = resolveAliasLocal(impPath)
+            if (resolved && resolved !== impPath) {
+              // ensure resolved is absolute-ish; if it's relative, resolve from cwd
+              let finalPath = resolved
+              try {
+                // If resolved looks like a path (contains /) but is not absolute, make it absolute
+                if (!path.isAbsolute(finalPath)) {
+                  finalPath = path.resolve(process.cwd(), finalPath)
+                }
+              }
+              catch (e) {
+                // keep original resolved if path ops fail
+              }
+
+              if (debug) {
+                console.log(
+                  `[transform-to-unocss] Rewriting ${kw} ${impPath} -> ${finalPath}`,
+                )
+              }
+              return `@${kw} ${quote}${finalPath}${quote}`
+            }
+          }
+          catch (e) {
+            // Ignore resolution errors and leave original import
+            if (debug)
+              console.warn('[transform-to-unocss] alias resolution error', e)
+          }
+
+          return match
+        })
+      }
+
+      // 在编译前把 alias 导入替换并准备要编译的源
+      const sourceToCompile = replaceAliasImports(result)
+
+      // 可选调试：打印最终传入 Sass 的源码，方便定位 globalCss 是否被包含
+      if (process.env.DEBUG_SASS) {
+        console.log(
+          '[transform-to-unocss] [sassCompiler] sourceToCompile:',
+          sourceToCompile,
+        )
+      }
+
       // 优先使用新的 compile API（如果可用），否则回退到 compileString
       let compiledResult: any
 
@@ -190,12 +340,11 @@ export async function sassCompiler(
 
       if (sass.compile && typeof sass.compile === 'function') {
         // 使用新的 API - 需要写入临时文件
-        const fs = await import('node:fs')
         const os = await import('node:os')
         const tempFilePath = `${os.tmpdir()}/transform-to-unocss-${Date.now()}.scss`
 
         try {
-          fs.writeFileSync(tempFilePath, result)
+          fs.writeFileSync(tempFilePath, sourceToCompile)
           compiledResult = sass.compile(tempFilePath, compileOptions)
         }
         finally {
@@ -210,7 +359,7 @@ export async function sassCompiler(
       }
       else {
         // 回退到旧的 API
-        compiledResult = sass.compileString(result, compileOptions)
+        compiledResult = sass.compileString(sourceToCompile, compileOptions)
       }
 
       result = compiledResult.css

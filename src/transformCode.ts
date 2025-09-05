@@ -12,6 +12,7 @@ interface Options {
   isJsx?: boolean
   globalCss?: any
   debug?: boolean
+  resolveAlias?: any
 }
 
 export async function transformCode(code: string, options: Options) {
@@ -22,6 +23,7 @@ export async function transformCode(code: string, options: Options) {
     isJsx = true,
     globalCss,
     debug,
+    resolveAlias,
   } = options || {}
 
   // 添加输入验证
@@ -94,14 +96,34 @@ export async function transformCode(code: string, options: Options) {
     if (debug) {
       console.log(`[DEBUG] transformCode: Processing as TSX file`)
     }
-    return transformJsx(code, { filepath, isRem, globalCss, debug })
+    return transformJsx(code, {
+      filepath,
+      isRem,
+      globalCss,
+      debug,
+      resolveAlias,
+    })
   }
   if (detectedType === 'html')
-    return transformHtml(code, { filepath, globalCss, debug })
-  if (detectedType === 'svelte')
-    return transformSvelte(code, { filepath, isRem, globalCss, debug })
-  if (detectedType === 'astro')
-    return transformAstro(code, { filepath, isRem, globalCss, debug })
+    return transformHtml(code, { filepath, globalCss, debug, resolveAlias })
+  if (detectedType === 'svelte') {
+    return transformSvelte(code, {
+      filepath,
+      isRem,
+      globalCss,
+      debug,
+      resolveAlias,
+    })
+  }
+  if (detectedType === 'astro') {
+    return transformAstro(code, {
+      filepath,
+      isRem,
+      globalCss,
+      debug,
+      resolveAlias,
+    })
+  }
 
   // 只有确认是Vue文件或包含Vue语法时才调用transformVue
   if (
@@ -113,7 +135,14 @@ export async function transformCode(code: string, options: Options) {
     if (debug) {
       console.log(`[DEBUG] transformCode: Processing as Vue file`)
     }
-    return transformVue(code, { isJsx, filepath, isRem, globalCss, debug })
+    return transformVue(code, {
+      isJsx,
+      filepath,
+      isRem,
+      globalCss,
+      debug,
+      resolveAlias,
+    })
   }
 
   // 如果都不匹配，返回原始代码

@@ -11,6 +11,7 @@ export function compilerCss(
   filepath: string = isNodeEnvironment() ? process.cwd() : '',
   globalCss?: string,
   debug?: boolean,
+  resolveAlias?: any,
 ) {
   // 添加输入验证
   if (typeof css !== 'string') {
@@ -34,11 +35,11 @@ export function compilerCss(
 
   switch (lang) {
     case 'stylus':
-      return stylusCompiler(css, filepath, globalCss, debug)
+      return stylusCompiler(css, filepath, globalCss, debug, resolveAlias)
     case 'less':
-      return lessCompiler(css, filepath, globalCss, debug)
+      return lessCompiler(css, filepath, globalCss, debug, resolveAlias)
     case 'scss':
-      return sassCompiler(css, filepath, globalCss, debug)
+      return sassCompiler(css, filepath, globalCss, debug, resolveAlias)
     default:
       return css
   }
