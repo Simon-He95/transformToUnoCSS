@@ -731,7 +731,12 @@ async function getConflictClass(
     const pre = prefix ? `${prefix}|` : ''
     const beforeArr = before.split(';').filter(Boolean)
     const data = beforeArr.map((item) => {
-      const [key, value] = item.trim().split(':')
+      const trimmed = item.trim()
+      const idx = trimmed.indexOf(':')
+      if (idx === -1)
+        return [`${pre}${trimmed}`, undefined]
+      const key = trimmed.slice(0, idx)
+      const value = trimmed.slice(idx + 1)
       return [`${pre}${key}`, value]
     })
 
