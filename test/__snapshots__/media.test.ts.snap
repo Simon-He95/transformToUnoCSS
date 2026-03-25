@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="red sm:bg-red max-2xl:bg-red bg-red">
+  <div class="red sm:bg-red max-2xl:bg-red">
     nihao
   </div>
 </template>

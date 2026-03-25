@@ -72,7 +72,7 @@ Options:
   }
 
   const entries = await fg(
-    ['**.vue', '**.tsx', '**.html', '**.svelte', '**.astro'],
+    ['**.vue', '**.tsx', '**.jsx', '**.html', '**.svelte', '**.astro'],
     { cwd: fileDir },
   )
   if (!entries.length) {

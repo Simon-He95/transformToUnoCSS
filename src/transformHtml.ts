@@ -6,7 +6,7 @@ import { diffTemplateStyle } from './utils'
 import { wrapperVueTemplate } from './wrapperVueTemplate'
 
 const linkCssReg = /<link.*href="(.+css)".*>/g
-const styleReg = /\s*<style[^>]*>(.*)<\/style>\s*/s
+const styleBlockReg = /<style\b[^>]*>([\s\S]*?)<\/style>/g
 
 interface Options {
   filepath?: string
@@ -25,10 +25,10 @@ export async function transformHtml(code: string, options?: Options) {
     resolveAlias,
   } = options || {}
   const css = await getLinkCss(code, filepath!)
-  const style = getStyleCss(code)
+  const styles = getStyleCss(code)
   const newCode = await generateNewCode(
     css,
-    style,
+    styles,
     code,
     isRem,
     globalCss,
@@ -59,10 +59,10 @@ async function getLinkCss(code: string, filepath: string) {
 }
 
 function getStyleCss(code: string) {
-  const match = code.match(styleReg)
-  if (!match)
-    return ''
-  return match[1]
+  return [...code.matchAll(styleBlockReg)].map(match => ({
+    full: match[0],
+    content: match[1],
+  }))
 }
 
 function getBody(code: string) {
@@ -74,7 +74,7 @@ function getBody(code: string) {
 
 async function generateNewCode(
   css: { url: string, content: string }[],
-  style: string,
+  styles: { full: string, content: string }[],
   code: string,
   isRem?: boolean,
   globalCss?: any,
@@ -84,20 +84,22 @@ async function generateNewCode(
   // 先处理style
   let template = getBody(code)
   const originBody = template
-  if (style) {
-    const vue = wrapperVueTemplate(template, style)
-    const transferCode = await transformVue(vue, {
-      isJsx: true,
-      isRem,
-      globalCss,
-      debug,
-      resolveAlias,
-    })
-    template = transferCode
+  if (styles.length) {
+    for (const style of styles) {
+      const vue = wrapperVueTemplate(template, style.content)
+      const transferCode = await transformVue(vue, {
+        isJsx: true,
+        isRem,
+        globalCss,
+        debug,
+        resolveAlias,
+      })
+      template = transferCode
 
-    // 如果没有style scoped 删除style
-    if (transferCode.includes('<style scoped></style>'))
-      code = code.replace(styleReg, '')
+      // 如果没有style scoped 删除这个style block
+      if (transferCode.includes('<style scoped></style>'))
+        code = code.replace(style.full, '')
+    }
   }
   if (css.length) {
     for (const c of css) {
@@ -123,5 +125,7 @@ async function generateNewCode(
     }
   }
 
-  return code.replace(originBody, getBody(template))
+  return code
+    .replace(originBody, getBody(template))
+    .replace(/\n[ \t]+\n/g, '\n')
 }

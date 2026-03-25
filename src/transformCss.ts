@@ -46,6 +46,12 @@ interface AllChange {
   end: Position
 }
 
+interface StyleBlock {
+  content: string
+  contentEnd: number
+  contentStart: number
+}
+
 let isRem: boolean | undefined
 export async function transformCss(
   style: string,
@@ -57,6 +63,7 @@ export async function transformCss(
   debug = false,
   globalCss?: any,
   resolveAlias?: any,
+  styleIndex?: number,
 ): Promise<string> {
   isRem = _isRem
   const allChanges: AllChange[] = []
@@ -69,6 +76,7 @@ export async function transformCss(
     debug,
     globalCss,
     resolveAlias,
+    styleIndex,
   )) as string
 
   if (debug) {
@@ -208,14 +216,18 @@ export async function transformCss(
       }
 
       // 拿出class
-      const _class = newCode.match(/<style[^>]+>(.*)<\/style>/s)![1]
+      const styleBlock = getStyleBlock(newCode, parse, styleIndex, all)
+      if (!styleBlock)
+        return
+
+      const _class = styleBlock.content
       // 删除原本class
       let newClass = _class.replace(all, _ =>
         _.replace(value, noTransfer.join(';')))
 
       // 如果class中内容全部被移除删除这个定义的class
       newClass = newClass.replace(emptyClass, '')
-      newCode = newCode.replace(_class, newClass)
+      newCode = replaceStyleBlockContent(newCode, styleBlock, newClass)
 
       for (const r of result) {
         const parent = r.parent
@@ -239,9 +251,7 @@ export async function transformCss(
           }
           else {
             const index = parent.loc.start.offset + parent.tag.length + 1
-            const newIndex
-              = hasClass.value.loc.start.offset
-                + getCalculateOffset(updateOffsetMap, index)
+            const newIndex = index + getCalculateOffset(updateOffsetMap, index)
             const updateText = 'class="group" '
             parent.props.push({
               type: 6,
@@ -358,7 +368,10 @@ async function importCss(
   debug = false,
   globalCss?: any,
   resolveAlias?: any,
+  styleIndex?: number,
 ) {
+  const { parse } = await getVueCompilerSfc()
+
   if (debug) {
     console.log(
       '[DEBUG] importCss started:',
@@ -374,12 +387,13 @@ async function importCss(
     )
   }
 
-  const originCode = code
   for await (const match of style.matchAll(
     /@import (url\()?["']*([\w./\-]*)["']*\)?;/g,
   )) {
     if (!match)
       continue
+
+    const previousCode = code
 
     if (debug) {
       console.log(
@@ -404,10 +418,13 @@ async function importCss(
       resolveAlias,
     )
 
-    const [_, beforeStyle] = code.match(/<style.*>(.*)<\/style>/s)!
-    code = code.replace(beforeStyle, '')
+    const styleBlock = getStyleBlock(code, parse, styleIndex, match[0])
+    const templateSource = getTemplateSource(code, parse)
+    if (!styleBlock || !templateSource)
+      continue
 
-    const vue = wrapperVueTemplate(code, css)
+    const beforeStyle = styleBlock.content
+    const vue = wrapperVueTemplate(templateSource, css)
 
     const transfer = await transformVue(vue, {
       isJsx,
@@ -419,31 +436,81 @@ async function importCss(
     })
 
     if (diffTemplateStyle(transfer, vue)) {
-      code = originCode
+      code = previousCode
       continue
     }
+
+    const nextTemplate = getTemplateSource(transfer, parse)
+    if (nextTemplate)
+      code = replaceTemplateContent(code, parse, nextTemplate)
+
     // 如果<style scoped>为空全部转换删除@import
 
     if (isEmptyStyle(transfer)) {
-      code = wrapperVueTemplate(transfer, beforeStyle.replace(match[0], ''))
+      code = replaceStyleBlockContent(
+        code,
+        styleBlock,
+        beforeStyle.replace(match[0], ''),
+      )
       continue
     }
     // 否则剩余的生成新的@import css
     const restStyle = getStyleScoped(transfer)
 
-    fsp.writeFile(
+    await fsp.writeFile(
       url.replace(`.${type}`, `${TRANSFER_FLAG}.${type}`),
       restStyle,
       'utf-8',
     )
-
-    code = wrapperVueTemplate(
-      transfer.replace(/<style scoped>.*<\/style>/s, ''),
-      beforeStyle,
-    )
     continue
   }
   return code
+}
+
+function getStyleBlock(
+  code: string,
+  parse: any,
+  styleIndex?: number,
+  needle?: string,
+): StyleBlock | undefined {
+  const styles = parse(code).descriptor.styles
+  const target
+    = styleIndex !== undefined
+      ? styles[styleIndex]
+      : styles.find((item: any) => needle && item.content.includes(needle))
+
+  if (!target)
+    return
+
+  return {
+    content: target.content,
+    contentEnd: target.loc.end.offset,
+    contentStart: target.loc.start.offset,
+  }
+}
+
+function replaceStyleBlockContent(
+  code: string,
+  styleBlock: StyleBlock,
+  content: string,
+) {
+  return `${code.slice(0, styleBlock.contentStart)}${content}${code.slice(styleBlock.contentEnd)}`
+}
+
+function getTemplateSource(code: string, parse: any) {
+  const template = parse(code).descriptor.template
+  if (!template)
+    return ''
+
+  return template.loc.source
+}
+
+function replaceTemplateContent(code: string, parse: any, content: string) {
+  const template = parse(code).descriptor.template
+  if (!template)
+    return code
+
+  return `${code.slice(0, template.loc.start.offset)}${content}${code.slice(template.loc.end.offset)}`
 }
 
 // 查找是否存在冲突样式按照names
@@ -730,7 +797,7 @@ async function getConflictClass(
     } = item
     const pre = prefix ? `${prefix}|` : ''
     const beforeArr = before.split(';').filter(Boolean)
-    const data = beforeArr.map((item) => {
+    const data: Array<[string, string | undefined]> = beforeArr.map((item) => {
       const trimmed = item.trim()
       const idx = trimmed.indexOf(':')
       if (idx === -1)

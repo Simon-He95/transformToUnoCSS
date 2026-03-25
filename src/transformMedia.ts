@@ -1,11 +1,12 @@
 import { getLastName } from 'transform-to-unocss-core'
 import { transformCss } from './transformCss'
 
-const mediaReg = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{([\s\w.{}\-:;]*)\}/g
+const mediaReg
+  = /@media([\s\w]*)\(([\w-]+)(?::\s*([\w-]+))?\)\s*\{([\s\w.{}\-:;!]*)\}/g
 
 const mediaSingleReg
-  = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{([\s\w.{}\-:;]*)\}/
-const emptyMediaReg = /@media([\s\w]*)\(([\w-]+):\s*(\w+)\)\s*\{\s*\}/g
+  = /@media([\s\w]*)\(([\w-]+)(?::\s*([\w-]+))?\)\s*\{([\s\w.{}\-:;!]*)\}/
+const emptyMediaReg = /@media([\s\w]*)\(([\w-]+)(?::\s*([\w-]+))?\)\s*\{\s*\}/g
 const valMap: any = {
   '640px': 'sm',
   '768px': 'md',
@@ -64,6 +65,7 @@ export async function transformMedia(
     const tempFlag = `/* __transformMedia${Math.random()}__ */`
 
     const value = valMap[val]
+    const mediaValue = getMediaValue(pre, key, value, val)
 
     if (debug) {
       console.log(
@@ -82,45 +84,18 @@ export async function transformMedia(
       )
     }
 
-    if (!value) {
+    if (!mediaValue) {
       result = result.replace(all, tempFlag)
       transferBackMap.push((r: string) => r.replace(tempFlag, all))
 
       continue
     }
-
-    if (pre.trim()) {
-      const transfer = await transformCss(
-        inner,
-        result,
-        `max-${value}`,
-        isJsx,
-        filepath,
-        isRem,
-        debug,
-        globalCss,
-      )
-
-      if (transfer !== result) {
-        result = transfer.replace(emptyMediaReg, '')
-        transferBackMap.push((r: string) => r.replace(tempFlag, transfer))
-
-        continue
-      }
-      result = result.replace(all, tempFlag)
-      transferBackMap.push((r: string) => r.replace(tempFlag, all))
-
-      continue
-    }
-    let mapValue: string = value
-    if (key === 'prefers-reduced-motion')
-      mapValue = `${getLastName(key)}-${val === 'no-preference' ? 'safe' : val}`
 
     const transfer = (
       await transformCss(
         inner,
         result,
-        mapValue,
+        mediaValue,
         isJsx,
         filepath,
         isRem,
@@ -144,4 +119,29 @@ export async function transformMedia(
         ),
     ]
   }
+}
+
+function getMediaValue(
+  pre: string,
+  key: string,
+  value: string | undefined,
+  rawValue?: string,
+) {
+  if (key === 'prefers-reduced-motion') {
+    return `${getLastName(key)}-${rawValue === 'no-preference' ? 'safe' : rawValue || 'reduce'}`
+  }
+
+  if (!value)
+    return
+
+  const normalizedPre = pre.trim()
+  const isNegated = normalizedPre.startsWith('not')
+
+  if (key === 'max-width')
+    return isNegated ? value : `max-${value}`
+
+  if (key === 'min-width')
+    return isNegated ? `max-${value}` : value
+
+  return value
 }

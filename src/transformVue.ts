@@ -97,7 +97,6 @@ export async function transformVue(code: string, options?: Options) {
         JSON.stringify(
           {
             stylesCount: styles.length,
-            firstStyle: styles[0],
           },
           null,
           2,
@@ -105,27 +104,37 @@ export async function transformVue(code: string, options?: Options) {
       )
     }
 
-    // transform class
-    const {
-      attrs: { scoped },
-      content: style,
-      lang = 'css',
-    } = styles[0]
+    const stylesCount = styles.length
+    for (let index = stylesCount - 1; index >= 0; index--) {
+      const currentStyles = parse(code).descriptor.styles
+      const currentStyle = currentStyles[index]
+      if (!currentStyle)
+        break
 
-    const css = await compilerCss(
-      style,
-      lang as CssType,
-      filepath,
-      globalCss,
-      debug,
-      resolveAlias,
-    )
-    if (css) {
+      const {
+        attrs: { scoped },
+        content: style,
+        lang = 'css',
+        loc: { start, end },
+      } = currentStyle
+
+      const css = await compilerCss(
+        style,
+        lang as CssType,
+        filepath,
+        globalCss,
+        debug,
+        resolveAlias,
+      )
+      if (!css)
+        continue
+
       if (debug) {
         console.log(
           '[DEBUG] CSS compiled successfully:',
           JSON.stringify(
             {
+              styleIndex: index,
               originalStyleLength: style.length,
               compiledCssLength: css.length,
               scoped: !!scoped,
@@ -136,9 +145,20 @@ export async function transformVue(code: string, options?: Options) {
         )
       }
 
-      // 能被正确编译解析的css
-      code = code.replace(style, `\n${css}\n`).replace(` lang="${lang}"`, '')
-      // 只针对scoped css处理
+      code = `${code.slice(0, start.offset)}\n${css}\n${code.slice(end.offset)}`
+
+      if (lang !== 'css') {
+        const styleTagStart = code.lastIndexOf('<style', start.offset)
+        const styleTagEnd = code.indexOf('>', styleTagStart)
+        if (styleTagStart !== -1 && styleTagEnd !== -1) {
+          const styleTag = code.slice(styleTagStart, styleTagEnd + 1)
+          const nextStyleTag = styleTag.replace(/\s+lang=(['"]).*?\1/, '')
+          if (nextStyleTag !== styleTag) {
+            code = `${code.slice(0, styleTagStart)}${nextStyleTag}${code.slice(styleTagEnd + 1)}`
+          }
+        }
+      }
+
       if (scoped) {
         code = await transformCss(
           css,
@@ -150,6 +170,7 @@ export async function transformVue(code: string, options?: Options) {
           debug,
           globalCss,
           resolveAlias,
+          index,
         )
       }
     }

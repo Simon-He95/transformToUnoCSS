@@ -9,7 +9,7 @@ export function compilerCss(
   css: string,
   lang: CssType,
   filepath: string = isNodeEnvironment() ? process.cwd() : '',
-  globalCss?: string,
+  globalCss?: any,
   debug?: boolean,
   resolveAlias?: any,
 ) {
@@ -33,14 +33,62 @@ export function compilerCss(
     return css
   }
 
+  const normalizedGlobalCss = getGlobalCssByLang(globalCss, lang)
+
   switch (lang) {
     case 'stylus':
-      return stylusCompiler(css, filepath, globalCss, debug, resolveAlias)
+      return stylusCompiler(
+        css,
+        filepath,
+        normalizedGlobalCss,
+        debug,
+        resolveAlias,
+      )
     case 'less':
-      return lessCompiler(css, filepath, globalCss, debug, resolveAlias)
+      return lessCompiler(
+        css,
+        filepath,
+        normalizedGlobalCss,
+        debug,
+        resolveAlias,
+      )
     case 'scss':
-      return sassCompiler(css, filepath, globalCss, debug, resolveAlias)
+      return sassCompiler(
+        css,
+        filepath,
+        normalizedGlobalCss,
+        debug,
+        resolveAlias,
+      )
     default:
       return css
   }
+}
+
+function getGlobalCssByLang(globalCss: any, lang: CssType) {
+  if (globalCss == null || typeof globalCss === 'string')
+    return globalCss
+
+  if (typeof globalCss !== 'object')
+    return globalCss
+
+  if ('css' in globalCss) {
+    return typeof globalCss.css === 'string' ? globalCss.css : undefined
+  }
+
+  const langConfig
+    = globalCss[lang] ?? (lang === 'scss' ? globalCss.sass : undefined)
+
+  if (typeof langConfig === 'string')
+    return langConfig
+
+  if (
+    langConfig
+    && typeof langConfig === 'object'
+    && typeof langConfig.additionalData === 'string'
+  ) {
+    return langConfig.additionalData
+  }
+
+  return undefined
 }

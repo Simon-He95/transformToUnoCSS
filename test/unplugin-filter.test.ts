@@ -18,6 +18,7 @@ describe('unplugin node_modules filtering', () => {
     // 测试正常的项目文件应该被包含
     expect(filter('src/components/App.vue')).toBe(true)
     expect(filter('src/pages/Home.tsx')).toBe(true)
+    expect(filter('src/pages/Home.jsx')).toBe(true)
     expect(filter('/Users/project/src/utils.ts')).toBe(true)
   })
 

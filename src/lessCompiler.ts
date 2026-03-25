@@ -17,14 +17,13 @@ export async function lessCompiler(
     )
   }
 
-  let result = globalCss ? `${globalCss}${css}` : css
+  let result = globalCss ? `${globalCss}\n${css}` : css
 
   try {
     // 使用用户项目中的 less 版本（通过 peerDependencies）
     const less = await import('less')
-    const { LessPluginModuleResolver } = await import(
-      'less-plugin-module-resolver'
-    )
+    const { LessPluginModuleResolver }
+      = await import('less-plugin-module-resolver')
 
     // normalize resolveAlias into plain alias object { find: replacement }
     const aliasObj: Record<string, string> = {}

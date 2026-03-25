@@ -92,6 +92,8 @@ export async function sassCompiler(
       )
     }
   }
+  if (result)
+    result += '\n'
   result += css
 
   if (process.env.DEBUG_SASS) {
@@ -210,6 +212,9 @@ export async function sassCompiler(
         const importRegex = /@(import|use|forward)\s+(['"])(~?@\/[\w\-./]+)\2/g
 
         const resolveAliasLocal = (impPath: string) => {
+          const getAliasSuffix = (find: string) =>
+            impPath.slice(find.length).replace(/^\/+/, '')
+
           // impPath like '@/styles/foo' or '~@/styles/foo'
           const rel = impPath.replace(/^~?@\//, '')
           // If we have a resolver map from Vite/Rollup, try to resolve via it
@@ -223,10 +228,7 @@ export async function sassCompiler(
                     typeof a.find === 'string'
                     && impPath.startsWith(a.find)
                   ) {
-                    return path.resolve(
-                      a.replacement,
-                      impPath.slice(a.find.length),
-                    )
+                    return path.resolve(a.replacement, getAliasSuffix(a.find))
                   }
                   if (a.find instanceof RegExp) {
                     const m = impPath.match(a.find)
@@ -238,10 +240,7 @@ export async function sassCompiler(
               else if (typeof resolveAlias === 'object') {
                 for (const key of Object.keys(resolveAlias)) {
                   if (impPath.startsWith(key)) {
-                    return path.resolve(
-                      resolveAlias[key],
-                      impPath.slice(key.length),
-                    )
+                    return path.resolve(resolveAlias[key], getAliasSuffix(key))
                   }
                 }
               }
@@ -341,7 +340,10 @@ export async function sassCompiler(
       if (sass.compile && typeof sass.compile === 'function') {
         // 使用新的 API - 需要写入临时文件
         const os = await import('node:os')
-        const tempFilePath = `${os.tmpdir()}/transform-to-unocss-${Date.now()}.scss`
+        const tempDirPath = fs.mkdtempSync(
+          path.join(os.tmpdir(), 'transform-to-unocss-'),
+        )
+        const tempFilePath = path.join(tempDirPath, 'input.scss')
 
         try {
           fs.writeFileSync(tempFilePath, sourceToCompile)
@@ -351,6 +353,12 @@ export async function sassCompiler(
           // 清理临时文件
           try {
             fs.unlinkSync(tempFilePath)
+          }
+          catch (e) {
+            // 忽略清理错误
+          }
+          try {
+            fs.rmdirSync(tempDirPath)
           }
           catch (e) {
             // 忽略清理错误

@@ -1,3 +1,6 @@
+import fsp from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { transformCode } from '../src/transformCode'
 
@@ -71,6 +74,33 @@ export function App() {
     expect(result).toContain('className')
     // Even if no transformation occurs, the file should at least be processed through the correct path
     expect(typeof result).toBe('string')
+  })
+
+  it('should handle explicit jsx type', async () => {
+    const dir = await fsp.mkdtemp(path.join(os.tmpdir(), 'transform-to-unocss-jsx-type-'))
+    await fsp.writeFile(path.join(dir, 'styles.css'), '.title { color: red; }', 'utf-8')
+
+    const jsxCode = `
+import { defineComponent } from 'vue'
+import './styles.css'
+
+export default defineComponent({
+  setup() {
+    return () => <div class="title">Hello</div>;
+  }
+})
+`
+
+    const result = await transformCode(jsxCode, {
+      filepath: path.join(dir, 'App.jsx'),
+      type: 'jsx',
+      debug: true,
+    })
+
+    expect(typeof result).toBe('string')
+    expect(result).toContain('text-red')
+
+    await fsp.rm(dir, { recursive: true, force: true })
   })
 
   it('should validate input types', async () => {

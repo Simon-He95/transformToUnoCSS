@@ -17,7 +17,7 @@ export async function stylusCompiler(
     )
   }
 
-  let result = globalCss ? `${globalCss}${css}` : css
+  let result = globalCss ? `${globalCss}\n${css}` : css
 
   // Pre-replace alias imports like @import '@/foo' using resolveAlias map if provided
   if (resolveAlias) {

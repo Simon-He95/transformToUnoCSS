@@ -33,15 +33,21 @@ const unplugin = createUnplugin((options?: Options): any => {
         return filter(id)
       },
       async transform(code: string, id: string) {
-        let suffix!: 'vue' | 'tsx'
+        let suffix!: 'vue' | 'tsx' | 'jsx'
         if (id.endsWith('.vue')) {
           suffix = 'vue'
         }
         else if (id.endsWith('lang.tsx')) {
           // skip
         }
+        else if (id.endsWith('lang.jsx')) {
+          // skip
+        }
         else if (id.endsWith('.tsx')) {
           suffix = 'tsx'
+        }
+        else if (id.endsWith('.jsx')) {
+          suffix = 'jsx'
         }
 
         if (!suffix)

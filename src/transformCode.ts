@@ -92,9 +92,9 @@ export async function transformCode(code: string, options: Options) {
 
   // 删除代码中的注释部分
   // code = code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
-  if (detectedType === 'tsx') {
+  if (detectedType === 'tsx' || detectedType === 'jsx') {
     if (debug) {
-      console.log(`[DEBUG] transformCode: Processing as TSX file`)
+      console.log(`[DEBUG] transformCode: Processing as JSX/TSX file`)
     }
     return transformJsx(code, {
       filepath,
