@@ -33,8 +33,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       transform-to-unocss-core:
-        specifier: 0.0.71
-        version: 0.0.71
+        specifier: 0.0.74
+        version: 0.0.74
       unplugin:
         specifier: ^2.3.11
         version: 2.3.11
@@ -4868,8 +4868,8 @@ packages:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
     engines: {node: '>=12'}
 
-  transform-to-unocss-core@0.0.71:
-    resolution: {integrity: sha512-6kF+iNE9muNmcNsXKtKpwz/Qzsv0WaKuNKpwdhNbdMLL1bdi3jeBl0lOV8NI55oy4QfOwh4kEtwFptBP5Zqm1A==}
+  transform-to-unocss-core@0.0.74:
+    resolution: {integrity: sha512-2SNUFnfkSfwhscCiId2fsNqBoWlJLCNFvy7Ew10AQEEbiISpYbu/AO8j+bwGYnhzhGlyF3kcrVwezic3LvUIDA==}
     hasBin: true
 
   trim-lines@3.0.1:
@@ -10646,7 +10646,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  transform-to-unocss-core@0.0.71: {}
+  transform-to-unocss-core@0.0.74: {}
 
   trim-lines@3.0.1: {}
 

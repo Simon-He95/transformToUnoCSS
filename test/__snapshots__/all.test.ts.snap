@@ -1089,7 +1089,7 @@ export default {
       <!-- Banner  -->
       <a
         :style="bannerPosition"
-        class="vue-inspector-banner vue-inspector-card font-[Arial,_Helvetica,_sans-serif] px-8px py-5px rounded-[4px] text-left text-[#e9e9e9] text-14px bg-[#42b883] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] hidden absolute m-0 w-260px"
+        class="vue-inspector-banner vue-inspector-card font-[Arial,_Helvetica,_sans-serif] px-8px py-5px rounded-[4px] text-left text-[#e9e9e9] text-14px bg-[#42b883] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] hidden absolute m-0 w-260px no-underline"
         href="https://github.com/webfansplz/vite-plugin-vue-inspector"
         target="_blank"
       >
@@ -1120,7 +1120,6 @@ export default {
 </template>
 
 <style scoped>
-.vue-inspector-banner {text-decoration: none}
 .vue-inspector-container--disabled:hover .vue-inspector-banner {
   display: none;
 }
@@ -2895,14 +2894,12 @@ export default defineComponent({
 </template>
 
 <style>
+.mixed-decls-test .content {
+  color: blue;
+}
 .mixed-decls-test {
   background: white;
   padding: 20px;
-  margin: 10px;
-  border: 1px solid #ccc;
-}
-.mixed-decls-test .content {
-  color: blue;
 }
 .mixed-decls-test h1 {
   font-size: 24px;
@@ -2910,17 +2907,23 @@ export default defineComponent({
 .mixed-decls-test h1:hover {
   color: red;
 }
-.another-example {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+.mixed-decls-test {
+  margin: 10px;
+  border: 1px solid #ccc;
 }
 .another-example .nested {
   font-weight: bold;
 }
+.another-example {
+  display: flex;
+  align-items: center;
+}
 .another-example .another-nested {
   text-decoration: underline;
+}
+.another-example {
+  justify-content: space-between;
+  gap: 15px;
 }
 </style>
 ",

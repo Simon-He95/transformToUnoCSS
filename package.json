@@ -109,7 +109,7 @@
     "@vue/compiler-sfc": "^3.5.30",
     "fast-glob": "^3.3.3",
     "node-html-parser": "^7.1.0",
-    "transform-to-unocss-core": "0.0.71",
+    "transform-to-unocss-core": "0.0.74",
     "unplugin": "^2.3.11"
   },
   "devDependencies": {

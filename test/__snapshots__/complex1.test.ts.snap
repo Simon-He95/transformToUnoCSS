@@ -326,7 +326,7 @@ export default {
       <!-- Banner  -->
       <a
         :style="bannerPosition"
-        class="vue-inspector-banner vue-inspector-card font-[Arial,_Helvetica,_sans-serif] px-8px py-5px rounded-[4px] text-left text-[#e9e9e9] text-14px bg-[#42b883] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] hidden absolute m-0 w-260px"
+        class="vue-inspector-banner vue-inspector-card font-[Arial,_Helvetica,_sans-serif] px-8px py-5px rounded-[4px] text-left text-[#e9e9e9] text-14px bg-[#42b883] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] hidden absolute m-0 w-260px no-underline"
         href="https://github.com/webfansplz/vite-plugin-vue-inspector"
         target="_blank"
       >
@@ -357,7 +357,6 @@ export default {
 </template>
 
 <style scoped>
-.vue-inspector-banner {text-decoration: none}
 .vue-inspector-container--disabled:hover .vue-inspector-banner {
   display: none;
 }
