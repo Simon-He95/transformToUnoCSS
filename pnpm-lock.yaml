@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  transform-to-unocss-core:
+    hash: e7fec95957acf5b397afd2ba53b5e51faf2d5b5be5da862a70791f7ad7a0e548
+    path: patches/transform-to-unocss-core.patch
+
 importers:
 
   .:
@@ -34,7 +39,7 @@ importers:
         version: 7.1.0
       transform-to-unocss-core:
         specifier: 0.0.74
-        version: 0.0.74
+        version: 0.0.74(patch_hash=e7fec95957acf5b397afd2ba53b5e51faf2d5b5be5da862a70791f7ad7a0e548)
       unplugin:
         specifier: ^2.3.11
         version: 2.3.11
@@ -10646,7 +10651,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  transform-to-unocss-core@0.0.74: {}
+  transform-to-unocss-core@0.0.74(patch_hash=e7fec95957acf5b397afd2ba53b5e51faf2d5b5be5da862a70791f7ad7a0e548): {}
 
   trim-lines@3.0.1: {}
 
