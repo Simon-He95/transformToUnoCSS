@@ -204,12 +204,48 @@ export async function sassCompiler(
         }
       }
 
-      // 在编译前，尝试将源码中以 '@/...' 或 '~@/...' 开头的别名导入替换为可解析的绝对路径。
+      // 在编译前，尝试将源码中以 '@/...' 或 '~@/...' 开头的别名导入替换为可解析的路径。
       // 这能解决在没有构建别名解析器（如 vite/webpack）的环境中，Sass 无法直接解析别名的问题。
       const fs = await import('node:fs')
 
       const replaceAliasImports = (source: string) => {
         const importRegex = /@(import|use|forward)\s+(['"])(~?@\/[\w\-./]+)\2/g
+
+        // Try to resolve via alias config by adding the alias root directory
+        // to loadPaths and returning the relative suffix. This avoids putting
+        // absolute paths in @use statements, which breaks on Windows where
+        // drive letters (e.g. C:/) are misinterpreted as URL schemes by Sass.
+        const tryResolveViaAlias = (impPath: string): { suffix: string, aliasRoot: string } | null => {
+          const getAliasSuffix = (find: string) =>
+            impPath.slice(find.length).replace(/^\/+/, '')
+
+          try {
+            if (resolveAlias) {
+              if (Array.isArray(resolveAlias)) {
+                for (const a of resolveAlias) {
+                  if (
+                    typeof a.find === 'string'
+                    && impPath.startsWith(a.find)
+                  ) {
+                    return { suffix: getAliasSuffix(a.find), aliasRoot: a.replacement }
+                  }
+                }
+              }
+              else if (typeof resolveAlias === 'object') {
+                for (const key of Object.keys(resolveAlias)) {
+                  if (impPath.startsWith(key)) {
+                    return { suffix: getAliasSuffix(key), aliasRoot: resolveAlias[key] }
+                  }
+                }
+              }
+            }
+          }
+          catch (e) {
+            if (debug)
+              console.warn('[transform-to-unocss] tryResolveViaAlias failed', e)
+          }
+          return null
+        }
 
         const resolveAliasLocal = (impPath: string) => {
           const getAliasSuffix = (find: string) =>
@@ -288,6 +324,25 @@ export async function sassCompiler(
 
         return source.replace(importRegex, (match, kw, quote, impPath) => {
           try {
+            // First, try to resolve via alias config using loadPaths approach.
+            // This adds the alias root directory to Sass loadPaths and rewrites
+            // the import to a relative suffix, avoiding Windows absolute path
+            // issues where drive letters (C:/) are misinterpreted as URL schemes.
+            const aliasResult = tryResolveViaAlias(impPath)
+            if (aliasResult) {
+              const { suffix, aliasRoot } = aliasResult
+              if (!compileOptions.loadPaths.includes(aliasRoot)) {
+                compileOptions.loadPaths.push(aliasRoot)
+              }
+              if (debug) {
+                console.log(
+                  `[transform-to-unocss] Rewriting ${kw} ${impPath} -> ${suffix} (added ${aliasRoot} to loadPaths)`,
+                )
+              }
+              return `@${kw} ${quote}${suffix}${quote}`
+            }
+
+            // Fall back to absolute path resolution for non-alias paths
             const resolved = resolveAliasLocal(impPath)
             if (resolved && resolved !== impPath) {
               // ensure resolved is absolute-ish; if it's relative, resolve from cwd
