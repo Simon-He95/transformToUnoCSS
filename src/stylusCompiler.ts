@@ -36,7 +36,7 @@ export async function stylusCompiler(
                     a.replacement,
                     imp.slice(a.find.length),
                   )
-              return `@import '${resolved}'`
+              return `@import '${resolved.replace(/\\/g, '/')}'`
             }
           }
         }
@@ -47,12 +47,12 @@ export async function stylusCompiler(
               const resolved = path.isAbsolute(val)
                 ? path.join(val, imp.slice(k.length))
                 : path.join(process.cwd(), val, imp.slice(k.length))
-              return `@import '${resolved}'`
+              return `@import '${resolved.replace(/\\/g, '/')}'`
             }
           }
         }
         // fallback to src
-        return `@import '${path.resolve(process.cwd(), 'src', rel)}'`
+        return `@import '${path.resolve(process.cwd(), 'src', rel).replace(/\\/g, '/')}'`
       })
     }
     catch (e) {

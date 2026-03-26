@@ -302,6 +302,9 @@ export async function sassCompiler(
                 // keep original resolved if path ops fail
               }
 
+              // Normalize to forward slashes for Sass compatibility on Windows
+              finalPath = finalPath.replace(/\\/g, '/')
+
               if (debug) {
                 console.log(
                   `[transform-to-unocss] Rewriting ${kw} ${impPath} -> ${finalPath}`,
