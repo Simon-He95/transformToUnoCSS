@@ -211,14 +211,14 @@ export async function sassCompiler(
       const replaceAliasImports = (source: string) => {
         const importRegex = /@(import|use|forward)\s+(['"])(~?@\/[\w\-./]+)\2/g
 
+        const getAliasSuffix = (impPath: string, find: string) =>
+          impPath.slice(find.length).replace(/^\/+/, '')
+
         // Try to resolve via alias config by adding the alias root directory
         // to loadPaths and returning the relative suffix. This avoids putting
         // absolute paths in @use statements, which breaks on Windows where
         // drive letters (e.g. C:/) are misinterpreted as URL schemes by Sass.
         const tryResolveViaAlias = (impPath: string): { suffix: string, aliasRoot: string } | null => {
-          const getAliasSuffix = (find: string) =>
-            impPath.slice(find.length).replace(/^\/+/, '')
-
           try {
             if (resolveAlias) {
               if (Array.isArray(resolveAlias)) {
@@ -227,14 +227,14 @@ export async function sassCompiler(
                     typeof a.find === 'string'
                     && impPath.startsWith(a.find)
                   ) {
-                    return { suffix: getAliasSuffix(a.find), aliasRoot: a.replacement }
+                    return { suffix: getAliasSuffix(impPath, a.find), aliasRoot: a.replacement }
                   }
                 }
               }
               else if (typeof resolveAlias === 'object') {
                 for (const key of Object.keys(resolveAlias)) {
                   if (impPath.startsWith(key)) {
-                    return { suffix: getAliasSuffix(key), aliasRoot: resolveAlias[key] }
+                    return { suffix: getAliasSuffix(impPath, key), aliasRoot: resolveAlias[key] }
                   }
                 }
               }
@@ -248,9 +248,6 @@ export async function sassCompiler(
         }
 
         const resolveAliasLocal = (impPath: string) => {
-          const getAliasSuffix = (find: string) =>
-            impPath.slice(find.length).replace(/^\/+/, '')
-
           // impPath like '@/styles/foo' or '~@/styles/foo'
           const rel = impPath.replace(/^~?@\//, '')
           // If we have a resolver map from Vite/Rollup, try to resolve via it
@@ -264,7 +261,7 @@ export async function sassCompiler(
                     typeof a.find === 'string'
                     && impPath.startsWith(a.find)
                   ) {
-                    return path.resolve(a.replacement, getAliasSuffix(a.find))
+                    return path.resolve(a.replacement, getAliasSuffix(impPath, a.find))
                   }
                   if (a.find instanceof RegExp) {
                     const m = impPath.match(a.find)
@@ -276,7 +273,7 @@ export async function sassCompiler(
               else if (typeof resolveAlias === 'object') {
                 for (const key of Object.keys(resolveAlias)) {
                   if (impPath.startsWith(key)) {
-                    return path.resolve(resolveAlias[key], getAliasSuffix(key))
+                    return path.resolve(resolveAlias[key], getAliasSuffix(impPath, key))
                   }
                 }
               }
