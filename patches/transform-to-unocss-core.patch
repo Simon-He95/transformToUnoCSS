@@ -1,72 +1,80 @@
 diff --git a/dist/index.cjs b/dist/index.cjs
-index 31efca00e685dbd0d243eb6978d36985b6d36c01..ea9a142d04912708e5d6597b114a37dce51b595f 100644
+index 31efca00e685dbd0d243eb6978d36985b6d36c01..808b68298b6d0671b761ab6631f5ea92fe50ce8b 100644
 --- a/dist/index.cjs
 +++ b/dist/index.cjs
-@@ -196,9 +196,10 @@ function animation(key, val) {
+@@ -196,10 +196,11 @@ function animation(key, val) {
  		let timeValuesFound = 0;
  		for (let i = 0; i < parts.length; i++) {
  			const part = parts[i];
 -			if (/^\d+(?:\.\d+)?s?$/.test(part)) {
 -				if (timeValuesFound === 0) result.push(`animate-duration${getVal(part)}`);
 -				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(part)}`);
+-				else result.push(`animate-[${part}]`);
 +			if (/^\d+(?:\.\d+)?(ms|s)?$/.test(part)) {
 +				const cleanPart = part.endsWith("ms") ? part.slice(0, -2) : part;
 +				if (timeValuesFound === 0) result.push(`animate-duration${getVal(cleanPart)}`);
 +				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(cleanPart)}`);
- 				else result.push(`animate-[${part}]`);
++				else result.push(`animate-[${cleanPart}]`);
  				timeValuesFound++;
  			} else if (/^(?:linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(part)) result.push(`animate-ease-[${part}]`);
+ 			else if (part.startsWith("cubic-bezier") || part.startsWith("steps")) result.push(`animate-ease-[${part}]`);
 diff --git a/dist/index.iife.js b/dist/index.iife.js
-index 09211d49d50bc0bcf8b9e7c9338a89aca88dc5c3..57406c07f7df2babf3abf3fbf8b899d192a52fce 100644
+index 09211d49d50bc0bcf8b9e7c9338a89aca88dc5c3..b082bb08060f832a8c01758f9a0b700f4ba17d20 100644
 --- a/dist/index.iife.js
 +++ b/dist/index.iife.js
-@@ -198,9 +198,10 @@ function animation(key, val) {
+@@ -198,10 +198,11 @@ function animation(key, val) {
  		let timeValuesFound = 0;
  		for (let i = 0; i < parts.length; i++) {
  			const part = parts[i];
 -			if (/^\d+(?:\.\d+)?s?$/.test(part)) {
 -				if (timeValuesFound === 0) result.push(`animate-duration${getVal(part)}`);
 -				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(part)}`);
+-				else result.push(`animate-[${part}]`);
 +			if (/^\d+(?:\.\d+)?(ms|s)?$/.test(part)) {
 +				const cleanPart = part.endsWith("ms") ? part.slice(0, -2) : part;
 +				if (timeValuesFound === 0) result.push(`animate-duration${getVal(cleanPart)}`);
 +				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(cleanPart)}`);
- 				else result.push(`animate-[${part}]`);
++				else result.push(`animate-[${cleanPart}]`);
  				timeValuesFound++;
  			} else if (/^(?:linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(part)) result.push(`animate-ease-[${part}]`);
+ 			else if (part.startsWith("cubic-bezier") || part.startsWith("steps")) result.push(`animate-ease-[${part}]`);
 diff --git a/dist/index.js b/dist/index.js
-index d01a82693019cf1faed07862abeb4eded2aead62..328462a01e630a3fad6ae44d9663e368ca501c9f 100644
+index d01a82693019cf1faed07862abeb4eded2aead62..02bab2103b13a97780d50b0e9ee2da5f6e084c14 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -194,9 +194,10 @@ function animation(key, val) {
+@@ -194,10 +194,11 @@ function animation(key, val) {
  		let timeValuesFound = 0;
  		for (let i = 0; i < parts.length; i++) {
  			const part = parts[i];
 -			if (/^\d+(?:\.\d+)?s?$/.test(part)) {
 -				if (timeValuesFound === 0) result.push(`animate-duration${getVal(part)}`);
 -				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(part)}`);
+-				else result.push(`animate-[${part}]`);
 +			if (/^\d+(?:\.\d+)?(ms|s)?$/.test(part)) {
 +				const cleanPart = part.endsWith("ms") ? part.slice(0, -2) : part;
 +				if (timeValuesFound === 0) result.push(`animate-duration${getVal(cleanPart)}`);
 +				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(cleanPart)}`);
- 				else result.push(`animate-[${part}]`);
++				else result.push(`animate-[${cleanPart}]`);
  				timeValuesFound++;
  			} else if (/^(?:linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(part)) result.push(`animate-ease-[${part}]`);
+ 			else if (part.startsWith("cubic-bezier") || part.startsWith("steps")) result.push(`animate-ease-[${part}]`);
 diff --git a/dist/index.umd.js b/dist/index.umd.js
-index 5344f0c6a69b279652aeef0d2a2ab59b42d7fc01..8df885d8820c78c84f529683e4e5a504029d8bb4 100644
+index 5344f0c6a69b279652aeef0d2a2ab59b42d7fc01..cd5ad0a93546c848553d9d9728ed45574f403b94 100644
 --- a/dist/index.umd.js
 +++ b/dist/index.umd.js
-@@ -201,9 +201,10 @@ function animation(key, val) {
+@@ -201,10 +201,11 @@ function animation(key, val) {
  		let timeValuesFound = 0;
  		for (let i = 0; i < parts.length; i++) {
  			const part = parts[i];
 -			if (/^\d+(?:\.\d+)?s?$/.test(part)) {
 -				if (timeValuesFound === 0) result.push(`animate-duration${getVal(part)}`);
 -				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(part)}`);
+-				else result.push(`animate-[${part}]`);
 +			if (/^\d+(?:\.\d+)?(ms|s)?$/.test(part)) {
 +				const cleanPart = part.endsWith("ms") ? part.slice(0, -2) : part;
 +				if (timeValuesFound === 0) result.push(`animate-duration${getVal(cleanPart)}`);
 +				else if (timeValuesFound === 1) result.push(`animate-delay${getVal(cleanPart)}`);
- 				else result.push(`animate-[${part}]`);
++				else result.push(`animate-[${cleanPart}]`);
  				timeValuesFound++;
  			} else if (/^(?:linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(part)) result.push(`animate-ease-[${part}]`);
+ 			else if (part.startsWith("cubic-bezier") || part.startsWith("steps")) result.push(`animate-ease-[${part}]`);
